@@ -11,4 +11,8 @@ import { ThemeDesignerComponent} from '../../../png-theme-designer';
 })
 export class App {
   pngTheme = definePNgThemePreset(false);
+
+  onThemeDesignerClose(): void {
+    console.log('[png-theme-designer demo] Theme designer was closed.');
+  }
 }

@@ -23,5 +23,7 @@ export class NextLevelSectionComponent {
   @Input({required: true}) header!: string;
   @Input({required: true}) key!: string;
   @Input() newFieldset = true;
+  @Input() collapsed = false;
+  protected readonly maximumUnfoldedSections = 25;
 
 }

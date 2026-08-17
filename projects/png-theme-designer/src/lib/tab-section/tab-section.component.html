@@ -1,9 +1,15 @@
 <form class="flex flex-col gap-3">
   <section class="w-full">
-    <div class="flex flex-column flex-wrap gap-1">
+    <div class="png-tab-section-grid">
       @for (entry of sectionConfig | keyvalue:null; track entry.key) {
         @let fullKey = key + '.' + entry.key;
-        <png-section-content class="mb-3" [header]="entry.key | titlecase" [sectionConfig]="entry.value" [key]="fullKey">
+        <png-section-content
+          class="mb-3"
+          [class.png-section-wide]="entry.value | isJson"
+          [header]="entry.key | titlecase"
+          [owner]="sectionConfig"
+          [propertyKey]="entry.key"
+          [key]="fullKey">
           @if (entry.value | isJson) {
             <png-first-level-section [sectionConfig]="entry.value" [header]="entry.key | titlecase" [key]="fullKey">
             </png-first-level-section>

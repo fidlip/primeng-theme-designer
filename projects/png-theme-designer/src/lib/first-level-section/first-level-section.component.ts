@@ -23,5 +23,6 @@ export class FirstLevelSectionComponent {
   @Input({required: true}) sectionConfig!: Json;
   @Input({required: true}) header!: string;
   @Input({required: true}) key!: string;
-
+  @Input() collapsed = false;
+  protected readonly maximumUnfoldedSections = 25;
 }

@@ -29,7 +29,8 @@ export class PaletteSectionComponent {
     const white: RGB = { r: 255, g: 255, b: 255 };
     const black: RGB = { r: 0, g: 0, b: 0 };
 
-    for (const key of Object.values(PaletteKey) as PaletteKey[]) {
+    const paletteKeys = Object.values(PaletteKey).filter((key): key is PaletteKey => typeof key === 'number');
+    for (const key of paletteKeys) {
       if (key === PaletteKey._500) {
         continue;
       }

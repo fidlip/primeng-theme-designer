@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 
 import {MaterialBaseDesignTokens} from '@primeng/themes/material/base';
 
-import {Theme} from '@primeng/themes';
+import {definePreset, Theme} from '@primeng/themes';
 import {PngThemeService} from './png-theme.service';
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 import {Tooltip} from 'primeng/tooltip';
@@ -14,6 +14,10 @@ import {Drawer} from 'primeng/drawer';
 import {Button} from 'primeng/button';
 import {TabSectionComponent} from './tab-section/tab-section.component';
 import {IsJsonPipe} from './is-json.pipe';
+import {TrackUserInteractionsDirective} from './track-user-interactions.directive';
+import {ConfirmDialog} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
+import {cloneTheme} from './theme-clone.helper';
 
 @Component({
   selector: 'png-theme-designer',
@@ -34,7 +38,10 @@ import {IsJsonPipe} from './is-json.pipe';
     Button,
     TabSectionComponent,
     IsJsonPipe,
+    TrackUserInteractionsDirective,
+    ConfirmDialog,
   ],
+  providers: [ConfirmationService],
   styleUrls: ['./theme-designer.component.scss'],
   standalone: true,
 })
@@ -44,15 +51,18 @@ export class ThemeDesignerComponent implements OnChanges {
   @Input() drawerVisible = true;
 
   @Output() close = new EventEmitter<void>();
+  @Output() openDemoPage = new EventEmitter<void>();
 
+  protected workingTheme?: MaterialBaseDesignTokens;
   protected themeSections: Array<{ key: string; value: unknown }> = [];
   protected loading = true;
 
-  private themeService = inject(PngThemeService);
+  private readonly themeService = inject(PngThemeService);
+  private readonly confirmationService = inject(ConfirmationService);
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['theme'] && this.theme) {
-      this.themeSections = Object.entries(this.theme).map(([key, value]) => ({key, value}));
+      this.initializeTheme();
       this.serveLoadingState();
     }
   }
@@ -72,8 +82,8 @@ export class ThemeDesignerComponent implements OnChanges {
    * Downloads the theme configuration as a TypeScript file
    */
   onDownloadTheme(): void {
-    if (isJson(this.theme)) {
-      this.themeService.downloadThemeDiffFile(this.theme);
+    if (isJson(this.workingTheme)) {
+      this.themeService.downloadThemeDiffFile(this.workingTheme);
     }
   }
 
@@ -89,6 +99,45 @@ export class ThemeDesignerComponent implements OnChanges {
   }
 
   onApplyTheme(): void {
-    Theme.setTheme({preset: this.theme});
+    Theme.setTheme({preset: this.workingTheme});
+  }
+
+  onDemoPage(): void {
+    this.openDemoPage.emit();
+  }
+
+  protected onUserInteraction(): void {
+    if (isJson(this.workingTheme)) {
+      this.themeService.saveToLocalStorage(this.workingTheme);
+    }
+  }
+
+  resetThemeToDefault(): void {
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: 'Do you want to discard the current theme and restore the default theme?',
+      acceptLabel: 'Discard',
+      rejectLabel: 'Back',
+      accept: () => {
+        this.themeService.clearThemeInLocalStorage();
+        this.initializeTheme(false);
+        this.onApplyTheme();
+      },
+    });
+  }
+
+  private initializeTheme(restoreSavedTheme = true): void {
+    if (!this.theme) {
+      return;
+    }
+
+    const initialTheme = cloneTheme(this.theme);
+    const savedTheme = restoreSavedTheme ? this.themeService.getSavedTheme() : undefined;
+    const workingTheme = savedTheme ? definePreset(initialTheme, savedTheme) : initialTheme;
+    this.workingTheme = workingTheme;
+    this.themeService.setTheme(workingTheme);
+    this.themeSections = Object.entries(workingTheme)
+      .filter(([key]) => key !== 'css')
+      .map(([key, value]) => ({key, value}));
   }
 }

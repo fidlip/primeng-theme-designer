@@ -1,6 +1,6 @@
 @if (palette) {
-  <div class="flex justify-between items-center mb-4">
-    <div class="flex gap-2 items-center">
+  <div class="png-theme-palette-row">
+    <div class="png-theme-palette-control">
       <span class="text-sm capitalize block w-20">{{ header }}</span>
       <input
         type="color"
@@ -9,10 +9,10 @@
         (ngModelChange)="onColorChange($event)"
       />
     </div>
-    <div class="ae-theme-palette-container">
+    <div class="png-theme-palette-container">
       @if (palette | isJson) {
         @for (color of palette | keyvalue:null; track color.key) {
-          <div class="ae-theme-palette-item"
+          <div class="png-theme-palette-item"
                [title]="color.key"
                [style.background-color]="color.value">
           </div>

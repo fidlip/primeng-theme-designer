@@ -1,0 +1,12 @@
+@if (preview) {
+  <ng-content></ng-content>
+  <span class="png-value-preview" [title]="evaluatedValue">
+    @for (part of preview; track $index) {
+      @if (part.isColor) {
+        <span class="png-value-preview__color" [style.background]="part.value" aria-hidden="true"></span>
+      } @else {
+        <span class="png-value-preview__text">{{ part.value }}</span>
+      }
+    }
+  </span>
+}

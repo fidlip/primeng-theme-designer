@@ -1,5 +1,5 @@
 @if (newFieldset) {
-  <p-fieldset class="w-full" [legend]="newFieldset ? header : ''" [toggleable]="true">
+  <p-fieldset class="w-full" [legend]="newFieldset ? header : ''" [toggleable]="true" [collapsed]="collapsed">
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </p-fieldset>
 } @else {
@@ -8,12 +8,19 @@
 }
 
 <ng-template #content>
-  <div class="flex flex-column flex-wrap gap-1">
+  <div class="png-section-grid">
     @for (entry of sectionConfig | keyvalue:null; track entry.key) {
-      <png-section-content [header]="entry.key" [sectionConfig]="entry.value" [key]="key">
+      @let fullEntryKey = key + '.' + entry.key;
+      <png-section-content
+        [class.png-section-wide]="entry.value | isJson"
+        [header]="entry.key"
+        [owner]="sectionConfig"
+        [propertyKey]="entry.key"
+        [key]="fullEntryKey">
         @if (entry.value | isJson) {
-          <png-next-level-section [sectionConfig]="entry.value" [header]="entry.key|titlecase" [key]="entry.key"
-                                  [newFieldset]="false">
+          <png-next-level-section [sectionConfig]="entry.value" [header]="entry.key|titlecase" [key]="fullEntryKey"
+                                  [newFieldset]="false"
+                                  [collapsed]="(sectionConfig | keyvalue:null).length > maximumUnfoldedSections">
           </png-next-level-section>
         }
       </png-section-content>

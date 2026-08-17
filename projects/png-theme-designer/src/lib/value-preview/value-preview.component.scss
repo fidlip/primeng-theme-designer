@@ -1,0 +1,22 @@
+.png-value-preview {
+  display: inline;
+  align-items: center;
+  gap: 0.15rem;
+  font-size: 10px;
+}
+
+.png-value-preview__color {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid rgb(0 0 0 / 12%);
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.png-value-preview__text {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,23 +1,21 @@
 @if (key) {
   @if (sectionConfig | isPalette) {
-    <png-palette-section class="ae-theme-palette" [header]="header" [palette]="sectionConfig"
+    <png-palette-section class="png-theme-palette" [header]="header" [palette]="sectionConfig"
                          [keyBase]="key"></png-palette-section>
   } @else if (sectionConfig | isJson) {
     <ng-content></ng-content>
   } @else {
-    <p-floatlabel variant="on">
-      <label
-        class="text-xs text-zinc-700 dark:text-white/70 block capitalize text-ellipsis overflow-hidden whitespace-nowrap mb-px">
-        <span>{{ header }}</span>
-      </label>
-      <input
-        pInputText
-        class="p-component !text-xs border-surface-300 dark:border-surface-600 w-30 mb-3"
-        type="text"
-        [(ngModel)]="sectionConfig"
+    <p-ifta-label class="png-theme-value-field">
+      <png-theme-value-picker
+        [inputId]="'png-theme-field-' + key"
+        [label]="header | camelToTokens"
+        [placeholder]="'Select a value for ' + (header | camelToTokens)"
+        [(ngModel)]="owner[propertyKey]"
         [name]="key"
+        [tokenTree]="(availableTokensTree | async) ?? []"
+        [tokens]="(availableTokens | async) ?? []"
       />
-    </p-floatlabel>
+    </p-ifta-label>
   }
 
 

@@ -5,8 +5,10 @@
        [class.pi-chevron-right]="drawerVisible"></i>
   </button>
 </div>
+<p-confirmdialog />
 <p-drawer styleClass="md:!w-80 lg:!w-[42rem]"
           [(visible)]="drawerVisible"
+          [closable]="false"
           [baseZIndex]="1000"
           [modal]="false"
           [position]="'right'"
@@ -16,20 +18,27 @@
       <div class="">
         <span class="font-bold text-xl">{{ title }}</span>
       </div>
-      <div class="ae-designer-action-buttons flex items-center gap-2">
-        <p-button icon="pi pi-download" [rounded]="true" [text]="true" severity="secondary" pTooltip="Stáhnout"
+      <div class="png-designer-action-buttons flex items-center gap-2">
+        <p-button icon="pi pi-home" [rounded]="true" [text]="true" severity="secondary" pTooltip="Demo page"
+                  (click)="onDemoPage()"/>
+        <p-button icon="pi pi-download" [rounded]="true" [text]="true" severity="secondary" pTooltip="Download"
                   (click)="onDownloadTheme()"/>
-        <p-button icon="pi pi-upload" [rounded]="true" [text]="true" severity="secondary" pTooltip="Aplikovat"
+        <p-button icon="pi pi-upload" [rounded]="true" [text]="true" severity="secondary" pTooltip="Apply"
                   (click)="onApplyTheme()"/>
-        <p-button icon="pi pi-sun" [rounded]="true" [text]="true" severity="secondary" pTooltip="Přepnout na tmavý mód"
+        <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" severity="secondary" pTooltip="Reset to the default theme"
+                  (click)="resetThemeToDefault()"/>
+        <p-button icon="pi pi-sun" [rounded]="true" [text]="true" severity="secondary" pTooltip="Toggle dark mode"
                   (click)="toggleDarkMode()" tooltipPosition="left"/>
+        <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="secondary" pTooltip="Close"
+                  (click)="onClose()"/>
       </div>
     </div>
   </ng-template>
-  <div class="ae-designer-content flex-auto overflow-auto overflow-x-hidden pb-5 px-5">
-    @if (theme && !loading) {
+  <div class="png-designer-content flex-auto overflow-auto overflow-x-hidden pb-5 px-5"
+       pngTrackUserInteractions (pngInteracted)="onUserInteraction()">
+    @if (workingTheme && !loading) {
       <p-tabs value="primitive">
-        <p-tablist>
+        <p-tablist class="png-designer-tablist">
           @for (themeTabPanelSection of themeSections; track themeTabPanelSection.key) {
             <p-tab [value]="themeTabPanelSection.key">
               {{ themeTabPanelSection.key | titlecase }}

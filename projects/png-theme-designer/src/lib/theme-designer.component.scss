@@ -7,6 +7,26 @@
   box-shadow: var(--p-drawer-shadow);
 }
 
+.png-designer-content {
+  height: 100%;
+  min-width: 0;
+}
+
+:host ::ng-deep .p-drawer-content,
+:host ::ng-deep .p-tabpanels,
+:host ::ng-deep .p-tabpanel,
+:host ::ng-deep .p-fieldset-content-container,
+:host ::ng-deep .p-fieldset-content {
+  min-width: 0;
+}
+
+.png-designer-tablist {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--p-content-background);
+}
+
 
 .icon-btn {
   width: 2rem;
