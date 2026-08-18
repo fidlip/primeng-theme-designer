@@ -76,7 +76,6 @@ import {SplitButtonModule} from 'primeng/splitbutton';
 import {SplitterModule} from 'primeng/splitter';
 import {StepperModule} from 'primeng/stepper';
 import {TableModule} from 'primeng/table';
-import {TabMenuModule} from 'primeng/tabmenu';
 import {TabsModule} from 'primeng/tabs';
 import {TagModule} from 'primeng/tag';
 import {TextareaModule} from 'primeng/textarea';
@@ -104,7 +103,7 @@ const PRIME_MODULES = [AccordionModule, AutoCompleteModule, AvatarModule, BadgeM
   OrderListModule, OrganizationChartModule, OverlayBadgeModule, PaginatorModule, PanelModule, PanelMenuModule,
   PasswordModule, PickListModule, PopoverModule, ProgressBarModule, ProgressSpinnerModule, RadioButtonModule,
   RatingModule, ScrollPanelModule, ScrollTopModule, SelectModule, SelectButtonModule, SkeletonModule, SliderModule,
-  SpeedDialModule, SplitButtonModule, SplitterModule, StepperModule, TableModule, TabMenuModule, TabsModule,
+  SpeedDialModule, SplitButtonModule, SplitterModule, StepperModule, TableModule, TabsModule,
   TagModule, TextareaModule, TieredMenuModule, TimelineModule, ToastModule, ToggleButtonModule, ToggleSwitchModule,
   ToolbarModule, TooltipModule, TreeModule, TreeSelectModule, TreeTableModule];
 

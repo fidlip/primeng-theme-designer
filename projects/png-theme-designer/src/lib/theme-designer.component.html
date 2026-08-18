@@ -38,7 +38,7 @@
        pngTrackUserInteractions (pngInteracted)="onUserInteraction()">
     @if (workingTheme && !loading) {
       <p-tabs [(value)]="activeTab">
-        <p-tablist class="png-designer-tablist">
+        <p-tablist>
           @for (themeTabPanelSection of themeSections; track themeTabPanelSection.key) {
             <p-tab [value]="themeTabPanelSection.key">
               {{ themeTabPanelSection.key | titlecase }}

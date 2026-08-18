@@ -215,9 +215,6 @@
   <demo-showcase-section title="Table" anchor="table" themeKey="datatable" (editTheme)="editTheme.emit($event)">
     <p-table [value]="products" [paginator]="true" [rows]="2"><ng-template #header><tr><th>Code</th><th>Name</th><th>Price</th></tr></ng-template><ng-template #body let-product><tr><td>{{product.code}}</td><td>{{product.name}}</td><td>{{product.price | currency:'EUR'}}</td></tr></ng-template></p-table>
   </demo-showcase-section>
-  <demo-showcase-section title="TabMenu" anchor="tabmenu" themeKey="tabmenu" (editTheme)="editTheme.emit($event)">
-    <p-tabmenu [model]="[{label:'Primitive',icon:'pi pi-circle'},{label:'Semantic',icon:'pi pi-sitemap'},{label:'Components',icon:'pi pi-box'}]" />
-  </demo-showcase-section>
   <demo-showcase-section title="Tabs" anchor="tabs" themeKey="tabs" (editTheme)="editTheme.emit($event)">
     <p-tabs value="0"><p-tablist><p-tab value="0">Light</p-tab><p-tab value="1">Dark</p-tab></p-tablist><p-tabpanels><p-tabpanel value="0">Light theme preview</p-tabpanel><p-tabpanel value="1">Dark theme preview</p-tabpanel></p-tabpanels></p-tabs>
   </demo-showcase-section>
