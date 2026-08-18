@@ -49,13 +49,18 @@ export class ThemeDesignerComponent implements OnChanges {
   @Input() title: string = 'Designer';
   @Input({required: true}) theme?: MaterialBaseDesignTokens;
   @Input() drawerVisible = true;
+  /** Dot-separated theme section, e.g. `components.button`. */
+  @Input() activeSection?: string;
 
   @Output() close = new EventEmitter<void>();
   @Output() openDemoPage = new EventEmitter<void>();
+  /** Emitted when a component section is used, suitable for synchronizing a showcase anchor. */
+  @Output() componentSectionSelected = new EventEmitter<string>();
 
   protected workingTheme?: MaterialBaseDesignTokens;
   protected themeSections: Array<{ key: string; value: unknown }> = [];
   protected loading = true;
+  protected activeTab = 'primitive';
 
   private readonly themeService = inject(PngThemeService);
   private readonly confirmationService = inject(ConfirmationService);
@@ -64,6 +69,10 @@ export class ThemeDesignerComponent implements OnChanges {
     if (changes['theme'] && this.theme) {
       this.initializeTheme();
       this.serveLoadingState();
+    }
+    if (changes['activeSection'] && this.activeSection) {
+      this.activeTab = this.activeSection.split('.')[0] || 'primitive';
+      this.drawerVisible = true;
     }
   }
 
@@ -104,6 +113,13 @@ export class ThemeDesignerComponent implements OnChanges {
 
   onDemoPage(): void {
     this.openDemoPage.emit();
+  }
+
+  protected onSectionSelected(section: string): void {
+    this.activeSection = section;
+    if (section.startsWith('components.')) {
+      this.componentSectionSelected.emit(section.slice('components.'.length));
+    }
   }
 
   protected onUserInteraction(): void {

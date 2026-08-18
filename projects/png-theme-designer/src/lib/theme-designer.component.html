@@ -37,7 +37,7 @@
   <div class="png-designer-content flex-auto overflow-auto overflow-x-hidden pb-5 px-5"
        pngTrackUserInteractions (pngInteracted)="onUserInteraction()">
     @if (workingTheme && !loading) {
-      <p-tabs value="primitive">
+      <p-tabs [(value)]="activeTab">
         <p-tablist class="png-designer-tablist">
           @for (themeTabPanelSection of themeSections; track themeTabPanelSection.key) {
             <p-tab [value]="themeTabPanelSection.key">
@@ -50,7 +50,9 @@
             @if (themeTabPanelSection.key) {
               <p-tabpanel [value]="themeTabPanelSection.key">
                 @if (themeTabPanelSection.value | isJson) {
-                  <png-tab-section [sectionConfig]="themeTabPanelSection.value" [key]="themeTabPanelSection.key"></png-tab-section>
+                  <png-tab-section [sectionConfig]="themeTabPanelSection.value" [key]="themeTabPanelSection.key"
+                                   [activeSection]="activeSection"
+                                   (sectionSelected)="onSectionSelected($event)"></png-tab-section>
                 }
               </p-tabpanel>
             }

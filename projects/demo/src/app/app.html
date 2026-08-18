@@ -1,3 +1,18 @@
+<header class="page-hero">
+  <div>
+    <p class="eyebrow">PrimeNG 19 theme playground</p>
+    <h1>Component showcase</h1>
+    <p>All visual PrimeNG components with mock data, ordered alphabetically. Use the palette icon to edit the matching component tokens.</p>
+  </div>
+</header>
 
+<main>
+  <demo-component-showcase (editTheme)="openDesigner($event)" />
+</main>
 
-<png-theme-designer [theme]="pngTheme" (close)="onThemeDesignerClose()"></png-theme-designer>
+<png-theme-designer [theme]="pngTheme"
+                    [drawerVisible]="designerVisible"
+                    [activeSection]="activeDesignerSection"
+                    (close)="onThemeDesignerClose()"
+                    (openDemoPage)="showDemoComponent()"
+                    (componentSectionSelected)="showDemoComponent($event)" />

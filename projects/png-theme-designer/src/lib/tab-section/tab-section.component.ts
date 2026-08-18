@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {IsJsonPipe} from "../is-json.pipe";
 import {KeyValuePipe, TitleCasePipe} from "@angular/common";
@@ -22,4 +22,6 @@ import {FirstLevelSectionComponent} from '../first-level-section/first-level-sec
 export class TabSectionComponent {
   @Input({required: true}) sectionConfig!: Json;
   @Input({required: true}) key!: string;
+  @Input() activeSection?: string;
+  @Output() sectionSelected = new EventEmitter<string>();
 }

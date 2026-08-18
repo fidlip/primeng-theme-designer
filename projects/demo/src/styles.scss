@@ -1,5 +1,9 @@
 @use "primeicons/primeicons.css";
 
+html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, sans-serif; background: var(--p-surface-ground); }
+* { box-sizing: border-box; }
+
 /* Layer settings */
 @layer tailwind-base, primeng, tailwind-utilities;
 

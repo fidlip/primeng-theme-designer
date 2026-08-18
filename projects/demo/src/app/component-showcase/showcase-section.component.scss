@@ -1,0 +1,7 @@
+:host { display: block; }
+.showcase-section { border: 1px solid var(--p-content-border-color); border-radius: var(--p-border-radius-lg); background: var(--p-content-background); overflow: hidden; }
+.showcase-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .75rem 1rem; border-bottom: 1px solid var(--p-content-border-color); background: var(--p-content-hover-background); }
+h2 { margin: 0; font-size: 1.25rem; }
+.showcase-anchor { color: var(--p-text-color); text-decoration: none; }
+.showcase-anchor:hover { color: var(--p-primary-color); }
+.showcase-example { padding: 1.25rem; min-width: 0; }

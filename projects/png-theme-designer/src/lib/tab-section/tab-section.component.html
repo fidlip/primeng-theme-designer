@@ -6,12 +6,14 @@
         <png-section-content
           class="mb-3"
           [class.png-section-wide]="entry.value | isJson"
+          (click)="sectionSelected.emit(fullKey)"
           [header]="entry.key | titlecase"
           [owner]="sectionConfig"
           [propertyKey]="entry.key"
           [key]="fullKey">
           @if (entry.value | isJson) {
-            <png-first-level-section [sectionConfig]="entry.value" [header]="entry.key | titlecase" [key]="fullKey">
+            <png-first-level-section [sectionConfig]="entry.value" [header]="entry.key | titlecase" [key]="fullKey"
+                                     [collapsed]="activeSection !== fullKey">
             </png-first-level-section>
           }
         </png-section-content>
