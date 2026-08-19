@@ -2,6 +2,8 @@
 
 A standalone visual theme editor for [PrimeNG](https://primeng.org) design tokens. Drop it into any Angular app and let users tweak primitive, semantic, and per-component tokens live, with instant preview and an exportable theme file.
 
+**[Live demo](https://fidlip.github.io/primeng-theme-designer/)**
+
 If you like it, you can buy me a [coffee](https://coff.ee/fidlip).
 
 ![img.png](img.png)
