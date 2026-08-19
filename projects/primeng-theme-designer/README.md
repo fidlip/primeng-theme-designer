@@ -2,7 +2,7 @@
 
 A standalone visual theme editor for [PrimeNG](https://primeng.org) design tokens. Drop `<primeng-theme-designer>` into any Angular app, hand it a PrimeNG preset, and let users tweak primitive, semantic, and per-component tokens live — with instant preview, `{token.path}` references, and an exportable theme file.
 
-![Theme designer screenshot](https://raw.githubusercontent.com/fidlip/png-theme-designer/main/img.png)
+![Theme designer screenshot](https://raw.githubusercontent.com/fidlip/primeng-theme-designer/main/img.png)
 
 ## Features
 
@@ -69,7 +69,7 @@ Pass any object built with `@primeng/themes`' `definePreset(...)` (or a stock pr
 
 ## Demo
 
-See the `demo` project in the [GitHub repository](https://github.com/fidlip/png-theme-designer) for a full example, including a complete PrimeNG component showcase wired up to the designer.
+See the `demo` project in the [GitHub repository](https://github.com/fidlip/primeng-theme-designer) for a full example, including a complete PrimeNG component showcase wired up to the designer.
 
 ## License
 

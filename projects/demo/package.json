@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fidlip/png-theme-designer.git"
+    "url": "git+https://github.com/fidlip/primeng-theme-designer.git"
   },
   "keywords": [
     "Theme",
@@ -21,9 +21,9 @@
   "author": "fidlip",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fidlip/png-theme-designer/issues"
+    "url": "https://github.com/fidlip/primeng-theme-designer/issues"
   },
-  "homepage": "https://github.com/fidlip/png-theme-designer#readme",
+  "homepage": "https://github.com/fidlip/primeng-theme-designer#readme",
   "dependencies": {
     "primeng-theme-designer": "../primeng-theme-designer"
   }
