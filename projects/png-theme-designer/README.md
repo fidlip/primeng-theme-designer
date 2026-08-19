@@ -1,5 +1,15 @@
 # png-theme-designer
 
+> **This package has been renamed to [`primeng-theme-designer`](https://www.npmjs.com/package/primeng-theme-designer).**
+> `png-theme-designer` is deprecated and will not receive further updates. Please switch to the new package:
+>
+> ```bash
+> npm uninstall png-theme-designer
+> npm install primeng-theme-designer
+> ```
+>
+> The only change needed in your code is the import specifier and the `<primeng-theme-designer>` selector — see the [new package's README](https://www.npmjs.com/package/primeng-theme-designer) for details.
+
 A standalone visual theme editor for [PrimeNG](https://primeng.org) design tokens. Drop `<png-theme-designer>` into any Angular app, hand it a PrimeNG preset, and let users tweak primitive, semantic, and per-component tokens live — with instant preview, `{token.path}` references, and an exportable theme file.
 
 ![Theme designer screenshot](https://raw.githubusercontent.com/fidlip/png-theme-designer/main/img.png)

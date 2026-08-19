@@ -1,6 +1,6 @@
 {
   "name": "png-theme-designer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Standalone Theme Designer for PrimeNG",
   "main": "./src/public-api.ts",
   "scripts": {
