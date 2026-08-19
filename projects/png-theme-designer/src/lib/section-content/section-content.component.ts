@@ -1,4 +1,4 @@
-import {Component, inject, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, Input} from '@angular/core';
 import {Json, JsonPropertyType} from '../json.model';
 import {FormsModule} from '@angular/forms';
 import {PaletteSectionComponent} from '../palette-section/palette-section.component';
@@ -25,6 +25,7 @@ import {IftaLabel} from 'primeng/iftalabel';
   templateUrl: './section-content.component.html',
   styleUrl: './section-content.component.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SectionContentComponent {
   @Input({required: true}) header!: string;

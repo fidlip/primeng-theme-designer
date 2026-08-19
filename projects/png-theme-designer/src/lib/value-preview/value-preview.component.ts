@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { evaluateTokenValue } from '../token-resolver';
 
@@ -14,6 +14,7 @@ const COLOR_CANDIDATE = /#[0-9a-fA-F]{3,8}|(?:rgb|rgba|hsl|hsla)\([^)]*\)|\b(?:t
   templateUrl: './value-preview.component.html',
   styleUrl: './value-preview.component.scss',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValuePreviewComponent implements OnChanges {
   @Input() value: string | null = null;

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {IsJsonPipe} from "../is-json.pipe";
 import {KeyValuePipe, TitleCasePipe} from "@angular/common";
@@ -17,7 +17,8 @@ import {FirstLevelSectionComponent} from '../first-level-section/first-level-sec
     TitleCasePipe
   ],
   templateUrl: './tab-section.component.html',
-  styleUrl: './tab-section.component.scss'
+  styleUrl: './tab-section.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TabSectionComponent {
   @Input({required: true}) sectionConfig!: Json;

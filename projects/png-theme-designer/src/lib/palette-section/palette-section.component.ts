@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PaletteDesignToken } from '@primeng/themes/types';
@@ -9,7 +9,8 @@ import {hexToRgb, mixRGB, PaletteKey, RGB, rgbToHex} from '../palette.helpers';
   selector: 'png-palette-section',
   imports: [CommonModule, FormsModule, IsJsonPipe],
   templateUrl: './palette-section.component.html',
-  styleUrl: './palette-section.component.scss'
+  styleUrl: './palette-section.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaletteSectionComponent {
   @Input({ required: true }) palette?: PaletteDesignToken;

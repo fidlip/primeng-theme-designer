@@ -62,6 +62,8 @@ export class ThemeDesignerComponent implements OnChanges {
   protected themeSections: Array<{ key: string; value: unknown }> = [];
   protected loading = true;
   protected activeTab = 'primitive';
+  /** Tab whose content is actually built; lags behind `activeTab` by one tick so a switch can paint a spinner first. */
+  protected renderedTab = this.activeTab;
 
   private readonly themeService = inject(PngThemeService);
   private readonly confirmationService = inject(ConfirmationService);
@@ -72,9 +74,32 @@ export class ThemeDesignerComponent implements OnChanges {
       this.serveLoadingState();
     }
     if (changes['activeSection'] && this.activeSection) {
-      this.activeTab = this.activeSection.split('.')[0] || 'primitive';
+      this.switchTab(this.activeSection.split('.')[0] || 'primitive');
       this.setCollapsed(false);
     }
+  }
+
+  protected onTabChange(tab: string | number): void {
+    this.switchTab(String(tab));
+  }
+
+  /**
+   * Switches the active tab immediately (so the spinner shows) and defers building
+   * the (potentially huge) tab content to the next tick, giving the browser a chance to paint.
+   */
+  private switchTab(tab: string): void {
+    this.activeTab = tab;
+    if (this.renderedTab === tab) {
+      return;
+    }
+    if (this.loading) {
+      // The initial theme load already hides content behind `loading`; no need for a second deferral.
+      this.renderedTab = tab;
+      return;
+    }
+    setTimeout(() => {
+      this.renderedTab = tab;
+    }, 0);
   }
 
   /**

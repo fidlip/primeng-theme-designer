@@ -36,7 +36,7 @@
   <div class="png-designer-content flex-auto overflow-auto overflow-x-hidden pb-5 px-5"
        pngTrackUserInteractions (pngInteracted)="onUserInteraction()">
     @if (theme && !loading) {
-      <p-tabs [(value)]="activeTab">
+      <p-tabs [value]="activeTab" (valueChange)="onTabChange($event)">
         <p-tablist>
           @for (themeTabPanelSection of themeSections; track themeTabPanelSection.key) {
             <p-tab [value]="themeTabPanelSection.key">
@@ -48,10 +48,14 @@
           @for (themeTabPanelSection of themeSections; track themeTabPanelSection.key) {
             @if (themeTabPanelSection.key) {
               <p-tabpanel [value]="themeTabPanelSection.key">
-                @if (themeTabPanelSection.value | isJson) {
+                @if (themeTabPanelSection.key === renderedTab && (themeTabPanelSection.value | isJson)) {
                   <png-tab-section [sectionConfig]="themeTabPanelSection.value" [key]="themeTabPanelSection.key"
                                    [activeSection]="activeSection"
                                    (sectionSelected)="onSectionSelected($event)"></png-tab-section>
+                } @else if (themeTabPanelSection.key === activeTab) {
+                  <div class="png-tab-loader flex items-center justify-center">
+                    <p-progress-spinner class="ngp-loader"/>
+                  </div>
                 }
               </p-tabpanel>
             }

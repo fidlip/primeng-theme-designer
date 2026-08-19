@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, forwardRef, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, forwardRef, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
@@ -15,6 +15,7 @@ const NON_TOKEN_CHARACTER = /[.A-Za-z0-9]/;
   imports: [CommonModule, FormsModule, InputTextModule, Popover, ValuePreviewComponent],
   templateUrl: './theme-value-picker.component.html',
   styleUrl: './theme-value-picker.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => ThemeValuePickerComponent),

@@ -63,6 +63,10 @@
   min-width: 0;
 }
 
+.png-tab-loader {
+  min-height: 12rem;
+}
+
 :host ::ng-deep .p-drawer-content,
 :host ::ng-deep .p-tabpanels,
 :host ::ng-deep .p-tabpanel,
