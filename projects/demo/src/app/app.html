@@ -4,12 +4,19 @@
     <h1>Component showcase</h1>
     <p>All visual PrimeNG components with mock data, ordered alphabetically. Use the palette icon to edit the matching component tokens.</p>
   </div>
-  <button pButton type="button" rounded icon="pi pi-palette"
-          class="open-theme-designer"
-          aria-label="Open theme designer"
-          pTooltip="Open theme designer"
-          tooltipPosition="left"
-          (click)="openThemeDesigner()"></button>
+  <div class="page-hero-actions">
+    <primeng-preset-selector
+        [presets]="themePresets"
+        [selected]="basePreset"
+        label="Choose theme preset"
+        (presetSelected)="onPresetSelected($event)" />
+    <button pButton type="button" rounded icon="pi pi-palette"
+            class="open-theme-designer"
+            aria-label="Open theme designer"
+            pTooltip="Open theme designer"
+            tooltipPosition="left"
+            (click)="openThemeDesigner()"></button>
+  </div>
 </header>
 
 <main>
@@ -19,6 +26,7 @@
 @if (showThemeDesigner && pngTheme) {
   <primeng-theme-designer class="primeng-theme-designer"
                       [initialTheme]="pngTheme"
+                      [basePreset]="basePreset"
                       [activeSection]="activeDesignerSection"
                       [(collapsed)]="designerCollapsed"
                       (closed)="closeThemeDesigner()"

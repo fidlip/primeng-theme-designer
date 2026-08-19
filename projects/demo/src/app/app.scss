@@ -19,11 +19,17 @@
   max-width: 46rem;
 }
 
-.open-theme-designer {
+.page-hero-actions {
   position: absolute;
   top: 1rem;
   right: 0;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.open-theme-designer {
   box-shadow: 0 .5rem 1.5rem color-mix(in srgb, var(--p-primary-color) 24%, transparent);
 }
 

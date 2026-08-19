@@ -1,6 +1,7 @@
 import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
 import {providePrimeNG} from 'primeng/config';
 import {definePNgThemePreset} from './theme';
+import {DEFAULT_THEME_PRESET} from './theme-presets';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideHttpClient} from '@angular/common/http';
 import {provideRouter} from '@angular/router';
@@ -17,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter([]),
     providePrimeNG({
       theme: {
-        preset: definePNgThemePreset(),
+        preset: definePNgThemePreset(DEFAULT_THEME_PRESET),
         options: {
           cssLayer: {
             name: 'primeng',

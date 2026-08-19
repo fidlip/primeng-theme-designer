@@ -2,13 +2,12 @@ import {Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 
-import {MaterialBaseDesignTokens} from '@primeng/themes/material/base';
-
 import {definePreset, Theme} from '@primeng/themes';
 import {ThemeStateService} from './theme-state.service';
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 import {Tooltip} from 'primeng/tooltip';
-import {isJson} from './json.model';
+import {isJson, Json} from './json.model';
+import {PresetOption} from './preset-option.model';
 import {ProgressSpinner} from 'primeng/progressspinner';
 import {Drawer} from 'primeng/drawer';
 import {Button} from 'primeng/button';
@@ -47,7 +46,9 @@ import {cloneTheme} from './theme-clone.helper';
 })
 export class ThemeDesignerComponent implements OnChanges {
   @Input() title: string = 'Designer';
-  @Input({required: true}) initialTheme!: MaterialBaseDesignTokens;
+  @Input({required: true}) initialTheme!: Json;
+  /** The stock preset `initialTheme` was derived from; used as the export/diff baseline. */
+  @Input({required: true}) basePreset!: PresetOption;
   /** Dot-separated theme section, e.g. `components.button`. */
   @Input() activeSection?: string;
   @Input() collapsed = false;
@@ -58,7 +59,7 @@ export class ThemeDesignerComponent implements OnChanges {
   @Output() componentSectionSelected = new EventEmitter<string>();
   @Output() collapsedChange = new EventEmitter<boolean>();
 
-  protected theme?: MaterialBaseDesignTokens;
+  protected theme?: Json;
   protected themeSections: Array<{ key: string; value: unknown }> = [];
   protected loading = true;
   protected activeTab = 'primitive';
@@ -69,7 +70,7 @@ export class ThemeDesignerComponent implements OnChanges {
   private readonly confirmationService = inject(ConfirmationService);
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['initialTheme'] && this.initialTheme) {
+    if ((changes['initialTheme'] || changes['basePreset']) && this.initialTheme && this.basePreset) {
       this.initializeTheme();
       this.serveLoadingState();
     }
@@ -178,7 +179,7 @@ export class ThemeDesignerComponent implements OnChanges {
   }
 
   private initializeTheme(restoreSavedTheme = true): void {
-    if (!this.initialTheme) {
+    if (!this.initialTheme || !this.basePreset) {
       return;
     }
 
@@ -186,6 +187,7 @@ export class ThemeDesignerComponent implements OnChanges {
     const savedTheme = restoreSavedTheme ? this.themeService.getSavedTheme() : undefined;
     const theme = savedTheme ? definePreset(initialTheme, savedTheme) : initialTheme;
     this.theme = theme;
+    this.themeService.setBasePreset(this.basePreset);
     this.themeService.setTheme(theme);
     this.themeSections = Object.entries(theme)
       .filter(([key]) => key !== 'css')

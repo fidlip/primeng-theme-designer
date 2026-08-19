@@ -1,4 +1,4 @@
-import { MaterialBaseDesignTokens } from '@primeng/themes/material/base';
+import { Json } from './json.model';
 import { buildTokenTree, flattenTokenTree } from './token-tree-builder';
 import { evaluateTokenValue, resolveToken, sanitizeToken } from './token-resolver';
 import { tokenize } from './tokenizer.helper';
@@ -13,7 +13,7 @@ describe('theme token utilities', () => {
       border: { value: '1px solid {blue.500}' },
     },
     css: () => '.ignored {}',
-  } as unknown as MaterialBaseDesignTokens;
+  } as unknown as Json;
 
   it('tokenizes camelCase and separators', () => {
     expect(tokenize('colorScheme.primaryColor')).toBe('color.scheme.primary.color');

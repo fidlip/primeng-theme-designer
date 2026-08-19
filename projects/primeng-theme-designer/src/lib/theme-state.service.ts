@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Json } from './json.model';
 import { detailedDiff } from 'deep-object-diff';
-import Material from '@primeng/themes/material';
 import { BehaviorSubject, map } from 'rxjs';
 import { TreeNode } from 'primeng/api';
 import { buildTokenTree, flattenTokenTree, ThemeTokenOption } from './token-tree-builder';
-import { MaterialBaseDesignTokens } from '@primeng/themes/material/base';
+import { PresetOption } from './preset-option.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +15,19 @@ export class ThemeStateService {
     map((tokenTree: TreeNode[]): ThemeTokenOption[] => flattenTokenTree(tokenTree))
   );
 
-  setTheme(theme: MaterialBaseDesignTokens): void {
+  /** The stock preset the working theme was derived from; used as the export/diff baseline. */
+  private basePreset?: PresetOption;
+
+  setTheme(theme: Json): void {
     this.availableTokensTree.next(buildTokenTree(theme));
+  }
+
+  /**
+   * Sets the stock preset (e.g. Material, Aura, Lara, Nora) that `downloadThemeFile` /
+   * `downloadThemeDiffFile` should use as their baseline.
+   */
+  setBasePreset(basePreset: PresetOption): void {
+    this.basePreset = basePreset;
   }
 
   /**
@@ -26,9 +36,10 @@ export class ThemeStateService {
    * @returns A blob URL for the generated file
    */
   private generateThemeBlob(themeConfig: Json): string {
+    const { importName, importPath } = this.getBasePresetImport();
     let themeContent = `import { definePreset } from '@primeng/themes';\n`;
-    themeContent += `import Material from '@primeng/themes/material';\n\n`;
-    themeContent += `export const MyPreset = definePreset(Material, ${JSON.stringify(themeConfig, null, 2)
+    themeContent += `import ${importName} from '${importPath}';\n\n`;
+    themeContent += `export const MyPreset = definePreset(${importName}, ${JSON.stringify(themeConfig, null, 2)
       .replace(/"([^"]+)":/g, "$1:")
       .replace(/"__REF__([^"]+)"/g, "{$1}")
     });\n`;
@@ -38,7 +49,7 @@ export class ThemeStateService {
   }
 
   private generateThemeDiffBlob(themeConfig: Json): string {
-    const diff = detailedDiff(Material, themeConfig);
+    const diff = detailedDiff(this.getBasePreset().preset, themeConfig);
     const diffJson = mergeJson(diff.added as Json, diff.updated as Json);
 
     const themeContent = `export const PngThemeDiff = ${JSON.stringify(diffJson, null, 2)
@@ -78,13 +89,13 @@ export class ThemeStateService {
     localStorage.setItem('primeng-theme-designer-saved-theme', JSON.stringify(themeJson));
   }
 
-  getSavedTheme(): MaterialBaseDesignTokens | undefined {
+  getSavedTheme(): Json | undefined {
     const savedTheme = localStorage.getItem('primeng-theme-designer-saved-theme');
     if (!savedTheme) {
       return undefined;
     }
     try {
-      return JSON.parse(savedTheme) as MaterialBaseDesignTokens;
+      return JSON.parse(savedTheme) as Json;
     } catch {
       this.clearThemeInLocalStorage();
       return undefined;
@@ -93,6 +104,21 @@ export class ThemeStateService {
 
   clearThemeInLocalStorage(): void {
     localStorage.removeItem('primeng-theme-designer-saved-theme');
+  }
+
+  private getBasePreset(): PresetOption {
+    if (!this.basePreset) {
+      throw new Error('ThemeStateService: basePreset is not set. Pass a `basePreset` input to <primeng-theme-designer> before exporting a theme.');
+    }
+    return this.basePreset;
+  }
+
+  private getBasePresetImport(): { importName: string; importPath: string } {
+    const { name } = this.getBasePreset();
+    return {
+      importName: name.charAt(0).toUpperCase() + name.slice(1),
+      importPath: `@primeng/themes/${name}`,
+    };
   }
 }
 

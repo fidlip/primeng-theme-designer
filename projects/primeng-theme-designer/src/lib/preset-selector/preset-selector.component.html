@@ -1,0 +1,20 @@
+<p-button icon="pi pi-images" [rounded]="true" [text]="true" severity="secondary"
+          class="primeng-preset-selector__trigger"
+          [pTooltip]="label" tooltipPosition="left"
+          (click)="onTriggerClick($event)"></p-button>
+<p-popover #popover [dismissable]="true">
+  <div class="primeng-preset-selector__list">
+    @for (preset of presets; track preset.name) {
+      <button type="button" class="primeng-preset-selector__item"
+              [class.primeng-preset-selector__item--selected]="preset.name === selected?.name"
+              (click)="onPresetClick(preset)">
+        <span>{{ preset.label }}</span>
+        @if (preset.name === selected?.name) {
+          <i class="pi pi-check"></i>
+        }
+      </button>
+    } @empty {
+      <span class="primeng-preset-selector__placeholder">No presets available</span>
+    }
+  </div>
+</p-popover>

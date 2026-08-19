@@ -1,5 +1,5 @@
 import { TreeNode } from 'primeng/api';
-import { MaterialBaseDesignTokens } from '@primeng/themes/material/base';
+import { Json } from './json.model';
 import { tokenize } from './tokenizer.helper';
 
 export interface ThemeTokenOption {
@@ -8,7 +8,7 @@ export interface ThemeTokenOption {
   valuePreview?: string;
 }
 
-export function buildTokenTree(theme: MaterialBaseDesignTokens, basePath?: string): TreeNode[] {
+export function buildTokenTree(theme: Json, basePath?: string): TreeNode[] {
   return Object.entries(theme as Record<string, unknown>)
     .filter(([key]) => key !== 'css')
     .map(([key, value]) => {
@@ -36,7 +36,7 @@ function buildNode(key: string, value: unknown, path: string): TreeNode {
     key,
     data,
     selectable: false,
-    children: buildTokenTree(value as MaterialBaseDesignTokens, path),
+    children: buildTokenTree(value as Json, path),
   };
 }
 

@@ -1,19 +1,25 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, inject} from '@angular/core';
 import { definePNgThemePreset } from './theme';
-import { ThemeDesignerComponent} from '../../../primeng-theme-designer';
+import { DEFAULT_THEME_PRESET, THEME_PRESETS } from './theme-presets';
+import { PresetOption, PresetSelectorComponent, ThemeDesignerComponent, ThemeStateService} from '../../../primeng-theme-designer';
+import { Theme } from '@primeng/themes';
 import {ComponentShowcaseComponent} from './component-showcase/component-showcase.component';
 import {ButtonModule} from 'primeng/button';
 import {TooltipModule} from 'primeng/tooltip';
 
 @Component({
   selector: 'app-root',
-  imports: [ThemeDesignerComponent, ComponentShowcaseComponent, ButtonModule, TooltipModule],
+  imports: [ThemeDesignerComponent, PresetSelectorComponent, ComponentShowcaseComponent, ButtonModule, TooltipModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   standalone: true
 })
 export class App implements AfterViewInit {
-  pngTheme = definePNgThemePreset(false);
+  private readonly themeService = inject(ThemeStateService);
+
+  protected readonly themePresets = THEME_PRESETS;
+  protected basePreset: PresetOption = DEFAULT_THEME_PRESET;
+  pngTheme = definePNgThemePreset(this.basePreset, false);
   showThemeDesigner = false;
   activeDesignerSection?: string;
   protected designerCollapsed: boolean = false;
@@ -39,6 +45,18 @@ export class App implements AfterViewInit {
     this.activeDesignerSection = undefined;
     this.showThemeDesigner = true;
     this.designerCollapsed = false;
+  }
+
+  /**
+   * Switching presets is treated as a fresh start: any theme edits the designer had
+   * persisted to localStorage for the previous preset are discarded rather than
+   * merged onto the new one, since they were tuned for a different token baseline.
+   */
+  onPresetSelected(preset: PresetOption): void {
+    this.themeService.clearThemeInLocalStorage();
+    this.basePreset = preset;
+    this.pngTheme = definePNgThemePreset(preset, false);
+    Theme.setTheme({preset: this.pngTheme});
   }
 
   showDemoComponent(componentKey?: string): void {
