@@ -1,63 +1,76 @@
-# PNgThemeDesigner
+# png-theme-designer
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.0.
+A standalone visual theme editor for [PrimeNG](https://primeng.org) design tokens. Drop `<png-theme-designer>` into any Angular app, hand it a PrimeNG preset, and let users tweak primitive, semantic, and per-component tokens live — with instant preview, `{token.path}` references, and an exportable theme file.
 
-## Code scaffolding
+![Theme designer screenshot](https://raw.githubusercontent.com/fidlip/png-theme-designer/main/img.png)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Features
 
-```bash
-ng generate component component-name
-```
+- **Live editing** of primitive, semantic, and per-component design tokens, organized in the same shape as a PrimeNG preset.
+- **Token references** — type `{` in any value field to autocomplete a reference to another token, with the resolved value previewed inline.
+- **Palette editor** — pick a base color and the whole 50–950 palette scale is generated automatically.
+- **Apply instantly** to `Theme.setTheme(...)` so changes are visible in the running app without a reload.
+- **Persistence** — edits are saved to `localStorage` and restored automatically; "Reset to default" clears them.
+- **Export** the current theme as a ready-to-use `definePreset(...)` TypeScript file, either in full or as a diff against the stock preset.
+- **Dark mode toggle**, collapsible panel, and deep-linkable sections (jump straight to `components.button`, for example).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the library, run:
+## Installation
 
 ```bash
-ng build png-theme-designer
+npm install png-theme-designer primeng @primeng/themes
 ```
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+`@angular/core`, `@angular/common`, and `@angular/forms` are expected to already be present in an Angular app; PrimeNG's own peer dependencies (such as animations support) apply as usual.
 
-### Publishing the Library
+## Usage
 
-Once the project is built, you can publish your library by following these steps:
+```ts
+import { Component } from '@angular/core';
+import { ThemeDesignerComponent } from 'png-theme-designer';
+import Material from '@primeng/themes/material';
 
-1. Navigate to the `dist` directory:
-   ```bash
-   cd dist/png-theme-designer
-   ```
-
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [ThemeDesignerComponent],
+  template: `
+    <png-theme-designer
+      [initialTheme]="theme"
+      (closed)="showDesigner = false" />
+  `,
+})
+export class AppComponent {
+  theme = Material;
+  showDesigner = true;
+}
 ```
 
-## Running end-to-end tests
+Pass any object built with `@primeng/themes`' `definePreset(...)` (or a stock preset like `Material`) as `initialTheme` — that's the only required input.
 
-For end-to-end (e2e) testing, run:
+## API
 
-```bash
-ng e2e
-```
+### Inputs
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+| Input | Type | Default | Description |
+| --- | --- | --- | --- |
+| `initialTheme` | `MaterialBaseDesignTokens` | *required* | The PrimeNG preset to edit. |
+| `title` | `string` | `'Designer'` | Panel header text. |
+| `activeSection` | `string` | — | Dot-separated section to open and scroll to, e.g. `components.button`. |
+| `collapsed` | `boolean` | `false` | Whether the panel is collapsed to a small tab. Supports two-way binding: `[(collapsed)]`. |
 
-## Additional Resources
+### Outputs
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+| Output | Payload | Description |
+| --- | --- | --- |
+| `closed` | `void` | Emitted when the user clicks the close button. |
+| `openDemoPage` | `void` | Emitted when the user clicks the "demo page" button — wire this up to navigate back to your own preview. |
+| `componentSectionSelected` | `string` | Emitted with a component key (e.g. `'button'`) when the user opens a `components.*` section — handy for syncing a showcase anchor. |
+| `collapsedChange` | `boolean` | Companion to `[(collapsed)]`. |
+
+## Demo
+
+See the `demo` project in the [GitHub repository](https://github.com/fidlip/png-theme-designer) for a full example, including a complete PrimeNG component showcase wired up to the designer.
+
+## License
+
+MIT. If you find this useful, you can [buy me a coffee](https://coff.ee/fidlip).

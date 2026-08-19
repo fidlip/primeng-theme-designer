@@ -1,11 +1,41 @@
-# ng-theme-designer
-Theme designer component for PrimeNG
+# png-theme-designer
+
+A standalone visual theme editor for [PrimeNG](https://primeng.org) design tokens. Drop it into any Angular app and let users tweak primitive, semantic, and per-component tokens live, with instant preview and an exportable theme file.
 
 If you like it, you can buy me a [coffee](https://coff.ee/fidlip).
 
 ![img.png](img.png)
 
-See the demo project in this repository for usage.
+This repository is an Angular CLI workspace with two projects:
+
+- **[`projects/png-theme-designer`](projects/png-theme-designer)** — the publishable library. See its [README](projects/png-theme-designer/README.md) for installation, usage, and the full API reference.
+- **`projects/demo`** — a demo app that consumes the library and doubles as a live showcase of PrimeNG components styled by the designer's output.
+
+## Quick start
+
+```bash
+npm install
+npm start
+```
+
+Then open `http://localhost:4200` — the demo app shows a full PrimeNG component gallery with the theme designer available via the palette button in the top-right corner.
+
+## Installing the library in your own app
+
+```bash
+npm install png-theme-designer primeng @primeng/themes
+```
+
+```ts
+import { ThemeDesignerComponent } from 'png-theme-designer';
+import Material from '@primeng/themes/material';
+```
+
+```html
+<png-theme-designer [initialTheme]="theme" (closed)="showDesigner = false" />
+```
+
+See the [library README](projects/png-theme-designer/README.md) for the full API and more usage details.
 
 ----
 
@@ -13,55 +43,37 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 ## Development server
 
-To start a local development server, run:
+To start the demo app's dev server, run:
 
 ```bash
-ng serve
+npm start
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Building the library
 
 ```bash
-ng generate component component-name
+ng build png-theme-designer
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+This compiles the library and writes the publishable package to `dist/png-theme-designer`.
+
+## Building the demo app
 
 ```bash
-ng generate --help
+npm run build
 ```
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+This compiles the demo app into `dist/demo`.
 
 ## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Runs Karma/Jasmine tests for the `demo` project. Use `ng test png-theme-designer` to test the library project instead.
 
 ## Additional Resources
 
