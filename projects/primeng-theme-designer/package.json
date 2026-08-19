@@ -1,12 +1,13 @@
 {
-  "name": "primeng-theme-designer-demo",
+  "name": "primeng-theme-designer",
   "version": "1.0.0",
   "description": "Standalone Theme Designer for PrimeNG",
+  "main": "./src/public-api.ts",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve demo",
-    "build": "ng build demo",
-    "watch": "ng build demo --watch --configuration development",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
   "repository": {
@@ -16,7 +17,9 @@
   "keywords": [
     "Theme",
     "Designer",
-    "PrimeNG"
+    "PrimeNG",
+    "Angular",
+    "Design Tokens"
   ],
   "author": "fidlip",
   "license": "MIT",
@@ -24,7 +27,16 @@
     "url": "https://github.com/fidlip/png-theme-designer/issues"
   },
   "homepage": "https://github.com/fidlip/png-theme-designer#readme",
+  "peerDependencies": {
+    "@angular/common": "^19.0.0",
+    "@angular/core": "^19.0.0",
+    "@angular/forms": "^19.0.0",
+    "@primeng/themes": "^19.1.3",
+    "primeng": "^19.1.3"
+  },
   "dependencies": {
-    "primeng-theme-designer": "../primeng-theme-designer"
-  }
+    "deep-object-diff": "^1.1.9",
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
 }

@@ -1,0 +1,23 @@
+<form class="flex flex-col gap-3">
+  <section class="w-full">
+    <div class="ptd-tab-section-grid">
+      @for (entry of sectionConfig | keyvalue:null; track entry.key) {
+        @let fullKey = key + '.' + entry.key;
+        <ptd-section-content
+          class="mb-3"
+          [class.ptd-section-wide]="entry.value | isJson"
+          (click)="sectionSelected.emit(fullKey)"
+          [header]="entry.key | titlecase"
+          [owner]="sectionConfig"
+          [propertyKey]="entry.key"
+          [key]="fullKey">
+          @if (entry.value | isJson) {
+            <ptd-first-level-section [sectionConfig]="entry.value" [header]="entry.key | titlecase" [key]="fullKey"
+                                     [collapsed]="activeSection !== fullKey">
+            </ptd-first-level-section>
+          }
+        </ptd-section-content>
+      }
+    </div>
+  </section>
+</form>

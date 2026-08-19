@@ -98,23 +98,23 @@
         }
       }
     },
-    "png-theme-designer": {
+    "primeng-theme-designer": {
       "projectType": "library",
-      "root": "projects/png-theme-designer",
-      "sourceRoot": "projects/png-theme-designer/src",
-      "prefix": "png",
+      "root": "projects/primeng-theme-designer",
+      "sourceRoot": "projects/primeng-theme-designer/src",
+      "prefix": "ptd",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
           "options": {
-            "project": "projects/png-theme-designer/ng-package.json"
+            "project": "projects/primeng-theme-designer/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/png-theme-designer/tsconfig.lib.prod.json"
+              "tsConfig": "projects/primeng-theme-designer/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/png-theme-designer/tsconfig.lib.json"
+              "tsConfig": "projects/primeng-theme-designer/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -122,7 +122,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "tsConfig": "projects/png-theme-designer/tsconfig.spec.json",
+            "tsConfig": "projects/primeng-theme-designer/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
               "zone.js/testing"

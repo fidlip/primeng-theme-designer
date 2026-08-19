@@ -8,8 +8,8 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "paths": {
-      "png-theme-designer": [
-        "./dist/png-theme-designer"
+      "primeng-theme-designer": [
+        "./dist/primeng-theme-designer"
       ]
     },
     "noFallthroughCasesInSwitch": true,
@@ -36,10 +36,10 @@
       "path": "./projects/demo/tsconfig.spec.json"
     },
     {
-      "path": "./projects/png-theme-designer/tsconfig.lib.json"
+      "path": "./projects/primeng-theme-designer/tsconfig.lib.json"
     },
     {
-      "path": "./projects/png-theme-designer/tsconfig.spec.json"
+      "path": "./projects/primeng-theme-designer/tsconfig.spec.json"
     }
   ]
 }

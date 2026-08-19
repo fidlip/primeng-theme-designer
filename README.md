@@ -1,4 +1,4 @@
-# png-theme-designer
+# primeng-theme-designer
 
 A standalone visual theme editor for [PrimeNG](https://primeng.org) design tokens. Drop it into any Angular app and let users tweak primitive, semantic, and per-component tokens live, with instant preview and an exportable theme file.
 
@@ -8,7 +8,7 @@ If you like it, you can buy me a [coffee](https://coff.ee/fidlip).
 
 This repository is an Angular CLI workspace with two projects:
 
-- **[`projects/png-theme-designer`](projects/png-theme-designer)** — the publishable library. See its [README](projects/png-theme-designer/README.md) for installation, usage, and the full API reference.
+- **[`projects/primeng-theme-designer`](projects/primeng-theme-designer)** — the publishable library. See its [README](projects/primeng-theme-designer/README.md) for installation, usage, and the full API reference.
 - **`projects/demo`** — a demo app that consumes the library and doubles as a live showcase of PrimeNG components styled by the designer's output.
 
 ## Quick start
@@ -23,19 +23,19 @@ Then open `http://localhost:4200` — the demo app shows a full PrimeNG componen
 ## Installing the library in your own app
 
 ```bash
-npm install png-theme-designer primeng @primeng/themes
+npm install primeng-theme-designer primeng @primeng/themes
 ```
 
 ```ts
-import { ThemeDesignerComponent } from 'png-theme-designer';
+import { ThemeDesignerComponent } from 'primeng-theme-designer';
 import Material from '@primeng/themes/material';
 ```
 
 ```html
-<png-theme-designer [initialTheme]="theme" (closed)="showDesigner = false" />
+<primeng-theme-designer [initialTheme]="theme" (closed)="showDesigner = false" />
 ```
 
-See the [library README](projects/png-theme-designer/README.md) for the full API and more usage details.
+See the [library README](projects/primeng-theme-designer/README.md) for the full API and more usage details.
 
 ----
 
@@ -54,10 +54,10 @@ Once the server is running, open your browser and navigate to `http://localhost:
 ## Building the library
 
 ```bash
-ng build png-theme-designer
+ng build primeng-theme-designer
 ```
 
-This compiles the library and writes the publishable package to `dist/png-theme-designer`.
+This compiles the library and writes the publishable package to `dist/primeng-theme-designer`.
 
 ## Building the demo app
 
@@ -73,7 +73,7 @@ This compiles the demo app into `dist/demo`.
 ng test
 ```
 
-Runs Karma/Jasmine tests for the `demo` project. Use `ng test png-theme-designer` to test the library project instead.
+Runs Karma/Jasmine tests for the `demo` project. Use `ng test primeng-theme-designer` to test the library project instead.
 
 ## Additional Resources
 

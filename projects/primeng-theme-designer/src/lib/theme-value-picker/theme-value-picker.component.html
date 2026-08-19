@@ -1,0 +1,38 @@
+<div #wrapper class="ptd-theme-value-picker">
+  <label class="ptd-theme-value-picker__label" [for]="inputId" (dblclick)="copyTokenPath()" title="Double-click to copy the token path">
+    <span>{{ label }}</span>
+    <ptd-value-preview [value]="inputText" [data]="tokenTree">&nbsp;→&nbsp;</ptd-value-preview>
+  </label>
+  <input
+    #input
+    pInputText
+    autocomplete="off"
+    class="ptd-theme-value-picker__input"
+    [id]="inputId"
+    [(ngModel)]="inputText"
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    [pSize]="'small'"
+    (input)="filterTokens($event)"
+    (click)="filterTokens($event)"
+    (keyup.arrowLeft)="filterTokens($event)"
+    (keyup.arrowRight)="filterTokens($event)"
+    (blur)="onInputBlur()"
+  />
+</div>
+<p-popover #popover [dismissable]="true">
+  <div class="ptd-theme-value-picker__popover-content">
+    @for (token of filteredTokens; track token.path) {
+      <button type="button" class="ptd-theme-value-picker__item"
+              [class.ptd-theme-value-picker__item--selected]="selectedTokenIndex === $index"
+              (click)="onTokenSelected(token)">
+        <span>{{ token.path }}</span>
+        @if (token.valuePreview) {
+          <ptd-value-preview class="ptd-theme-value-picker__item-preview" [value]="'{' + token.path + '}'" [data]="tokenTree" />
+        }
+      </button>
+    } @empty {
+      <span class="ptd-theme-value-picker__placeholder">No tokens to display</span>
+    }
+  </div>
+</p-popover>

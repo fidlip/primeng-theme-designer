@@ -1,0 +1,22 @@
+@if (key) {
+  @if (sectionConfig | isPalette) {
+    <ptd-palette-section class="ptd-theme-palette" [header]="header" [palette]="sectionConfig"
+                         [keyBase]="key"></ptd-palette-section>
+  } @else if (sectionConfig | isJson) {
+    <ng-content></ng-content>
+  } @else {
+    <p-ifta-label class="ptd-theme-value-field">
+      <ptd-theme-value-picker
+        [inputId]="'ptd-theme-field-' + key"
+        [label]="header | camelToTokens"
+        [placeholder]="'Select a value for ' + (header | camelToTokens)"
+        [(ngModel)]="owner[propertyKey]"
+        [name]="key"
+        [tokenTree]="(availableTokensTree | async) ?? []"
+        [tokens]="(availableTokens | async) ?? []"
+      />
+    </p-ifta-label>
+  }
+
+
+}

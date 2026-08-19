@@ -1,0 +1,73 @@
+<p-confirmdialog />
+<p-drawer
+          [styleClass]="'primeng-theme-designer-drawer' + (collapsed ? ' collapsed' : '')"
+          [visible]="true"
+          [closable]="false"
+          [baseZIndex]="1000"
+          [modal]="false"
+          [position]="'right'"
+>
+  <ng-template #header>
+    <div class="grow flex items-center justify-between p-5">
+      <div class="flex items-center gap-2">
+        <button type="button" class="icon-btn" (click)="toggleCollapsed()">
+          <i class="pi"
+             [class.pi-chevron-left]="collapsed"
+             [class.pi-chevron-right]="!collapsed"></i>
+        </button>
+        <span class="ptd-designer-title font-bold text-xl">{{ title }}</span>
+      </div>
+      <div class="ptd-designer-action-buttons flex items-center gap-2">
+        <p-button icon="pi pi-home" [rounded]="true" [text]="true" severity="secondary" pTooltip="Demo page"
+                  (click)="onDemoPage()"/>
+        <p-button icon="pi pi-download" [rounded]="true" [text]="true" severity="secondary" pTooltip="Download"
+                  (click)="onDownloadTheme()"/>
+        <p-button icon="pi pi-upload" [rounded]="true" [text]="true" severity="secondary" pTooltip="Apply"
+                  (click)="onApplyTheme()"/>
+        <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" severity="secondary" pTooltip="Reset to the default theme"
+                  (click)="resetThemeToDefault()"/>
+        <p-button icon="pi pi-sun" [rounded]="true" [text]="true" severity="secondary" pTooltip="Toggle dark mode"
+                  (click)="toggleDarkMode()" tooltipPosition="left"/>
+        <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="secondary" pTooltip="Close"
+                  (click)="onClose()"/>
+      </div>
+    </div>
+  </ng-template>
+  <div class="ptd-designer-content flex-auto overflow-auto overflow-x-hidden pb-5 px-5"
+       trackUserInteractions (interacted)="onUserInteraction()">
+    @if (theme && !loading) {
+      <p-tabs [value]="activeTab" (valueChange)="onTabChange($event)">
+        <p-tablist>
+          @for (themeTabPanelSection of themeSections; track themeTabPanelSection.key) {
+            <p-tab [value]="themeTabPanelSection.key">
+              {{ themeTabPanelSection.key | titlecase }}
+            </p-tab>
+          }
+        </p-tablist>
+        <p-tabpanels>
+          @for (themeTabPanelSection of themeSections; track themeTabPanelSection.key) {
+            @if (themeTabPanelSection.key) {
+              <p-tabpanel [value]="themeTabPanelSection.key">
+                @if (themeTabPanelSection.key === renderedTab && (themeTabPanelSection.value | isJson)) {
+                  <ptd-tab-section [sectionConfig]="themeTabPanelSection.value" [key]="themeTabPanelSection.key"
+                                   [activeSection]="activeSection"
+                                   (sectionSelected)="onSectionSelected($event)"></ptd-tab-section>
+                } @else if (themeTabPanelSection.key === activeTab) {
+                  <div class="ptd-tab-loader flex items-center justify-center">
+                    <p-progress-spinner class="ngp-loader"/>
+                  </div>
+                }
+              </p-tabpanel>
+            }
+          }
+
+        </p-tabpanels>
+      </p-tabs>
+
+    } @else {
+      <p-progress-spinner class="ngp-loader"/>
+    }
+
+  </div>
+
+</p-drawer>

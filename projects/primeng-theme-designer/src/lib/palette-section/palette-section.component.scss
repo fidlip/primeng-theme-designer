@@ -1,0 +1,42 @@
+:host {
+  display: block;
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.ptd-theme-palette-row {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  margin-bottom: 1rem;
+}
+
+.ptd-theme-palette-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ptd-theme-palette-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(1.5rem, 1fr));
+  gap: 2px;
+  min-width: 0;
+  width: 100%;
+}
+
+.ptd-theme-palette-item {
+  display: block;
+  min-width: 0;
+  width: 100%;
+  height: 30px;
+}
+
+@container (max-width: 30rem) {
+  .ptd-theme-palette-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+

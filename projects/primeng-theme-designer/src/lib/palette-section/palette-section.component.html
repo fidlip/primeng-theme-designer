@@ -1,0 +1,25 @@
+@if (palette) {
+  <div class="ptd-theme-palette-row">
+    <div class="ptd-theme-palette-control">
+      <span class="text-sm capitalize block w-20">{{ header }}</span>
+      <input
+        type="color"
+        [(ngModel)]="palette[PaletteKey._500]"
+        [name]="keyBase + 'BaseColor'"
+        (ngModelChange)="onColorChange($event)"
+      />
+    </div>
+    <div class="ptd-theme-palette-container">
+      @if (palette | isJson) {
+        @for (color of palette | keyvalue:null; track color.key) {
+          <div class="ptd-theme-palette-item"
+               [title]="color.key"
+               [style.background-color]="color.value">
+          </div>
+        }
+      } @else {
+        <span>Invalid palette</span>
+      }
+    </div>
+  </div>
+}

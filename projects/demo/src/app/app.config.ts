@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
             name: 'primeng',
             order: 'tailwind-base, primeng, tailwind-utilities',
           },
-          darkModeSelector: '.png-dark-mode',
+          darkModeSelector: '.ptd-dark-mode',
         },
       },
     }),

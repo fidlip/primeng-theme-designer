@@ -1,6 +1,6 @@
 import {AfterViewInit, Component} from '@angular/core';
 import { definePNgThemePreset } from './theme';
-import { ThemeDesignerComponent} from '../../../png-theme-designer';
+import { ThemeDesignerComponent} from '../../../primeng-theme-designer';
 import {ComponentShowcaseComponent} from './component-showcase/component-showcase.component';
 import {ButtonModule} from 'primeng/button';
 import {TooltipModule} from 'primeng/tooltip';
