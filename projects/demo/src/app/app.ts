@@ -2,18 +2,21 @@ import {AfterViewInit, Component} from '@angular/core';
 import { definePNgThemePreset } from './theme';
 import { ThemeDesignerComponent} from '../../../png-theme-designer';
 import {ComponentShowcaseComponent} from './component-showcase/component-showcase.component';
+import {ButtonModule} from 'primeng/button';
+import {TooltipModule} from 'primeng/tooltip';
 
 @Component({
   selector: 'app-root',
-  imports: [ThemeDesignerComponent, ComponentShowcaseComponent],
+  imports: [ThemeDesignerComponent, ComponentShowcaseComponent, ButtonModule, TooltipModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   standalone: true
 })
 export class App implements AfterViewInit {
   pngTheme = definePNgThemePreset(false);
-  designerVisible = false;
+  showThemeDesigner = false;
   activeDesignerSection?: string;
+  protected designerCollapsed: boolean = false;
 
   ngAfterViewInit(): void {
     const params = new URLSearchParams(window.location.search);
@@ -24,23 +27,29 @@ export class App implements AfterViewInit {
     this.scrollToAnchor(window.location.hash.slice(1), false);
   }
 
-  onThemeDesignerClose(): void {
-    this.designerVisible = false;
-  }
-
   openDesigner(componentKey: string, updateUrl = true): void {
     this.activeDesignerSection = `components.${componentKey}`;
-    this.designerVisible = true;
+    this.showThemeDesigner = true;
     if (updateUrl) {
       this.updateUrl(componentKey, window.location.hash.slice(1));
     }
   }
 
+  openThemeDesigner(): void {
+    this.activeDesignerSection = undefined;
+    this.showThemeDesigner = true;
+    this.designerCollapsed = false;
+  }
+
   showDemoComponent(componentKey?: string): void {
     const anchor = componentKey ? this.anchorForThemeKey(componentKey) : window.location.hash.slice(1) || 'accordion';
-    this.designerVisible = false;
     this.scrollToAnchor(anchor);
     this.updateUrl(componentKey, anchor);
+    this.designerCollapsed = false;
+  }
+
+  closeThemeDesigner(): void {
+    this.showThemeDesigner = false;
   }
 
   private anchorForThemeKey(themeKey: string): string {

@@ -4,15 +4,24 @@
     <h1>Component showcase</h1>
     <p>All visual PrimeNG components with mock data, ordered alphabetically. Use the palette icon to edit the matching component tokens.</p>
   </div>
+  <button pButton type="button" rounded icon="pi pi-palette"
+          class="open-theme-designer"
+          aria-label="Open theme designer"
+          pTooltip="Open theme designer"
+          tooltipPosition="left"
+          (click)="openThemeDesigner()"></button>
 </header>
 
 <main>
   <demo-component-showcase (editTheme)="openDesigner($event)" />
 </main>
 
-<png-theme-designer [theme]="pngTheme"
-                    [drawerVisible]="designerVisible"
-                    [activeSection]="activeDesignerSection"
-                    (close)="onThemeDesignerClose()"
-                    (openDemoPage)="showDemoComponent()"
-                    (componentSectionSelected)="showDemoComponent($event)" />
+@if (showThemeDesigner && pngTheme) {
+  <png-theme-designer class="png-theme-designer"
+                      [initialTheme]="pngTheme"
+                      [activeSection]="activeDesignerSection"
+                      [(collapsed)]="designerCollapsed"
+                      (closed)="closeThemeDesigner()"
+                      (openDemoPage)="showDemoComponent()"
+                      (componentSectionSelected)="showDemoComponent($event)" />
+}

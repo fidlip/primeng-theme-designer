@@ -1,4 +1,6 @@
 import { cloneTheme } from './theme-clone.helper';
+import { EventEmitter } from '@angular/core';
+import { ThemeDesignerComponent } from './theme-designer.component';
 
 describe('cloneTheme', () => {
   it('deep-clones PrimeNG presets while preserving css callbacks', () => {
@@ -26,5 +28,19 @@ describe('cloneTheme', () => {
 
     expect(clone).not.toBe(source);
     expect(clone.self).toBe(clone);
+  });
+});
+
+describe('ThemeDesignerComponent visibility', () => {
+  it('collapses itself and emits the public closed event', () => {
+    const component = Object.create(ThemeDesignerComponent.prototype) as ThemeDesignerComponent;
+    component.closed = new EventEmitter<void>();
+    let closeEvents = 0;
+    component.closed.subscribe(() => closeEvents++);
+
+    component.onClose();
+
+    expect((component as unknown as {collapsed: boolean}).collapsed).toBeTrue();
+    expect(closeEvents).toBe(1);
   });
 });

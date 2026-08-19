@@ -47,17 +47,18 @@ import {cloneTheme} from './theme-clone.helper';
 })
 export class ThemeDesignerComponent implements OnChanges {
   @Input() title: string = 'Designer';
-  @Input({required: true}) theme?: MaterialBaseDesignTokens;
-  @Input() drawerVisible = true;
+  @Input({required: true}) initialTheme!: MaterialBaseDesignTokens;
   /** Dot-separated theme section, e.g. `components.button`. */
   @Input() activeSection?: string;
+  @Input() collapsed = false;
 
-  @Output() close = new EventEmitter<void>();
+  @Output() closed = new EventEmitter<void>();
   @Output() openDemoPage = new EventEmitter<void>();
   /** Emitted when a component section is used, suitable for synchronizing a showcase anchor. */
   @Output() componentSectionSelected = new EventEmitter<string>();
+  @Output() collapsedChange = new EventEmitter<boolean>();
 
-  protected workingTheme?: MaterialBaseDesignTokens;
+  protected theme?: MaterialBaseDesignTokens;
   protected themeSections: Array<{ key: string; value: unknown }> = [];
   protected loading = true;
   protected activeTab = 'primitive';
@@ -66,13 +67,13 @@ export class ThemeDesignerComponent implements OnChanges {
   private readonly confirmationService = inject(ConfirmationService);
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['theme'] && this.theme) {
+    if (changes['initialTheme'] && this.initialTheme) {
       this.initializeTheme();
       this.serveLoadingState();
     }
     if (changes['activeSection'] && this.activeSection) {
       this.activeTab = this.activeSection.split('.')[0] || 'primitive';
-      this.drawerVisible = true;
+      this.setCollapsed(false);
     }
   }
 
@@ -91,8 +92,8 @@ export class ThemeDesignerComponent implements OnChanges {
    * Downloads the theme configuration as a TypeScript file
    */
   onDownloadTheme(): void {
-    if (isJson(this.workingTheme)) {
-      this.themeService.downloadThemeDiffFile(this.workingTheme);
+    if (isJson(this.theme)) {
+      this.themeService.downloadThemeDiffFile(this.theme);
     }
   }
 
@@ -100,15 +101,24 @@ export class ThemeDesignerComponent implements OnChanges {
    * Closes the theme designer
    */
   onClose(): void {
-    this.close.emit();
+    this.closed.emit();
   }
 
   toggleDarkMode(): void {
     window.document.body.classList.toggle('png-dark-mode');
   }
 
+  protected toggleCollapsed(): void {
+    this.setCollapsed(!this.collapsed);
+  }
+
+  protected setCollapsed(collapsed: boolean): void {
+    this.collapsed = collapsed;
+    this.collapsedChange.emit(collapsed);
+  }
+
   onApplyTheme(): void {
-    Theme.setTheme({preset: this.workingTheme});
+    Theme.setTheme({preset: this.theme});
   }
 
   onDemoPage(): void {
@@ -123,8 +133,8 @@ export class ThemeDesignerComponent implements OnChanges {
   }
 
   protected onUserInteraction(): void {
-    if (isJson(this.workingTheme)) {
-      this.themeService.saveToLocalStorage(this.workingTheme);
+    if (isJson(this.theme)) {
+      this.themeService.saveToLocalStorage(this.theme);
     }
   }
 
@@ -143,16 +153,16 @@ export class ThemeDesignerComponent implements OnChanges {
   }
 
   private initializeTheme(restoreSavedTheme = true): void {
-    if (!this.theme) {
+    if (!this.initialTheme) {
       return;
     }
 
-    const initialTheme = cloneTheme(this.theme);
+    const initialTheme = cloneTheme(this.initialTheme);
     const savedTheme = restoreSavedTheme ? this.themeService.getSavedTheme() : undefined;
-    const workingTheme = savedTheme ? definePreset(initialTheme, savedTheme) : initialTheme;
-    this.workingTheme = workingTheme;
-    this.themeService.setTheme(workingTheme);
-    this.themeSections = Object.entries(workingTheme)
+    const theme = savedTheme ? definePreset(initialTheme, savedTheme) : initialTheme;
+    this.theme = theme;
+    this.themeService.setTheme(theme);
+    this.themeSections = Object.entries(theme)
       .filter(([key]) => key !== 'css')
       .map(([key, value]) => ({key, value}));
   }

@@ -1,3 +1,54 @@
+::ng-deep .png-theme-designer-drawer {
+  width: min(clamp(36rem, 30vw, 40rem), calc(100vw - 1rem));
+  height: 100%;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  transform-origin: top right;
+  transition:
+    transform 300ms ease,
+    height 300ms ease,
+    opacity 300ms ease;
+
+  .png-designer-title,
+  .png-designer-action-buttons,
+  .png-designer-content {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 150ms ease 150ms,
+      visibility 0s linear 150ms;
+  }
+
+}
+
+::ng-deep .png-theme-designer-drawer.collapsed {
+    transform: translate3d(calc(100% - 3.75rem), 0, 0);
+    height: 5.5rem;
+    opacity: 0.5;
+
+    .png-designer-title,
+    .png-designer-action-buttons,
+    .png-designer-content {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 100ms ease,
+        visibility 0s linear 100ms;
+    }
+
+    .p-drawer-header {
+      padding: 0;
+    }
+
+    .p-drawer-content {
+      flex: 0 0 0;
+      min-height: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+}
+
 .openCloseButton {
   position: fixed;
   top: 50px;

@@ -1,13 +1,7 @@
-<div class="openCloseButton">
-  <button type="button" class="icon-btn" (click)="drawerVisible=!drawerVisible">
-    <i class="pi"
-       [class.pi-chevron-left]="!drawerVisible"
-       [class.pi-chevron-right]="drawerVisible"></i>
-  </button>
-</div>
 <p-confirmdialog />
-<p-drawer styleClass="md:!w-80 lg:!w-[42rem]"
-          [(visible)]="drawerVisible"
+<p-drawer
+          [styleClass]="'png-theme-designer-drawer' + (collapsed ? ' collapsed' : '')"
+          [visible]="true"
           [closable]="false"
           [baseZIndex]="1000"
           [modal]="false"
@@ -15,8 +9,13 @@
 >
   <ng-template #header>
     <div class="grow flex items-center justify-between p-5">
-      <div class="">
-        <span class="font-bold text-xl">{{ title }}</span>
+      <div class="flex items-center gap-2">
+        <button type="button" class="icon-btn" (click)="toggleCollapsed()">
+          <i class="pi"
+             [class.pi-chevron-left]="collapsed"
+             [class.pi-chevron-right]="!collapsed"></i>
+        </button>
+        <span class="png-designer-title font-bold text-xl">{{ title }}</span>
       </div>
       <div class="png-designer-action-buttons flex items-center gap-2">
         <p-button icon="pi pi-home" [rounded]="true" [text]="true" severity="secondary" pTooltip="Demo page"
@@ -36,7 +35,7 @@
   </ng-template>
   <div class="png-designer-content flex-auto overflow-auto overflow-x-hidden pb-5 px-5"
        pngTrackUserInteractions (pngInteracted)="onUserInteraction()">
-    @if (workingTheme && !loading) {
+    @if (theme && !loading) {
       <p-tabs [(value)]="activeTab">
         <p-tablist>
           @for (themeTabPanelSection of themeSections; track themeTabPanelSection.key) {
