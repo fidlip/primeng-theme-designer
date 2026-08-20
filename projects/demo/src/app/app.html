@@ -20,8 +20,8 @@
 </header>
 
 <main>
-  <demo-component-showcase (editTheme)="openDesigner($event)">
-    <demo-showcase-section title="CustomTest" anchor="customtest" themeKey="custom.content" (editTheme)="showDemoComponent($event)">
+  <demo-component-showcase (editTheme)="selectComponent($event)">
+    <demo-showcase-section title="CustomTest" anchor="customtest" (editTheme)="selectComponent($event)">
       <!--suppress CssUnresolvedCustomProperty -->
       <i style="color: var(--p-test-color)">... custom content </i>
     </demo-showcase-section>
@@ -36,6 +36,6 @@
                       [activeSection]="activeDesignerSection"
                       [(collapsed)]="designerCollapsed"
                       (closed)="closeThemeDesigner()"
-                      (openDemoPage)="showDemoComponent()"
-                      (componentSectionSelected)="showDemoComponent($event)" />
+                      (openDemoPage)="onDemoPage()"
+                      (componentSectionSelected)="selectComponent(anchorForThemeKey($event))" />
 }

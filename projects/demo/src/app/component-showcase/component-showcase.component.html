@@ -1,263 +1,263 @@
 <div class="showcase-list">
-  <demo-showcase-section title="Accordion" anchor="accordion" themeKey="accordion" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Accordion" anchor="accordion" (editTheme)="editTheme.emit($event)">
     <p-accordion value="0"><p-accordion-panel value="0"><p-accordion-header>Theme details</p-accordion-header><p-accordion-content><p>Mock accordion content.</p></p-accordion-content></p-accordion-panel></p-accordion>
   </demo-showcase-section>
-  <demo-showcase-section title="AutoComplete" anchor="autocomplete" themeKey="autocomplete" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="AutoComplete" anchor="autocomplete" (editTheme)="editTheme.emit($event)">
     <p-autocomplete [(ngModel)]="selectedCity" [suggestions]="filteredCities" optionLabel="name" (completeMethod)="filterCities($event)" appendTo="body" />
   </demo-showcase-section>
-  <demo-showcase-section title="Avatar" anchor="avatar" themeKey="avatar" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Avatar" anchor="avatar" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-avatar label="PT" size="large" shape="circle" /><p-avatar icon="pi pi-user" size="large" /></div>
   </demo-showcase-section>
-  <demo-showcase-section title="Badge" anchor="badge" themeKey="badge" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Badge" anchor="badge" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-badge value="2" /><p-badge value="8" severity="success" /><p-badge value="9" severity="warn" /><p-badge value="3" severity="danger" /><i class="pi pi-bell overlay-icon" pBadge value="2"></i></div>
   </demo-showcase-section>
-  <demo-showcase-section title="BlockUI" anchor="blockui" themeKey="blockui" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="BlockUI" anchor="blockui" (editTheme)="editTheme.emit($event)">
     <div class="block-target" #blockTarget>Theme workspace</div><p-blockui [blocked]="true" [target]="blockUiTarget"><i class="pi pi-spin pi-spinner overlay-icon"></i></p-blockui>
   </demo-showcase-section>
-  <demo-showcase-section title="Breadcrumb" anchor="breadcrumb" themeKey="breadcrumb" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Breadcrumb" anchor="breadcrumb" (editTheme)="editTheme.emit($event)">
     <p-breadcrumb [model]="[{label:'Themes'}, {label:'Material'}, {label:'Components'}]" [home]="{icon:'pi pi-home'}" />
   </demo-showcase-section>
-  <demo-showcase-section title="Button" anchor="button" themeKey="button" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Button" anchor="button" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-button label="Primary" icon="pi pi-check" /><p-button label="Secondary" severity="secondary" /><p-button icon="pi pi-heart" rounded /></div>
   </demo-showcase-section>
-  <demo-showcase-section title="ButtonGroup" anchor="buttongroup" themeKey="buttongroup" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="ButtonGroup" anchor="buttongroup" (editTheme)="editTheme.emit($event)">
     <p-buttonGroup><p-button label="Save" icon="pi pi-check" /><p-button label="Edit" icon="pi pi-pencil" /><p-button label="Delete" icon="pi pi-trash" /></p-buttonGroup>
   </demo-showcase-section>
-  <demo-showcase-section title="Card" anchor="card" themeKey="card" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Card" anchor="card" (editTheme)="editTheme.emit($event)">
     <p-card header="Material preset" subheader="Mock theme card"><p>Explore component design tokens.</p><ng-template #footer><p-button label="Open" /></ng-template></p-card>
   </demo-showcase-section>
-  <demo-showcase-section title="Carousel" anchor="carousel" themeKey="carousel" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Carousel" anchor="carousel" (editTheme)="editTheme.emit($event)">
     <p-carousel [value]="products" [numVisible]="2" [numScroll]="1" [responsiveOptions]="responsiveOptions"><ng-template #item let-product><div class="product-tile"><strong>{{product.name}}</strong><span>{{product.price | currency:'EUR'}}</span></div></ng-template></p-carousel>
   </demo-showcase-section>
-  <demo-showcase-section title="CascadeSelect" anchor="cascadeselect" themeKey="cascadeselect" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="CascadeSelect" anchor="cascadeselect" (editTheme)="editTheme.emit($event)">
     <p-cascadeselect [(ngModel)]="selectedCity" [options]="$any(countries)" optionLabel="name" optionGroupLabel="name" [optionGroupChildren]="['cities']" placeholder="Select a city" appendTo="body" />
   </demo-showcase-section>
-  <demo-showcase-section title="Chart" anchor="chart" themeKey="chart" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Chart" anchor="chart" (editTheme)="editTheme.emit($event)">
     <p-chart type="bar" [data]="chartData" [options]="chartOptions" height="220px" />
   </demo-showcase-section>
-  <demo-showcase-section title="Checkbox" anchor="checkbox" themeKey="checkbox" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Checkbox" anchor="checkbox" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-checkbox [(ngModel)]="checked" [binary]="true" inputId="mock-check" /><label for="mock-check">Use semantic tokens</label></div>
   </demo-showcase-section>
-  <demo-showcase-section title="Chip" anchor="chip" themeKey="chip" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Chip" anchor="chip" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-chip label="Material" icon="pi pi-palette" /><p-chip label="Dark mode" removable /></div>
   </demo-showcase-section>
-  <demo-showcase-section title="Chips" anchor="chips" themeKey="inputchips" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Chips" anchor="chips" (editTheme)="editTheme.emit($event)">
     <p-chips [(ngModel)]="chipsValue" />
   </demo-showcase-section>
-  <demo-showcase-section title="ColorPicker" anchor="colorpicker" themeKey="colorpicker" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="ColorPicker" anchor="colorpicker" (editTheme)="editTheme.emit($event)">
     <p-colorpicker [(ngModel)]="color" appendTo="body" /> <code>{{color}}</code>
   </demo-showcase-section>
-  <demo-showcase-section title="ConfirmDialog" anchor="confirmdialog" themeKey="confirmdialog" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="ConfirmDialog" anchor="confirmdialog" (editTheme)="editTheme.emit($event)">
     <div class="confirmdialog-host" #confirmDialogHost><p-confirmdialog key="confirmdialog-demo" [closable]="false" [appendTo]="confirmDialogHost" /></div>
   </demo-showcase-section>
-  <demo-showcase-section title="ConfirmPopup" anchor="confirmpopup" themeKey="confirmpopup" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="ConfirmPopup" anchor="confirmpopup" (editTheme)="editTheme.emit($event)">
     <div #confirmPopupAnchor class="confirmpopup-anchor"></div><p-confirmpopup #confirmPopup key="confirmpopup-demo" defaultFocus="none" />
   </demo-showcase-section>
-  <demo-showcase-section title="ContextMenu" anchor="contextmenu" themeKey="contextmenu" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="ContextMenu" anchor="contextmenu" (editTheme)="editTheme.emit($event)">
     <div class="contextmenu-host" #contextMenuHost><div #contextTarget class="context-target"></div><p-contextmenu #contextMenu [target]="contextTarget" [model]="menuItems" [appendTo]="contextMenuHost" /></div>
   </demo-showcase-section>
-  <demo-showcase-section title="DataView" anchor="dataview" themeKey="dataview" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="DataView" anchor="dataview" (editTheme)="editTheme.emit($event)">
     <p-dataview [value]="products"><ng-template #list let-items><div class="stack">@for (item of items; track item.code) {<div class="product-row"><strong>{{item.name}}</strong><p-tag [value]="item.inventoryStatus" /></div>}</div></ng-template></p-dataview>
   </demo-showcase-section>
-  <demo-showcase-section title="DatePicker" anchor="datepicker" themeKey="datepicker" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="DatePicker" anchor="datepicker" (editTheme)="editTheme.emit($event)">
     <p-datepicker [(ngModel)]="date" [showIcon]="true" appendTo="body" />
   </demo-showcase-section>
-  <demo-showcase-section title="Dialog" anchor="dialog" themeKey="dialog" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Dialog" anchor="dialog" (editTheme)="editTheme.emit($event)">
     <div class="dialog-host"><p-dialog header="Theme dialog" [visible]="true" [modal]="false" [closable]="false" [focusOnShow]="false"><p>Mock dialog content.</p></p-dialog></div>
   </demo-showcase-section>
-  <demo-showcase-section title="Divider" anchor="divider" themeKey="divider" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Divider" anchor="divider" (editTheme)="editTheme.emit($event)">
     <span>Primitive tokens</span><p-divider align="center"><p-tag value="to" /></p-divider><span>Component tokens</span>
   </demo-showcase-section>
-  <demo-showcase-section title="Dock" anchor="dock" themeKey="dock" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Dock" anchor="dock" (editTheme)="editTheme.emit($event)">
     <div class="dock-host"><p-dock [model]="actionItems" position="bottom" /></div>
   </demo-showcase-section>
-  <demo-showcase-section title="Drawer" anchor="drawer" themeKey="drawer" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Drawer" anchor="drawer" (editTheme)="editTheme.emit($event)">
     <div class="drawer-host" #drawerHost><p-drawer header="Mock drawer" [visible]="true" [modal]="false" [closable]="false" [appendTo]="drawerHost"><p>Drawer content.</p></p-drawer></div>
   </demo-showcase-section>
-  <demo-showcase-section title="Editor" anchor="editor" themeKey="editor" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Editor" anchor="editor" (editTheme)="editTheme.emit($event)">
     <p-editor [(ngModel)]="editorText" [style]="{height:'160px'}" />
   </demo-showcase-section>
-  <demo-showcase-section title="Fieldset" anchor="fieldset" themeKey="fieldset" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Fieldset" anchor="fieldset" (editTheme)="editTheme.emit($event)">
     <p-fieldset legend="Semantic colors" [toggleable]="true"><p>Primary, surface and text palettes.</p></p-fieldset>
   </demo-showcase-section>
-  <demo-showcase-section title="FileUpload" anchor="fileupload" themeKey="fileupload" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="FileUpload" anchor="fileupload" (editTheme)="editTheme.emit($event)">
     <p-fileupload mode="basic" name="theme" chooseLabel="Choose theme file" accept=".json,.ts" [customUpload]="true" />
   </demo-showcase-section>
-  <demo-showcase-section title="FloatLabel" anchor="floatlabel" themeKey="floatlabel" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="FloatLabel" anchor="floatlabel" (editTheme)="editTheme.emit($event)">
     <p-floatlabel><input pInputText id="float-value" [(ngModel)]="text" /><label for="float-value">Theme name</label></p-floatlabel>
   </demo-showcase-section>
-  <demo-showcase-section title="Fluid" anchor="fluid" themeKey="formfield" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Fluid" anchor="fluid" (editTheme)="editTheme.emit($event)">
     <p-fluid><input pInputText [(ngModel)]="text" /><p-button label="Full-width action" /></p-fluid>
   </demo-showcase-section>
-  <demo-showcase-section title="Galleria" anchor="galleria" themeKey="galleria" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Galleria" anchor="galleria" (editTheme)="editTheme.emit($event)">
     <p-galleria [value]="galleryImages" [numVisible]="2" [containerStyle]="{'max-width':'420px'}"><ng-template #item let-item><img [src]="item.itemImageSrc" [alt]="item.alt" class="gallery-image" /></ng-template><ng-template #thumbnail let-item><img [src]="item.thumbnailImageSrc" [alt]="item.alt" class="gallery-thumb" /></ng-template></p-galleria>
   </demo-showcase-section>
-  <demo-showcase-section title="IconField" anchor="iconfield" themeKey="iconfield" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="IconField" anchor="iconfield" (editTheme)="editTheme.emit($event)">
     <p-iconfield><p-inputicon class="pi pi-search" /><input pInputText placeholder="Search tokens" /></p-iconfield>
   </demo-showcase-section>
-  <demo-showcase-section title="IftaLabel" anchor="iftalabel" themeKey="iftalabel" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="IftaLabel" anchor="iftalabel" (editTheme)="editTheme.emit($event)">
     <p-iftalabel><input pInputText id="ifta-value" [(ngModel)]="text" /><label for="ifta-value">Token value</label></p-iftalabel>
   </demo-showcase-section>
-  <demo-showcase-section title="Image" anchor="image" themeKey="image" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Image" anchor="image" (editTheme)="editTheme.emit($event)">
     <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria1.jpg" alt="Mountain" width="240" [preview]="true" />
   </demo-showcase-section>
-  <demo-showcase-section title="ImageCompare" anchor="imagecompare" themeKey="imagecompare" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="ImageCompare" anchor="imagecompare" (editTheme)="editTheme.emit($event)">
     <p-imagecompare class="image-compare"><ng-template #left><img src="https://primefaces.org/cdn/primeng/images/galleria/galleria1.jpg" alt="Before" /></ng-template><ng-template #right><img src="https://primefaces.org/cdn/primeng/images/galleria/galleria2.jpg" alt="After" /></ng-template></p-imagecompare>
   </demo-showcase-section>
-  <demo-showcase-section title="Inplace" anchor="inplace" themeKey="inplace" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Inplace" anchor="inplace" (editTheme)="editTheme.emit($event)">
     <p-inplace><ng-template #display><span class="inplace-display">Click to edit theme name</span></ng-template><ng-template #content><input pInputText [(ngModel)]="text" /></ng-template></p-inplace>
   </demo-showcase-section>
-  <demo-showcase-section title="InputGroup" anchor="inputgroup" themeKey="inputgroup" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="InputGroup" anchor="inputgroup" (editTheme)="editTheme.emit($event)">
     <p-inputgroup><p-inputgroup-addon><i class="pi pi-at"></i></p-inputgroup-addon><input pInputText placeholder="Username" /><p-inputgroup-addon>.theme</p-inputgroup-addon></p-inputgroup>
   </demo-showcase-section>
-  <demo-showcase-section title="InputMask" anchor="inputmask" themeKey="inputmask" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="InputMask" anchor="inputmask" (editTheme)="editTheme.emit($event)">
     <p-inputmask mask="aaa-999" placeholder="ABC-123" />
   </demo-showcase-section>
-  <demo-showcase-section title="InputNumber" anchor="inputnumber" themeKey="inputnumber" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="InputNumber" anchor="inputnumber" (editTheme)="editTheme.emit($event)">
     <p-inputnumber [(ngModel)]="numeric" mode="currency" currency="EUR" [showButtons]="true" />
   </demo-showcase-section>
-  <demo-showcase-section title="InputOtp" anchor="inputotp" themeKey="inputotp" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="InputOtp" anchor="inputotp" (editTheme)="editTheme.emit($event)">
     <p-inputotp [(ngModel)]="text" [length]="6" />
   </demo-showcase-section>
-  <demo-showcase-section title="InputText" anchor="inputtext" themeKey="inputtext" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="InputText" anchor="inputtext" (editTheme)="editTheme.emit($event)">
     <input pInputText [(ngModel)]="text" placeholder="Theme name" />
   </demo-showcase-section>
-  <demo-showcase-section title="Knob" anchor="knob" themeKey="knob" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Knob" anchor="knob" (editTheme)="editTheme.emit($event)">
     <p-knob [(ngModel)]="numeric" valueTemplate="{value}%" />
   </demo-showcase-section>
-  <demo-showcase-section title="Listbox" anchor="listbox" themeKey="listbox" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Listbox" anchor="listbox" (editTheme)="editTheme.emit($event)">
     <p-listbox [options]="cities" [(ngModel)]="selectedCity" optionLabel="name" [filter]="true" />
   </demo-showcase-section>
-  <demo-showcase-section title="MegaMenu" anchor="megamenu" themeKey="megamenu" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="MegaMenu" anchor="megamenu" (editTheme)="editTheme.emit($event)">
     <p-megamenu [model]="[{label:'Themes',icon:'pi pi-palette',items:[[{items:[{label:'Material'},{label:'Aura'}]}]]},{label:'Designer',icon:'pi pi-sliders-h'}]" />
   </demo-showcase-section>
-  <demo-showcase-section title="Menu" anchor="menu" themeKey="menu" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Menu" anchor="menu" (editTheme)="editTheme.emit($event)">
     <p-menu [model]="menuItems" />
   </demo-showcase-section>
-  <demo-showcase-section title="Menubar" anchor="menubar" themeKey="menubar" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Menubar" anchor="menubar" (editTheme)="editTheme.emit($event)">
     <p-menubar [model]="actionItems" />
   </demo-showcase-section>
-  <demo-showcase-section title="Message" anchor="message" themeKey="message" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Message" anchor="message" (editTheme)="editTheme.emit($event)">
     <div class="stack"><p-message severity="success">Theme compiled successfully.</p-message><p-message severity="warn">Unsaved token changes.</p-message></div>
   </demo-showcase-section>
-  <demo-showcase-section title="MeterGroup" anchor="metergroup" themeKey="metergroup" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="MeterGroup" anchor="metergroup" (editTheme)="editTheme.emit($event)">
     <p-metergroup [value]="meterValues" />
   </demo-showcase-section>
-  <demo-showcase-section title="MultiSelect" anchor="multiselect" themeKey="multiselect" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="MultiSelect" anchor="multiselect" (editTheme)="editTheme.emit($event)">
     <p-multiselect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" placeholder="Select cities" display="chip" appendTo="body" />
   </demo-showcase-section>
-  <demo-showcase-section title="OrderList" anchor="orderlist" themeKey="orderlist" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="OrderList" anchor="orderlist" (editTheme)="editTheme.emit($event)">
     <p-orderlist [value]="sourceProducts" dataKey="code" breakpoint="700px"><ng-template #item let-product>{{product.name}}</ng-template></p-orderlist>
   </demo-showcase-section>
-  <demo-showcase-section title="OrganizationChart" anchor="organizationchart" themeKey="organizationchart" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="OrganizationChart" anchor="organizationchart" (editTheme)="editTheme.emit($event)">
     <p-organization-chart [value]="orgNodes"><ng-template #default let-node><strong>{{node?.label}}</strong></ng-template></p-organization-chart>
   </demo-showcase-section>
-  <demo-showcase-section title="OverlayBadge" anchor="overlaybadge" themeKey="overlaybadge" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="OverlayBadge" anchor="overlaybadge" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-overlaybadge value="2"><i class="pi pi-bell overlay-icon"></i></p-overlaybadge><p-overlaybadge value="4" severity="danger"><i class="pi pi-calendar overlay-icon"></i></p-overlaybadge><p-overlaybadge severity="danger"><i class="pi pi-envelope overlay-icon"></i></p-overlaybadge></div>
   </demo-showcase-section>
-  <demo-showcase-section title="Paginator" anchor="paginator" themeKey="paginator" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Paginator" anchor="paginator" (editTheme)="editTheme.emit($event)">
     <p-paginator [first]="0" [rows]="10" [totalRecords]="120" [rowsPerPageOptions]="[10,20,30]" />
   </demo-showcase-section>
-  <demo-showcase-section title="Panel" anchor="panel" themeKey="panel" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Panel" anchor="panel" (editTheme)="editTheme.emit($event)">
     <p-panel header="Component tokens" [toggleable]="true"><p>Panel content with mock data.</p></p-panel>
   </demo-showcase-section>
-  <demo-showcase-section title="PanelMenu" anchor="panelmenu" themeKey="panelmenu" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="PanelMenu" anchor="panelmenu" (editTheme)="editTheme.emit($event)">
     <p-panelmenu [model]="[{label:'Colors',icon:'pi pi-palette',items:[{label:'Primary'},{label:'Surface'}]},{label:'Typography',icon:'pi pi-align-left'}]" />
   </demo-showcase-section>
-  <demo-showcase-section title="Password" anchor="password" themeKey="password" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Password" anchor="password" (editTheme)="editTheme.emit($event)">
     <p-password [(ngModel)]="text" [toggleMask]="true" promptLabel="Choose a secure token" appendTo="body" />
   </demo-showcase-section>
-  <demo-showcase-section title="PickList" anchor="picklist" themeKey="picklist" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="PickList" anchor="picklist" (editTheme)="editTheme.emit($event)">
     <p-picklist [source]="sourceProducts" [target]="targetProducts" sourceHeader="Available" targetHeader="Selected" [responsive]="true" breakpoint="700px"><ng-template #item let-product>{{product.name}}</ng-template></p-picklist>
   </demo-showcase-section>
-  <demo-showcase-section title="Popover" anchor="popover" themeKey="popover" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Popover" anchor="popover" (editTheme)="editTheme.emit($event)">
     <div class="popover-host" #popoverHost><span #popoverAnchor>Primary color preview</span><p-popover #popover [appendTo]="popoverHost" [dismissable]="false" [focusOnShow]="false"><strong>Primary color</strong><p>{{color}}</p></p-popover></div>
   </demo-showcase-section>
-  <demo-showcase-section title="ProgressBar" anchor="progressbar" themeKey="progressbar" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="ProgressBar" anchor="progressbar" (editTheme)="editTheme.emit($event)">
     <p-progressbar [value]="65" />
   </demo-showcase-section>
-  <demo-showcase-section title="ProgressSpinner" anchor="progressspinner" themeKey="progressspinner" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="ProgressSpinner" anchor="progressspinner" (editTheme)="editTheme.emit($event)">
     <p-progressspinner strokeWidth="5" [style]="{width:'48px',height:'48px'}" />
   </demo-showcase-section>
-  <demo-showcase-section title="RadioButton" anchor="radiobutton" themeKey="radiobutton" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="RadioButton" anchor="radiobutton" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-radiobutton name="preset" value="Material" [(ngModel)]="text" inputId="material" /><label for="material">Material</label><p-radiobutton name="preset" value="Aura" [(ngModel)]="text" inputId="aura" /><label for="aura">Aura</label></div>
   </demo-showcase-section>
-  <demo-showcase-section title="Rating" anchor="rating" themeKey="rating" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Rating" anchor="rating" (editTheme)="editTheme.emit($event)">
     <p-rating [(ngModel)]="rating" />
   </demo-showcase-section>
-  <demo-showcase-section title="ScrollPanel" anchor="scrollpanel" themeKey="scrollpanel" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="ScrollPanel" anchor="scrollpanel" (editTheme)="editTheme.emit($event)">
     <p-scrollpanel [style]="{width:'100%',height:'140px'}"><p class="long-copy">PrimeNG theme tokens provide a consistent visual language. This scrollable mock content demonstrates track and thumb styling. Edit this themed content. PrimeNG theme tokens provide a consistent visual language. This scrollable mock content demonstrates track and thumb styling.</p></p-scrollpanel>
   </demo-showcase-section>
-  <demo-showcase-section title="ScrollTop" anchor="scrolltop" themeKey="scrolltop" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="ScrollTop" anchor="scrolltop" (editTheme)="editTheme.emit($event)">
     <div class="scrolltop-host" #scrollTopHost>@for (paragraph of scrollTopCopy; track paragraph) {<p>{{paragraph}}</p>}<p-scrolltop target="parent" [threshold]="30" /></div>
   </demo-showcase-section>
-  <demo-showcase-section title="Select" anchor="select" themeKey="select" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Select" anchor="select" (editTheme)="editTheme.emit($event)">
     <p-select [options]="cities" [(ngModel)]="selectedCity" optionLabel="name" placeholder="Select a city" appendTo="body" />
   </demo-showcase-section>
-  <demo-showcase-section title="SelectButton" anchor="selectbutton" themeKey="selectbutton" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="SelectButton" anchor="selectbutton" (editTheme)="editTheme.emit($event)">
     <p-selectbutton [options]="['Light','Dark','System']" [(ngModel)]="text" />
   </demo-showcase-section>
-  <demo-showcase-section title="Skeleton" anchor="skeleton" themeKey="skeleton" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Skeleton" anchor="skeleton" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-skeleton shape="circle" size="3rem" /><div class="stack grow"><p-skeleton width="60%" /><p-skeleton width="90%" /></div></div>
   </demo-showcase-section>
-  <demo-showcase-section title="Slider" anchor="slider" themeKey="slider" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Slider" anchor="slider" (editTheme)="editTheme.emit($event)">
     <p-slider [(ngModel)]="slider" /><p>{{slider}}%</p>
   </demo-showcase-section>
-  <demo-showcase-section title="SpeedDial" anchor="speeddial" themeKey="speeddial" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="SpeedDial" anchor="speeddial" (editTheme)="editTheme.emit($event)">
     <div class="speed-host"><p-speeddial [model]="actionItems" direction="right" [hideOnClickOutside]="false" [visible]="true" /></div>
   </demo-showcase-section>
-  <demo-showcase-section title="SplitButton" anchor="splitbutton" themeKey="splitbutton" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="SplitButton" anchor="splitbutton" (editTheme)="editTheme.emit($event)">
     <p-splitbutton label="Save theme" icon="pi pi-save" [model]="actionItems" appendTo="body" />
   </demo-showcase-section>
-  <demo-showcase-section title="Splitter" anchor="splitter" themeKey="splitter" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Splitter" anchor="splitter" (editTheme)="editTheme.emit($event)">
     <p-splitter [style]="{height:'140px'}"><ng-template #panel><div class="center">Preview</div></ng-template><ng-template #panel><div class="center">Tokens</div></ng-template></p-splitter>
   </demo-showcase-section>
-  <demo-showcase-section title="Stepper" anchor="stepper" themeKey="stepper" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Stepper" anchor="stepper" (editTheme)="editTheme.emit($event)">
     <p-stepper [value]="1"><p-step-list><p-step [value]="1">Preset</p-step><p-step [value]="2">Tokens</p-step><p-step [value]="3">Export</p-step></p-step-list><p-step-panels><p-step-panel [value]="1"><ng-template #content let-activateCallback="activateCallback"><p>Select a preset.</p><p-button label="Next" (click)="activateCallback(2)" /></ng-template></p-step-panel><p-step-panel [value]="2"><ng-template #content><p>Edit component tokens.</p></ng-template></p-step-panel></p-step-panels></p-stepper>
   </demo-showcase-section>
-  <demo-showcase-section title="Table" anchor="table" themeKey="datatable" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Table" anchor="table" (editTheme)="editTheme.emit($event)">
     <p-table [value]="products" [paginator]="true" [rows]="2"><ng-template #header><tr><th>Code</th><th>Name</th><th>Price</th></tr></ng-template><ng-template #body let-product><tr><td>{{product.code}}</td><td>{{product.name}}</td><td>{{product.price | currency:'EUR'}}</td></tr></ng-template></p-table>
   </demo-showcase-section>
-  <demo-showcase-section title="Tabs" anchor="tabs" themeKey="tabs" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Tabs" anchor="tabs" (editTheme)="editTheme.emit($event)">
     <p-tabs value="0"><p-tablist><p-tab value="0">Light</p-tab><p-tab value="1">Dark</p-tab></p-tablist><p-tabpanels><p-tabpanel value="0">Light theme preview</p-tabpanel><p-tabpanel value="1">Dark theme preview</p-tabpanel></p-tabpanels></p-tabs>
   </demo-showcase-section>
-  <demo-showcase-section title="Tag" anchor="tag" themeKey="tag" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Tag" anchor="tag" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-tag value="Stable" severity="success" /><p-tag value="Draft" severity="warn" icon="pi pi-pencil" /><p-tag value="Material" rounded /></div>
   </demo-showcase-section>
-  <demo-showcase-section title="Terminal" anchor="terminal" themeKey="terminal" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Terminal" anchor="terminal" (editTheme)="editTheme.emit($event)">
     <p-terminal welcomeMessage="Theme designer terminal" prompt="theme $" />
   </demo-showcase-section>
-  <demo-showcase-section title="Textarea" anchor="textarea" themeKey="textarea" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Textarea" anchor="textarea" (editTheme)="editTheme.emit($event)">
     <textarea pTextarea [(ngModel)]="text" rows="4" cols="40" [autoResize]="true"></textarea>
   </demo-showcase-section>
-  <demo-showcase-section title="TieredMenu" anchor="tieredmenu" themeKey="tieredmenu" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="TieredMenu" anchor="tieredmenu" (editTheme)="editTheme.emit($event)">
     <p-tieredmenu [model]="[{label:'Components',icon:'pi pi-box',items:[{label:'Button'},{label:'Card'}]},{label:'Semantic',icon:'pi pi-sitemap'}]" />
   </demo-showcase-section>
-  <demo-showcase-section title="Timeline" anchor="timeline" themeKey="timeline" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Timeline" anchor="timeline" (editTheme)="editTheme.emit($event)">
     <p-timeline [value]="timelineEvents"><ng-template #content let-event><strong>{{event.status}}</strong><small>{{event.date}}</small></ng-template></p-timeline>
   </demo-showcase-section>
-  <demo-showcase-section title="Toast" anchor="toast" themeKey="toast" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Toast" anchor="toast" (editTheme)="editTheme.emit($event)">
     <div class="toast-host"><p-toast key="showcase" [baseZIndex]="0" /></div>
   </demo-showcase-section>
-  <demo-showcase-section title="ToggleButton" anchor="togglebutton" themeKey="togglebutton" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="ToggleButton" anchor="togglebutton" (editTheme)="editTheme.emit($event)">
     <p-togglebutton [(ngModel)]="toggle" onLabel="Dark mode" offLabel="Light mode" onIcon="pi pi-moon" offIcon="pi pi-sun" />
   </demo-showcase-section>
-  <demo-showcase-section title="ToggleSwitch" anchor="toggleswitch" themeKey="toggleswitch" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="ToggleSwitch" anchor="toggleswitch" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-toggleswitch [(ngModel)]="toggle" inputId="animations" /><label for="animations">Enable animations</label></div>
   </demo-showcase-section>
-  <demo-showcase-section title="Toolbar" anchor="toolbar" themeKey="toolbar" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Toolbar" anchor="toolbar" (editTheme)="editTheme.emit($event)">
     <p-toolbar><ng-template #start><p-button label="New" icon="pi pi-plus" /></ng-template><ng-template #center><strong>Theme Designer</strong></ng-template><ng-template #end><p-button icon="pi pi-download" /></ng-template></p-toolbar>
   </demo-showcase-section>
-  <demo-showcase-section title="Tooltip" anchor="tooltip" themeKey="tooltip" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Tooltip" anchor="tooltip" (editTheme)="editTheme.emit($event)">
     <div class="tooltip-host"><p-button label="Hover me" /><div class="p-tooltip p-component p-tooltip-right" role="tooltip"><div class="p-tooltip-arrow"></div><div class="p-tooltip-text">A themed PrimeNG tooltip</div></div></div>
   </demo-showcase-section>
-  <demo-showcase-section title="Tree" anchor="tree" themeKey="tree" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="Tree" anchor="tree" (editTheme)="editTheme.emit($event)">
     <p-tree [value]="treeNodes" selectionMode="single" [(selection)]="treeSelection" />
   </demo-showcase-section>
-  <demo-showcase-section title="TreeSelect" anchor="treeselect" themeKey="treeselect" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="TreeSelect" anchor="treeselect" (editTheme)="editTheme.emit($event)">
     <div class="treeselect-host" #treeSelectHost><p-treeselect #treeSelect [options]="treeNodes" [(ngModel)]="treeSelection" placeholder="Select a file" [appendTo]="treeSelectHost" /></div>
   </demo-showcase-section>
-  <demo-showcase-section title="TreeTable" anchor="treetable" themeKey="treetable" (editTheme)="editTheme.emit($event)">
+  <demo-showcase-section title="TreeTable" anchor="treetable" (editTheme)="editTheme.emit($event)">
     <p-treetable [value]="treeTableNodes"><ng-template #header><tr><th>Name</th><th>Type</th></tr></ng-template><ng-template #body let-rowNode let-rowData="rowData"><tr [ttRow]="rowNode"><td><p-treetable-toggler [rowNode]="rowNode" />{{rowData?.name}}</td><td>{{rowData?.type}}</td></tr></ng-template></p-treetable>
   </demo-showcase-section>
   <ng-content></ng-content>

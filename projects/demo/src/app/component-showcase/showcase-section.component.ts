@@ -23,7 +23,7 @@ const PRIMENG_DOCS_VERSION = 'v19';
           <button pButton type="button" text rounded severity="secondary" icon="pi pi-palette"
                   [attr.aria-label]="'Edit ' + title() + ' theme'"
                   [pTooltip]="'Open ' + title() + ' in theme designer'"
-                  (click)="editTheme.emit(themeKey())"></button>
+                  (click)="editTheme.emit(anchor())"></button>
         </div>
       </header>
       <div class="showcase-example"><ng-content /></div>
@@ -34,7 +34,6 @@ const PRIMENG_DOCS_VERSION = 'v19';
 export class ShowcaseSectionComponent {
   readonly title = input.required<string>();
   readonly anchor = input.required<string>();
-  readonly themeKey = input.required<string>();
   readonly editTheme = output<string>();
   readonly docsUrl = computed(() => `https://${PRIMENG_DOCS_VERSION}.primeng.org/${this.anchor()}`);
 }

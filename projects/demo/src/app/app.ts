@@ -29,12 +29,10 @@ export class App implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.suppressFocusScrollBriefly();
-    const params = new URLSearchParams(window.location.search);
-    const component = params.get('component');
-    if (component) {
-      this.openDesigner(component, false);
+    const anchor = window.location.hash.slice(1);
+    if (anchor) {
+      this.selectComponent(anchor, false);
     }
-    this.scrollToAnchor(window.location.hash.slice(1), false);
   }
 
   /**
@@ -54,12 +52,23 @@ export class App implements AfterViewInit {
     }, 4000);
   }
 
-  openDesigner(componentKey: string, updateUrl = true): void {
-    this.activeDesignerSection = `components.${componentKey}`;
+  /**
+   * The single entry point for "select this component" - whether triggered by a showcase
+   * palette icon (already anchor-keyed) or by clicking a section in the designer (theme-keyed,
+   * converted via anchorForThemeKey at the call site). One anchor value drives the designer's
+   * open section, the demo's scroll position and the URL hash together, instead of tracking a
+   * theme key and an anchor as two separately-updated identities.
+   */
+  selectComponent(anchor: string, smooth = true): void {
+    this.activeDesignerSection = `components.${this.themeKeyForAnchor(anchor)}`;
     this.showThemeDesigner = true;
-    if (updateUrl) {
-      this.updateUrl(componentKey, window.location.hash.slice(1));
-    }
+    this.designerCollapsed = false;
+    this.scrollToAnchor(anchor, smooth);
+    this.updateUrl(anchor);
+  }
+
+  protected onDemoPage(): void {
+    this.selectComponent(window.location.hash.slice(1) || 'accordion');
   }
 
   openThemeDesigner(): void {
@@ -80,19 +89,27 @@ export class App implements AfterViewInit {
     Theme.setTheme({preset: this.pngTheme});
   }
 
-  showDemoComponent(componentKey?: string): void {
-    const anchor = componentKey ? this.anchorForThemeKey(componentKey) : window.location.hash.slice(1) || 'accordion';
-    this.scrollToAnchor(anchor);
-    this.updateUrl(componentKey, anchor);
-    this.designerCollapsed = false;
-  }
-
   closeThemeDesigner(): void {
     this.showThemeDesigner = false;
   }
 
-  private anchorForThemeKey(themeKey: string): string {
-    return ({datatable: 'table', formfield: 'fluid', inputchips: 'chips'} as Record<string, string>)[themeKey] ?? themeKey;
+  /**
+   * PrimeNG's theme object key and the demo's anchor/docs slug agree for almost every
+   * component; these are the handful where they don't.
+   */
+  private static readonly THEME_KEY_TO_ANCHOR: Record<string, string> = {
+    datatable: 'table', formfield: 'fluid', inputchips: 'chips',
+  };
+  private static readonly ANCHOR_TO_THEME_KEY: Record<string, string> = Object.fromEntries(
+    Object.entries(App.THEME_KEY_TO_ANCHOR).map(([themeKey, anchor]) => [anchor, themeKey])
+  );
+
+  protected anchorForThemeKey(themeKey: string): string {
+    return App.THEME_KEY_TO_ANCHOR[themeKey] ?? themeKey;
+  }
+
+  private themeKeyForAnchor(anchor: string): string {
+    return App.ANCHOR_TO_THEME_KEY[anchor] ?? anchor;
   }
 
   /**
@@ -101,15 +118,14 @@ export class App implements AfterViewInit {
    * no longer gets hijacked by a focus() call once suppressFocusScrollBriefly is in effect.
    */
   private scrollToAnchor(anchor: string, smooth = true): void {
-    if (!anchor.length) return;
+    if (!anchor) return;
     const scroll = () => document.getElementById(anchor)?.scrollIntoView({behavior: smooth ? 'smooth' : 'auto', block: 'start'});
     setTimeout(scroll);
   }
 
-  private updateUrl(component?: string, anchor?: string): void {
+  private updateUrl(anchor: string): void {
     const url = new URL(window.location.href);
-    component ? url.searchParams.set('component', component) : url.searchParams.delete('component');
-    url.hash = anchor || '';
+    url.hash = anchor;
     window.history.replaceState({}, '', url);
   }
 
