@@ -1,6 +1,9 @@
-import {Component, input, output} from '@angular/core';
+import {Component, computed, input, output} from '@angular/core';
 import {ButtonModule} from 'primeng/button';
 import {TooltipModule} from 'primeng/tooltip';
+
+/** PrimeNG major version this demo is built against; matches the version-pinned docs subdomain (e.g. v19.primeng.org). */
+const PRIMENG_DOCS_VERSION = 'v19';
 
 @Component({
   selector: 'demo-showcase-section',
@@ -12,10 +15,16 @@ import {TooltipModule} from 'primeng/tooltip';
         <h2 [id]="anchor() + '-title'">
           <a [id]="anchor()" class="showcase-anchor" [href]="'#' + anchor()">{{ title() }}</a>
         </h2>
-        <button pButton type="button" text rounded severity="secondary" icon="pi pi-palette"
-                [attr.aria-label]="'Edit ' + title() + ' theme'"
-                [pTooltip]="'Open ' + title() + ' in theme designer'"
-                (click)="editTheme.emit(themeKey())"></button>
+        <div class="showcase-header-actions">
+          <a pButton type="button" text rounded severity="secondary" icon="pi pi-question-circle"
+             [href]="docsUrl()" target="_blank" rel="noopener"
+             [attr.aria-label]="'View ' + title() + ' in the PrimeNG docs'"
+             [pTooltip]="'View ' + title() + ' in the PrimeNG docs'"></a>
+          <button pButton type="button" text rounded severity="secondary" icon="pi pi-palette"
+                  [attr.aria-label]="'Edit ' + title() + ' theme'"
+                  [pTooltip]="'Open ' + title() + ' in theme designer'"
+                  (click)="editTheme.emit(themeKey())"></button>
+        </div>
       </header>
       <div class="showcase-example"><ng-content /></div>
     </section>
@@ -27,4 +36,5 @@ export class ShowcaseSectionComponent {
   readonly anchor = input.required<string>();
   readonly themeKey = input.required<string>();
   readonly editTheme = output<string>();
+  readonly docsUrl = computed(() => `https://${PRIMENG_DOCS_VERSION}.primeng.org/${this.anchor()}`);
 }
