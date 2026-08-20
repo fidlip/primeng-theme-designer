@@ -77,7 +77,22 @@ export class ThemeDesignerComponent implements OnChanges {
     if (changes['activeSection'] && this.activeSection) {
       this.switchTab(this.activeSection.split('.')[0] || 'primitive');
       this.setCollapsed(false);
+      this.scrollToActiveSection();
     }
+  }
+
+  /**
+   * The target section may live in a tab that's still being (re)rendered (see `switchTab`'s
+   * deferral), so wait a tick past that before looking it up in the DOM. A previously-expanded
+   * section collapsing (p-fieldset's default 400ms toggle animation) shifts everything below it
+   * for the duration of that animation, so the first scroll can land short; a second, later scroll
+   * corrects for that once the layout has settled.
+   */
+  private scrollToActiveSection(): void {
+    const section = this.activeSection;
+    const scroll = () => document.getElementById(`ptd-section-${section}`)?.scrollIntoView({behavior: 'smooth', block: 'start'});
+    setTimeout(scroll, 50);
+    setTimeout(scroll, 450);
   }
 
   protected onTabChange(tab: string | number): void {

@@ -6,6 +6,7 @@
         <ptd-section-content
           class="mb-3"
           [class.ptd-section-wide]="entry.value | isJson"
+          [attr.id]="'ptd-section-' + fullKey"
           (click)="sectionSelected.emit(fullKey)"
           [header]="entry.key | titlecase"
           [owner]="sectionConfig"
