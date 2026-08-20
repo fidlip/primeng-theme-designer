@@ -1,6 +1,6 @@
 @if (newFieldset) {
   <p-fieldset class="w-full" [legend]="header" [toggleable]="true" [collapsed]="collapsed"
-              (collapsedChange)="onCollapsedChange($event)">
+              [transitionOptions]="'0ms'" (collapsedChange)="onCollapsedChange($event)">
     @if (expanded) {
       <ng-container *ngTemplateOutlet="content"></ng-container>
     }
