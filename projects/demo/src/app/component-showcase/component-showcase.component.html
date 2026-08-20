@@ -45,7 +45,8 @@
     <p-chips [(ngModel)]="chipsValue" />
   </demo-showcase-section>
   <demo-showcase-section title="ColorPicker" anchor="colorpicker" (editTheme)="editTheme.emit($event)">
-    <p-colorpicker [(ngModel)]="color" appendTo="body" /> <code>{{color}}</code>
+    <div class="row"><p-colorpicker class="colorpicker-static-preview" [(ngModel)]="color" /></div>
+    <p-colorpicker [(ngModel)]="color" [inline]="true" />
   </demo-showcase-section>
   <demo-showcase-section title="ConfirmDialog" anchor="confirmdialog" (editTheme)="editTheme.emit($event)">
     <div class="confirmdialog-host" #confirmDialogHost><p-confirmdialog key="confirmdialog-demo" [closable]="false" [appendTo]="confirmDialogHost" /></div>

@@ -21,6 +21,9 @@
   position: static !important; inset: auto !important; opacity: 1 !important; transform: none !important; margin-top: .5rem;
 }
 .popover-host ::ng-deep .p-popover { position: static !important; inset: auto !important; opacity: 1 !important; transform: none !important; margin-top: .5rem; }
+/* This preview swatch is just here to show its own themed tokens alongside the always-open
+   inline picker below; it doesn't need to open its own overlay on click. */
+.colorpicker-static-preview { pointer-events: none; }
 .tooltip-host { display: flex; align-items: center; gap: .5rem; }
 .tooltip-host .p-tooltip { position: static; display: inline-block; }
 .dock-host, .speed-host { position: relative; min-height: 7rem; }
