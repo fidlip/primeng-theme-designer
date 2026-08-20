@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {ConfirmationService, MessageService} from 'primeng/api';
@@ -90,7 +90,7 @@ import {TreeModule} from 'primeng/tree';
 import {TreeSelectModule} from 'primeng/treeselect';
 import {TreeTableModule} from 'primeng/treetable';
 import {ShowcaseSectionComponent} from './showcase-section.component';
-import {CITIES, MENU_ITEMS, ORG_NODES, PRODUCTS, TIMELINE_EVENTS, TREE_NODES} from './showcase-data';
+import {CITIES, MENU_ITEMS, ORG_NODES, PRODUCTS, SCROLL_TOP_COPY, TIMELINE_EVENTS, TOAST_MESSAGES, TREE_NODES, TREE_TABLE_NODES} from './showcase-data';
 
 const PRIME_MODULES = [AccordionModule, AutoCompleteModule, AvatarModule, BadgeModule, BlockUIModule,
   BreadcrumbModule, ButtonModule, ButtonGroupModule, CardModule, CarouselModule, CascadeSelectModule,
@@ -115,14 +115,17 @@ const PRIME_MODULES = [AccordionModule, AutoCompleteModule, AvatarModule, BadgeM
   templateUrl: './component-showcase.component.html',
   styleUrl: './component-showcase.component.scss'
 })
-export class ComponentShowcaseComponent {
+export class ComponentShowcaseComponent implements AfterViewInit {
   @Output() editTheme = new EventEmitter<string>();
+  @ViewChild('scrollTopHost') scrollTopHost?: ElementRef<HTMLDivElement>;
   readonly products = PRODUCTS;
+  readonly scrollTopCopy = SCROLL_TOP_COPY;
   readonly cities = CITIES;
   readonly menuItems = MENU_ITEMS;
   readonly actionItems = MENU_ITEMS.filter(item => !item.separator);
   readonly countries = [{name: 'Czechia', cities: CITIES}];
   readonly treeNodes = TREE_NODES;
+  readonly treeTableNodes = TREE_TABLE_NODES;
   readonly orgNodes = ORG_NODES;
   readonly timelineEvents = TIMELINE_EVENTS;
   readonly responsiveOptions = [{breakpoint: '1024px', numVisible: 2, numScroll: 1}, {breakpoint: '600px', numVisible: 1, numScroll: 1}];
@@ -139,8 +142,12 @@ export class ComponentShowcaseComponent {
   sourceProducts = [...PRODUCTS]; targetProducts = [PRODUCTS[2]];
 
   constructor(private readonly confirmation: ConfirmationService, private readonly messages: MessageService) {}
+  ngAfterViewInit(): void {
+    const host = this.scrollTopHost?.nativeElement;
+    if (host) host.scrollTop = (host.scrollHeight - host.clientHeight) / 2;
+    this.messages.addAll(TOAST_MESSAGES.map(message => ({...message, key: 'showcase', sticky: true, closable: false})));
+  }
   filterCities(event: {query: string}): void { this.filteredCities = this.cities.filter(city => city.name.toLowerCase().includes(event.query.toLowerCase())); }
   filteredCities = [...this.cities];
   confirm(event: Event): void { this.confirmation.confirm({target: event.currentTarget as EventTarget, message: 'Apply this theme?', accept: () => undefined}); }
-  toast(): void { this.messages.add({severity: 'success', summary: 'Theme saved', detail: 'Mock notification'}); }
 }
