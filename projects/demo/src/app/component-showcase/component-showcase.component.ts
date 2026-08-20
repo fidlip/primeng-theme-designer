@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {ConfirmationService, MessageService} from 'primeng/api';
+import {BlockableUI, ConfirmationService, MessageService} from 'primeng/api';
 import {AccordionModule} from 'primeng/accordion';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {AvatarModule} from 'primeng/avatar';
@@ -18,8 +18,8 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {ChipModule} from 'primeng/chip';
 import {ColorPickerModule} from 'primeng/colorpicker';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {ConfirmPopupModule} from 'primeng/confirmpopup';
-import {ContextMenuModule} from 'primeng/contextmenu';
+import {ConfirmPopup, ConfirmPopupModule} from 'primeng/confirmpopup';
+import {ContextMenu, ContextMenuModule} from 'primeng/contextmenu';
 import {DataViewModule} from 'primeng/dataview';
 import {DatePickerModule} from 'primeng/datepicker';
 import {DialogModule} from 'primeng/dialog';
@@ -60,7 +60,7 @@ import {PanelModule} from 'primeng/panel';
 import {PanelMenuModule} from 'primeng/panelmenu';
 import {PasswordModule} from 'primeng/password';
 import {PickListModule} from 'primeng/picklist';
-import {PopoverModule} from 'primeng/popover';
+import {Popover, PopoverModule} from 'primeng/popover';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {RadioButtonModule} from 'primeng/radiobutton';
@@ -85,9 +85,8 @@ import {ToastModule} from 'primeng/toast';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {ToggleSwitchModule} from 'primeng/toggleswitch';
 import {ToolbarModule} from 'primeng/toolbar';
-import {TooltipModule} from 'primeng/tooltip';
 import {TreeModule} from 'primeng/tree';
-import {TreeSelectModule} from 'primeng/treeselect';
+import {TreeSelect, TreeSelectModule} from 'primeng/treeselect';
 import {TreeTableModule} from 'primeng/treetable';
 import {ShowcaseSectionComponent} from './showcase-section.component';
 import {CITIES, MENU_ITEMS, ORG_NODES, PRODUCTS, SCROLL_TOP_COPY, TIMELINE_EVENTS, TOAST_MESSAGES, TREE_NODES, TREE_TABLE_NODES} from './showcase-data';
@@ -105,7 +104,7 @@ const PRIME_MODULES = [AccordionModule, AutoCompleteModule, AvatarModule, BadgeM
   RatingModule, ScrollPanelModule, ScrollTopModule, SelectModule, SelectButtonModule, SkeletonModule, SliderModule,
   SpeedDialModule, SplitButtonModule, SplitterModule, StepperModule, TableModule, TabsModule,
   TagModule, TextareaModule, TieredMenuModule, TimelineModule, ToastModule, ToggleButtonModule, ToggleSwitchModule,
-  ToolbarModule, TooltipModule, TreeModule, TreeSelectModule, TreeTableModule];
+  ToolbarModule, TreeModule, TreeSelectModule, TreeTableModule];
 
 @Component({
   selector: 'demo-component-showcase',
@@ -118,6 +117,15 @@ const PRIME_MODULES = [AccordionModule, AutoCompleteModule, AvatarModule, BadgeM
 export class ComponentShowcaseComponent implements AfterViewInit {
   @Output() editTheme = new EventEmitter<string>();
   @ViewChild('scrollTopHost') scrollTopHost?: ElementRef<HTMLDivElement>;
+  @ViewChild('popover') popoverRef?: Popover;
+  @ViewChild('popoverAnchor') popoverAnchor?: ElementRef<HTMLElement>;
+  @ViewChild('confirmPopupAnchor') confirmPopupAnchor?: ElementRef<HTMLElement>;
+  @ViewChild('confirmPopup') confirmPopupRef?: ConfirmPopup;
+  @ViewChild('contextMenu') contextMenuRef?: ContextMenu;
+  @ViewChild('contextTarget') contextTargetRef?: ElementRef<HTMLElement>;
+  @ViewChild('treeSelect') treeSelectRef?: TreeSelect;
+  @ViewChild('blockTarget') blockTargetRef?: ElementRef<HTMLElement>;
+  readonly blockUiTarget: BlockableUI = {getBlockableElement: () => this.blockTargetRef!.nativeElement};
   readonly products = PRODUCTS;
   readonly scrollTopCopy = SCROLL_TOP_COPY;
   readonly cities = CITIES;
@@ -138,16 +146,58 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   ];
   selectedCity = this.cities[0]; selectedCities = [this.cities[0]]; text = 'PrimeNG'; numeric = 42; checked = true;
   date = new Date(); color = '#3b82f6'; rating = 4; slider = 55; treeSelection: unknown; toggle = true;
-  dialogVisible = false; drawerVisible = false; blocked = false; editorText = '<p>Edit this themed content.</p>';
+  editorText = '<p>Edit this themed content.</p>';
   sourceProducts = [...PRODUCTS]; targetProducts = [PRODUCTS[2]];
 
   constructor(private readonly confirmation: ConfirmationService, private readonly messages: MessageService) {}
+
+  /**
+   * Popup/overlay-style components render nothing until triggered by a click or hover, which
+   * defeats the point of a showcase meant to be scanned without interacting. Everything here
+   * forces those components open immediately so their themed state is visible on load; child
+   * components must already be subscribed/rendered for that, hence doing it in AfterViewInit
+   * rather than OnInit.
+   */
   ngAfterViewInit(): void {
     const host = this.scrollTopHost?.nativeElement;
     if (host) host.scrollTop = (host.scrollHeight - host.clientHeight) / 2;
     this.messages.addAll(TOAST_MESSAGES.map(message => ({...message, key: 'showcase', sticky: true, closable: false})));
+    this.confirmation.confirm({key: 'confirmdialog-demo', message: 'Apply this theme?', accept: () => undefined});
+
+    // Popover/ConfirmPopup/ContextMenu position themselves off their anchor's current layout
+    // position; deferring a tick lets the sections above (which just grew from the triggers
+    // above) finish reflowing first, so the anchors below them are measured in their final spot.
+    setTimeout(() => {
+      if (this.confirmPopupAnchor) {
+        this.confirmation.confirm({
+          key: 'confirmpopup-demo', target: this.confirmPopupAnchor.nativeElement,
+          message: 'Apply this theme?', accept: () => undefined,
+        });
+      }
+      this.popoverRef?.show(null, this.popoverAnchor?.nativeElement);
+      this.treeSelectRef?.containerEl?.nativeElement.click();
+      const contextTarget = this.contextTargetRef?.nativeElement;
+      if (contextTarget) {
+        const rect = contextTarget.getBoundingClientRect();
+        this.contextMenuRef?.show({
+          pageX: rect.left + rect.width / 2 + window.scrollX,
+          pageY: rect.top + rect.height / 2 + window.scrollY,
+          stopPropagation: () => undefined,
+          preventDefault: () => undefined,
+        });
+      }
+
+      // ConfirmPopup/ContextMenu/TreeSelect hide themselves on the next outside click with no way
+      // to opt out via inputs, which would undo the forced-open state above the moment the user
+      // clicks anywhere else on the page. Since these instances only exist to display their
+      // themed appearance (not to be interacted with), neutering hide() keeps them open
+      // permanently. TreeSelect delegates its outside-click handling to the underlying p-overlay,
+      // so it's that overlay's hide() that needs neutering, not TreeSelect's own.
+      if (this.confirmPopupRef) this.confirmPopupRef.hide = () => undefined;
+      if (this.contextMenuRef) this.contextMenuRef.hide = () => undefined;
+      if (this.treeSelectRef?.overlayViewChild) this.treeSelectRef.overlayViewChild.hide = () => undefined;
+    });
   }
   filterCities(event: {query: string}): void { this.filteredCities = this.cities.filter(city => city.name.toLowerCase().includes(event.query.toLowerCase())); }
   filteredCities = [...this.cities];
-  confirm(event: Event): void { this.confirmation.confirm({target: event.currentTarget as EventTarget, message: 'Apply this theme?', accept: () => undefined}); }
 }

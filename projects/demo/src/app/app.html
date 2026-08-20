@@ -20,7 +20,13 @@
 </header>
 
 <main>
-  <demo-component-showcase (editTheme)="openDesigner($event)" />
+  <demo-component-showcase (editTheme)="openDesigner($event)">
+    <demo-showcase-section title="CustomTest" anchor="customtest" themeKey="custom.content" (editTheme)="showDemoComponent($event)">
+      <!--suppress CssUnresolvedCustomProperty -->
+      <i style="color: var(--p-test-color)">... custom content </i>
+    </demo-showcase-section>
+
+  </demo-component-showcase>
 </main>
 
 @if (showThemeDesigner && pngTheme) {

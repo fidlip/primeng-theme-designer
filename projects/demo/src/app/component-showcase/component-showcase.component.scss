@@ -3,11 +3,40 @@
 .stack { display: grid; gap: .75rem; }
 .grow { flex: 1; }
 .product-tile, .product-row { margin: .5rem; padding: 1rem; border: 1px solid var(--p-content-border-color); border-radius: var(--p-border-radius-md); display: flex; justify-content: space-between; gap: 1rem; }
-.block-target, .context-target { margin-top: .75rem; min-height: 5rem; display: grid; place-items: center; border: 1px dashed var(--p-content-border-color); border-radius: var(--p-border-radius-md); }
+.block-target { margin-top: .75rem; min-height: 5rem; display: grid; place-items: center; border: 1px dashed var(--p-content-border-color); border-radius: var(--p-border-radius-md); }
+.block-target ::ng-deep .p-blockui-mask { display: flex !important; align-items: center; justify-content: center; }
+.confirmpopup-anchor { margin-top: 5.5rem; }
+/* ConfirmPopup always appends to document.body (no appendTo input), so this can't be
+   scoped to a local host — it targets the class globally instead. */
+::ng-deep .p-confirmpopup { opacity: 1 !important; transform: none !important; }
+.contextmenu-host { position: relative; }
+.contextmenu-host ::ng-deep .p-contextmenu {
+  position: static !important; inset: auto !important; opacity: 1 !important; transform: none !important; margin-top: .5rem;
+}
+.popover-host ::ng-deep .p-popover { position: static !important; inset: auto !important; opacity: 1 !important; transform: none !important; margin-top: .5rem; }
+.tooltip-host { display: flex; align-items: center; gap: .5rem; }
+.tooltip-host .p-tooltip { position: static; display: inline-block; }
 .dock-host, .speed-host { position: relative; min-height: 7rem; }
+.treeselect-host { position: relative; }
+.treeselect-host ::ng-deep .p-overlay {
+  position: static !important; inset: auto !important; opacity: 1 !important; transform: none !important;
+}
+.treeselect-host ::ng-deep .p-treeselect-overlay {
+  position: static !important; inset: auto !important; opacity: 1 !important; transform: none !important;
+  width: 100% !important; margin-top: .5rem;
+}
 .scrolltop-host { height: 200px; overflow-y: auto; }
 .toast-host ::ng-deep .p-toast { display: flex; flex-wrap: wrap; gap: .75rem; position: static !important; inset: auto !important; width: 100% !important; }
 .toast-host ::ng-deep .p-toast-message { margin: 0; }
+.dialog-host ::ng-deep .p-dialog-mask, .confirmdialog-host ::ng-deep .p-dialog-mask {
+  position: static !important; inset: auto !important; height: auto !important; width: auto !important;
+}
+.dialog-host ::ng-deep .p-dialog, .confirmdialog-host ::ng-deep .p-dialog { opacity: 1 !important; transform: none !important; }
+.confirmdialog-host ::ng-deep .p-dialog-mask { background: transparent !important; }
+.drawer-host ::ng-deep .p-drawer {
+  position: static !important; inset: auto !important; width: 100% !important; height: auto !important;
+  max-height: none !important; transform: none !important;
+}
 .scrolltop-host p { max-width: 420px; margin: 0 0 .75rem; }
 .gallery-image { width: 100%; display: block; max-height: 250px; object-fit: cover; }
 .gallery-thumb { width: 4rem; height: 3rem; object-fit: cover; display: block; }

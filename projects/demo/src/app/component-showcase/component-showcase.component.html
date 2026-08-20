@@ -12,7 +12,7 @@
     <div class="row"><p-badge value="2" /><p-badge value="8" severity="success" /><p-badge value="9" severity="warn" /><p-badge value="3" severity="danger" /><i class="pi pi-bell overlay-icon" pBadge value="2"></i></div>
   </demo-showcase-section>
   <demo-showcase-section title="BlockUI" anchor="blockui" themeKey="blockui" (editTheme)="editTheme.emit($event)">
-    <p-button label="Toggle page block" (click)="blocked = !blocked" /><div class="block-target">Theme workspace</div><p-blockui [blocked]="blocked"><i class="pi pi-spin pi-spinner overlay-icon"></i></p-blockui>
+    <div class="block-target" #blockTarget>Theme workspace</div><p-blockui [blocked]="true" [target]="blockUiTarget"><i class="pi pi-spin pi-spinner overlay-icon"></i></p-blockui>
   </demo-showcase-section>
   <demo-showcase-section title="Breadcrumb" anchor="breadcrumb" themeKey="breadcrumb" (editTheme)="editTheme.emit($event)">
     <p-breadcrumb [model]="[{label:'Themes'}, {label:'Material'}, {label:'Components'}]" [home]="{icon:'pi pi-home'}" />
@@ -44,14 +44,14 @@
   <demo-showcase-section title="ColorPicker" anchor="colorpicker" themeKey="colorpicker" (editTheme)="editTheme.emit($event)">
     <p-colorpicker [(ngModel)]="color" appendTo="body" /> <code>{{color}}</code>
   </demo-showcase-section>
-  <demo-showcase-section title="ConfirmDialog" anchor="confirmdialog" themeKey="dialog" (editTheme)="editTheme.emit($event)">
-    <p-confirmdialog /><p-button label="Open confirm dialog" icon="pi pi-question-circle" (click)="confirm($event)" />
+  <demo-showcase-section title="ConfirmDialog" anchor="confirmdialog" themeKey="confirmdialog" (editTheme)="editTheme.emit($event)">
+    <div class="confirmdialog-host" #confirmDialogHost><p-confirmdialog key="confirmdialog-demo" [closable]="false" [appendTo]="confirmDialogHost" /></div>
   </demo-showcase-section>
   <demo-showcase-section title="ConfirmPopup" anchor="confirmpopup" themeKey="confirmpopup" (editTheme)="editTheme.emit($event)">
-    <p-confirmpopup /><p-button label="Open confirm popup" (click)="confirm($event)" />
+    <div #confirmPopupAnchor class="confirmpopup-anchor"></div><p-confirmpopup #confirmPopup key="confirmpopup-demo" />
   </demo-showcase-section>
   <demo-showcase-section title="ContextMenu" anchor="contextmenu" themeKey="contextmenu" (editTheme)="editTheme.emit($event)">
-    <div #contextTarget class="context-target">Right-click this area</div><p-contextmenu [target]="contextTarget" [model]="menuItems" appendTo="body" />
+    <div class="contextmenu-host" #contextMenuHost><div #contextTarget class="context-target"></div><p-contextmenu #contextMenu [target]="contextTarget" [model]="menuItems" [appendTo]="contextMenuHost" /></div>
   </demo-showcase-section>
   <demo-showcase-section title="DataView" anchor="dataview" themeKey="dataview" (editTheme)="editTheme.emit($event)">
     <p-dataview [value]="products"><ng-template #list let-items><div class="stack">@for (item of items; track item.code) {<div class="product-row"><strong>{{item.name}}</strong><p-tag [value]="item.inventoryStatus" /></div>}</div></ng-template></p-dataview>
@@ -60,7 +60,7 @@
     <p-datepicker [(ngModel)]="date" [showIcon]="true" appendTo="body" />
   </demo-showcase-section>
   <demo-showcase-section title="Dialog" anchor="dialog" themeKey="dialog" (editTheme)="editTheme.emit($event)">
-    <p-button label="Open dialog" (click)="dialogVisible=true" /><p-dialog header="Theme dialog" [(visible)]="dialogVisible" [modal]="true"><p>Mock dialog content.</p></p-dialog>
+    <div class="dialog-host"><p-dialog header="Theme dialog" [visible]="true" [modal]="false" [closable]="false"><p>Mock dialog content.</p></p-dialog></div>
   </demo-showcase-section>
   <demo-showcase-section title="Divider" anchor="divider" themeKey="divider" (editTheme)="editTheme.emit($event)">
     <span>Primitive tokens</span><p-divider align="center"><p-tag value="to" /></p-divider><span>Component tokens</span>
@@ -69,7 +69,7 @@
     <div class="dock-host"><p-dock [model]="actionItems" position="bottom" /></div>
   </demo-showcase-section>
   <demo-showcase-section title="Drawer" anchor="drawer" themeKey="drawer" (editTheme)="editTheme.emit($event)">
-    <p-button label="Open drawer" (click)="drawerVisible=true" /><p-drawer header="Mock drawer" [(visible)]="drawerVisible"><p>Drawer content.</p></p-drawer>
+    <div class="drawer-host" #drawerHost><p-drawer header="Mock drawer" [visible]="true" [modal]="false" [closable]="false" [appendTo]="drawerHost"><p>Drawer content.</p></p-drawer></div>
   </demo-showcase-section>
   <demo-showcase-section title="Editor" anchor="editor" themeKey="editor" (editTheme)="editTheme.emit($event)">
     <p-editor [(ngModel)]="editorText" [style]="{height:'160px'}" />
@@ -168,7 +168,7 @@
     <p-picklist [source]="sourceProducts" [target]="targetProducts" sourceHeader="Available" targetHeader="Selected" [responsive]="true" breakpoint="700px"><ng-template #item let-product>{{product.name}}</ng-template></p-picklist>
   </demo-showcase-section>
   <demo-showcase-section title="Popover" anchor="popover" themeKey="popover" (editTheme)="editTheme.emit($event)">
-    <p-button label="Show popover" (click)="popover.toggle($event)" /><p-popover #popover appendTo="body"><strong>Primary color</strong><p>{{color}}</p></p-popover>
+    <div class="popover-host" #popoverHost><span #popoverAnchor>Primary color preview</span><p-popover #popover [appendTo]="popoverHost" [dismissable]="false"><strong>Primary color</strong><p>{{color}}</p></p-popover></div>
   </demo-showcase-section>
   <demo-showcase-section title="ProgressBar" anchor="progressbar" themeKey="progressbar" (editTheme)="editTheme.emit($event)">
     <p-progressbar [value]="65" />
@@ -201,7 +201,7 @@
     <p-slider [(ngModel)]="slider" /><p>{{slider}}%</p>
   </demo-showcase-section>
   <demo-showcase-section title="SpeedDial" anchor="speeddial" themeKey="speeddial" (editTheme)="editTheme.emit($event)">
-    <div class="speed-host"><p-speeddial [model]="actionItems" direction="right" /></div>
+    <div class="speed-host"><p-speeddial [model]="actionItems" direction="right" [hideOnClickOutside]="false" [visible]="true" /></div>
   </demo-showcase-section>
   <demo-showcase-section title="SplitButton" anchor="splitbutton" themeKey="splitbutton" (editTheme)="editTheme.emit($event)">
     <p-splitbutton label="Save theme" icon="pi pi-save" [model]="actionItems" appendTo="body" />
@@ -243,15 +243,16 @@
     <p-toolbar><ng-template #start><p-button label="New" icon="pi pi-plus" /></ng-template><ng-template #center><strong>Theme Designer</strong></ng-template><ng-template #end><p-button icon="pi pi-download" /></ng-template></p-toolbar>
   </demo-showcase-section>
   <demo-showcase-section title="Tooltip" anchor="tooltip" themeKey="tooltip" (editTheme)="editTheme.emit($event)">
-    <p-button label="Hover me" pTooltip="A themed PrimeNG tooltip" tooltipPosition="right" />
+    <div class="tooltip-host"><p-button label="Hover me" /><div class="p-tooltip p-component p-tooltip-right" role="tooltip"><div class="p-tooltip-arrow"></div><div class="p-tooltip-text">A themed PrimeNG tooltip</div></div></div>
   </demo-showcase-section>
   <demo-showcase-section title="Tree" anchor="tree" themeKey="tree" (editTheme)="editTheme.emit($event)">
     <p-tree [value]="treeNodes" selectionMode="single" [(selection)]="treeSelection" />
   </demo-showcase-section>
   <demo-showcase-section title="TreeSelect" anchor="treeselect" themeKey="treeselect" (editTheme)="editTheme.emit($event)">
-    <p-treeselect [options]="treeNodes" [(ngModel)]="treeSelection" placeholder="Select a file" appendTo="body" />
+    <div class="treeselect-host" #treeSelectHost><p-treeselect #treeSelect [options]="treeNodes" [(ngModel)]="treeSelection" placeholder="Select a file" [appendTo]="treeSelectHost" /></div>
   </demo-showcase-section>
   <demo-showcase-section title="TreeTable" anchor="treetable" themeKey="treetable" (editTheme)="editTheme.emit($event)">
     <p-treetable [value]="treeTableNodes"><ng-template #header><tr><th>Name</th><th>Type</th></tr></ng-template><ng-template #body let-rowNode let-rowData="rowData"><tr [ttRow]="rowNode"><td><p-treetable-toggler [rowNode]="rowNode" />{{rowData?.name}}</td><td>{{rowData?.type}}</td></tr></ng-template></p-treetable>
   </demo-showcase-section>
+  <ng-content></ng-content>
 </div>

@@ -6,10 +6,13 @@ import { Theme } from '@primeng/themes';
 import {ComponentShowcaseComponent} from './component-showcase/component-showcase.component';
 import {ButtonModule} from 'primeng/button';
 import {TooltipModule} from 'primeng/tooltip';
+import {ShowcaseSectionComponent} from './component-showcase/showcase-section.component';
+import {TreeTableModule} from 'primeng/treetable';
+import {TREE_TABLE_NODES} from './component-showcase/showcase-data';
 
 @Component({
   selector: 'app-root',
-  imports: [ThemeDesignerComponent, PresetSelectorComponent, ComponentShowcaseComponent, ButtonModule, TooltipModule],
+  imports: [ThemeDesignerComponent, PresetSelectorComponent, ComponentShowcaseComponent, ButtonModule, TooltipModule, ShowcaseSectionComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   standalone: true
@@ -85,4 +88,6 @@ export class App implements AfterViewInit {
     url.hash = anchor || '';
     window.history.replaceState({}, '', url);
   }
+
+  protected readonly treeTableNodes = TREE_TABLE_NODES;
 }

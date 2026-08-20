@@ -702,4 +702,9 @@ export const DemoPNgDiffTheme = {
       }
     },
   },
+  extend: {
+    test: {
+      color: '{emerald.400}'
+    }
+  }
 };
