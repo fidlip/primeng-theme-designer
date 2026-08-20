@@ -1,4 +1,4 @@
-<div class="showcase-list">
+<div class="showcase-list" [class.terminal-ready]="terminalReady">
   <demo-showcase-section title="Accordion" anchor="accordion" (editTheme)="editTheme.emit($event)">
     <p-accordion value="0"><p-accordion-panel value="0"><p-accordion-header>Theme details</p-accordion-header><p-accordion-content><p>Mock accordion content.</p></p-accordion-content></p-accordion-panel></p-accordion>
   </demo-showcase-section>

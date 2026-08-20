@@ -1,4 +1,11 @@
 .showcase-list { display: grid; gap: 1.5rem; }
+/* PrimeNG hardcodes `autofocus` on Terminal's prompt input with no way to opt out; the browser
+   applies that the instant the element is inserted, well before any JS in ngAfterViewInit runs,
+   dragging the whole page's scroll down to it on every load. An element that isn't rendered
+   (display:none) is skipped by the browser's autofocus handling entirely, so keep it hidden from
+   the very first paint and only reveal it once the component confirms that moment has passed. */
+.showcase-list ::ng-deep .p-terminal-prompt-value { display: none; }
+.showcase-list.terminal-ready ::ng-deep .p-terminal-prompt-value { display: block; }
 .row { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; }
 .stack { display: grid; gap: .75rem; }
 .grow { flex: 1; }

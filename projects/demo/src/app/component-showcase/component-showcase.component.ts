@@ -152,16 +152,51 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   editorText = '<p>Edit this themed content.</p>';
   sourceProducts = [...PRODUCTS]; targetProducts = [PRODUCTS[2]];
 
+  /**
+   * Kept hidden via CSS (`.terminal-ready` in component-showcase.component.scss) until this
+   * flips true, so PrimeNG's hardcoded `autofocus` on Terminal's prompt input - which the browser
+   * applies the instant the element is inserted, well before any JS here can react - has nothing
+   * to focus yet. Two rAFs is a conservative wait past the browser's next render, by which point
+   * autofocus handling for this insertion has already been resolved either way.
+   */
+  protected terminalReady = false;
+
   constructor(private readonly confirmation: ConfirmationService, private readonly messages: MessageService) {}
+
+  ngAfterViewInit(): void {
+    this.suppressFocusScrollUntilSettled();
+    this.forceOpenOverlays();
+    this.scheduleTerminalReveal();
+  }
+
+  /**
+   * ConfirmDialog, forced open below, autofocuses its reject button with no way to opt out (its
+   * defaultFocus input is dead code in this PrimeNG version) - that drags the page's scroll along
+   * with it, stomping whatever anchor scroll App just did. Must run before forceOpenOverlays()
+   * triggers that autofocus. How long settling takes varies with machine load (a shorter window
+   * here meant a slower load, e.g. with devtools open, could let the late focus() land outside it
+   * and win) - a MutationObserver that waits for the DOM to go quiet would track that precisely,
+   * but watching this page's own subtree (~90 components' worth of ripple/toast/animation churn)
+   * is itself expensive enough to make things worse. A generously long flat window is the cheaper
+   * trade-off here.
+   */
+  private suppressFocusScrollUntilSettled(): void {
+    const originalFocus = HTMLElement.prototype.focus;
+    HTMLElement.prototype.focus = function (options?: FocusOptions) {
+      originalFocus.call(this, {...options, preventScroll: true});
+    };
+    setTimeout(() => {
+      HTMLElement.prototype.focus = originalFocus;
+    }, 15000);
+  }
 
   /**
    * Popup/overlay-style components render nothing until triggered by a click or hover, which
-   * defeats the point of a showcase meant to be scanned without interacting. Everything here
-   * forces those components open immediately so their themed state is visible on load; child
-   * components must already be subscribed/rendered for that, hence doing it in AfterViewInit
-   * rather than OnInit.
+   * defeats the point of a showcase meant to be scanned without interacting. Forces those open
+   * immediately so their themed state is visible on load; child components must already be
+   * subscribed/rendered for that, hence doing it in AfterViewInit rather than OnInit.
    */
-  ngAfterViewInit(): void {
+  private forceOpenOverlays(): void {
     const host = this.scrollTopHost?.nativeElement;
     if (host) host.scrollTop = (host.scrollHeight - host.clientHeight) / 2;
     this.messages.addAll(TOAST_MESSAGES.map(message => ({...message, key: 'showcase', sticky: true, closable: false})));
@@ -170,36 +205,50 @@ export class ComponentShowcaseComponent implements AfterViewInit {
     // Popover/ConfirmPopup/ContextMenu position themselves off their anchor's current layout
     // position; deferring a tick lets the sections above (which just grew from the triggers
     // above) finish reflowing first, so the anchors below them are measured in their final spot.
-    setTimeout(() => {
-      if (this.confirmPopupAnchor) {
-        this.confirmation.confirm({
-          key: 'confirmpopup-demo', target: this.confirmPopupAnchor.nativeElement,
-          message: 'Apply this theme?', accept: () => undefined,
-        });
-      }
-      this.popoverRef?.show(null, this.popoverAnchor?.nativeElement);
-      this.treeSelectRef?.containerEl?.nativeElement.click();
-      const contextTarget = this.contextTargetRef?.nativeElement;
-      if (contextTarget) {
-        const rect = contextTarget.getBoundingClientRect();
-        this.contextMenuRef?.show({
-          pageX: rect.left + rect.width / 2 + window.scrollX,
-          pageY: rect.top + rect.height / 2 + window.scrollY,
-          stopPropagation: () => undefined,
-          preventDefault: () => undefined,
-        });
-      }
+    setTimeout(() => this.forceOpenDeferredOverlays());
+  }
 
-      // ConfirmPopup/ContextMenu/TreeSelect hide themselves on the next outside click with no way
-      // to opt out via inputs, which would undo the forced-open state above the moment the user
-      // clicks anywhere else on the page. Since these instances only exist to display their
-      // themed appearance (not to be interacted with), neutering hide() keeps them open
-      // permanently. TreeSelect delegates its outside-click handling to the underlying p-overlay,
-      // so it's that overlay's hide() that needs neutering, not TreeSelect's own.
-      if (this.confirmPopupRef) this.confirmPopupRef.hide = () => undefined;
-      if (this.contextMenuRef) this.contextMenuRef.hide = () => undefined;
-      if (this.treeSelectRef?.overlayViewChild) this.treeSelectRef.overlayViewChild.hide = () => undefined;
-    });
+  private forceOpenDeferredOverlays(): void {
+    if (this.confirmPopupAnchor) {
+      this.confirmation.confirm({
+        key: 'confirmpopup-demo', target: this.confirmPopupAnchor.nativeElement,
+        message: 'Apply this theme?', accept: () => undefined,
+      });
+    }
+    this.popoverRef?.show(null, this.popoverAnchor?.nativeElement);
+    this.treeSelectRef?.containerEl?.nativeElement.click();
+    const contextTarget = this.contextTargetRef?.nativeElement;
+    if (contextTarget) {
+      const rect = contextTarget.getBoundingClientRect();
+      this.contextMenuRef?.show({
+        pageX: rect.left + rect.width / 2 + window.scrollX,
+        pageY: rect.top + rect.height / 2 + window.scrollY,
+        stopPropagation: () => undefined,
+        preventDefault: () => undefined,
+      });
+    }
+    this.preventOverlaysClosingOnOutsideClick();
+  }
+
+  /**
+   * ConfirmPopup/ContextMenu/TreeSelect hide themselves on the next outside click with no way
+   * to opt out via inputs, which would undo the forced-open state above the moment the user
+   * clicks anywhere else on the page. Since these instances only exist to display their
+   * themed appearance (not to be interacted with), neutering hide() keeps them open
+   * permanently. TreeSelect delegates its outside-click handling to the underlying p-overlay,
+   * so it's that overlay's hide() that needs neutering, not TreeSelect's own.
+   */
+  private preventOverlaysClosingOnOutsideClick(): void {
+    if (this.confirmPopupRef) this.confirmPopupRef.hide = () => undefined;
+    if (this.contextMenuRef) this.contextMenuRef.hide = () => undefined;
+    if (this.treeSelectRef?.overlayViewChild) this.treeSelectRef.overlayViewChild.hide = () => undefined;
+  }
+
+  /** See the terminalReady doc comment - unrelated to the overlay-forcing above. */
+  private scheduleTerminalReveal(): void {
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      this.terminalReady = true;
+    }));
   }
   filterCities(event: {query: string}): void { this.filteredCities = this.cities.filter(city => city.name.toLowerCase().includes(event.query.toLowerCase())); }
   filteredCities = [...this.cities];

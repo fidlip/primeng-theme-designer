@@ -28,28 +28,10 @@ export class App implements AfterViewInit {
   protected designerCollapsed: boolean = false;
 
   ngAfterViewInit(): void {
-    this.suppressFocusScrollBriefly();
     const anchor = window.location.hash.slice(1);
     if (anchor) {
       this.selectComponent(anchor, false);
     }
-  }
-
-  /**
-   * The showcase force-opens several overlays (ConfirmDialog in particular) that autofocus a
-   * button on mount with no way to opt out via inputs, which drags the page's scroll along
-   * with it and stomps the anchor scroll below. There's no completion event to hook to correct
-   * for it afterward, so instead this suppresses the scroll side effect of any focus() call for
-   * a window comfortably covering every forced-open overlay's mount, whatever it's caused by.
-   */
-  private suppressFocusScrollBriefly(): void {
-    const originalFocus = HTMLElement.prototype.focus;
-    HTMLElement.prototype.focus = function (options?: FocusOptions) {
-      originalFocus.call(this, {...options, preventScroll: true});
-    };
-    setTimeout(() => {
-      HTMLElement.prototype.focus = originalFocus;
-    }, 4000);
   }
 
   /**
@@ -113,9 +95,9 @@ export class App implements AfterViewInit {
   }
 
   /**
-   * The target anchor may not exist yet on a heavy initial load (the showcase is still
-   * mounting); a second, later attempt catches it once rendering has caught up. Scroll itself
-   * no longer gets hijacked by a focus() call once suppressFocusScrollBriefly is in effect.
+   * ComponentShowcaseComponent guards against two separate sources of scroll-hijacking that
+   * would otherwise stomp this: ConfirmDialog's own focus()-triggered scroll
+   * (suppressFocusScrollUntilSettled) and Terminal's native autofocus attribute (terminalReady).
    */
   private scrollToAnchor(anchor: string, smooth = true): void {
     if (!anchor) return;
