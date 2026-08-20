@@ -28,12 +28,30 @@ export class App implements AfterViewInit {
   protected designerCollapsed: boolean = false;
 
   ngAfterViewInit(): void {
+    this.suppressFocusScrollBriefly();
     const params = new URLSearchParams(window.location.search);
     const component = params.get('component');
     if (component) {
       this.openDesigner(component, false);
     }
     this.scrollToAnchor(window.location.hash.slice(1), false);
+  }
+
+  /**
+   * The showcase force-opens several overlays (ConfirmDialog in particular) that autofocus a
+   * button on mount with no way to opt out via inputs, which drags the page's scroll along
+   * with it and stomps the anchor scroll below. There's no completion event to hook to correct
+   * for it afterward, so instead this suppresses the scroll side effect of any focus() call for
+   * a window comfortably covering every forced-open overlay's mount, whatever it's caused by.
+   */
+  private suppressFocusScrollBriefly(): void {
+    const originalFocus = HTMLElement.prototype.focus;
+    HTMLElement.prototype.focus = function (options?: FocusOptions) {
+      originalFocus.call(this, {...options, preventScroll: true});
+    };
+    setTimeout(() => {
+      HTMLElement.prototype.focus = originalFocus;
+    }, 4000);
   }
 
   openDesigner(componentKey: string, updateUrl = true): void {
@@ -77,9 +95,15 @@ export class App implements AfterViewInit {
     return ({datatable: 'table', formfield: 'fluid', inputchips: 'chips'} as Record<string, string>)[themeKey] ?? themeKey;
   }
 
+  /**
+   * The target anchor may not exist yet on a heavy initial load (the showcase is still
+   * mounting); a second, later attempt catches it once rendering has caught up. Scroll itself
+   * no longer gets hijacked by a focus() call once suppressFocusScrollBriefly is in effect.
+   */
   private scrollToAnchor(anchor: string, smooth = true): void {
-    if (!anchor) return;
-    setTimeout(() => document.getElementById(anchor)?.scrollIntoView({behavior: smooth ? 'smooth' : 'auto', block: 'start'}));
+    if (!anchor.length) return;
+    const scroll = () => document.getElementById(anchor)?.scrollIntoView({behavior: smooth ? 'smooth' : 'auto', block: 'start'});
+    setTimeout(scroll);
   }
 
   private updateUrl(component?: string, anchor?: string): void {

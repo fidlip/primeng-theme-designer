@@ -51,7 +51,7 @@
     <div class="confirmdialog-host" #confirmDialogHost><p-confirmdialog key="confirmdialog-demo" [closable]="false" [appendTo]="confirmDialogHost" /></div>
   </demo-showcase-section>
   <demo-showcase-section title="ConfirmPopup" anchor="confirmpopup" themeKey="confirmpopup" (editTheme)="editTheme.emit($event)">
-    <div #confirmPopupAnchor class="confirmpopup-anchor"></div><p-confirmpopup #confirmPopup key="confirmpopup-demo" />
+    <div #confirmPopupAnchor class="confirmpopup-anchor"></div><p-confirmpopup #confirmPopup key="confirmpopup-demo" defaultFocus="none" />
   </demo-showcase-section>
   <demo-showcase-section title="ContextMenu" anchor="contextmenu" themeKey="contextmenu" (editTheme)="editTheme.emit($event)">
     <div class="contextmenu-host" #contextMenuHost><div #contextTarget class="context-target"></div><p-contextmenu #contextMenu [target]="contextTarget" [model]="menuItems" [appendTo]="contextMenuHost" /></div>
@@ -63,7 +63,7 @@
     <p-datepicker [(ngModel)]="date" [showIcon]="true" appendTo="body" />
   </demo-showcase-section>
   <demo-showcase-section title="Dialog" anchor="dialog" themeKey="dialog" (editTheme)="editTheme.emit($event)">
-    <div class="dialog-host"><p-dialog header="Theme dialog" [visible]="true" [modal]="false" [closable]="false"><p>Mock dialog content.</p></p-dialog></div>
+    <div class="dialog-host"><p-dialog header="Theme dialog" [visible]="true" [modal]="false" [closable]="false" [focusOnShow]="false"><p>Mock dialog content.</p></p-dialog></div>
   </demo-showcase-section>
   <demo-showcase-section title="Divider" anchor="divider" themeKey="divider" (editTheme)="editTheme.emit($event)">
     <span>Primitive tokens</span><p-divider align="center"><p-tag value="to" /></p-divider><span>Component tokens</span>
@@ -171,7 +171,7 @@
     <p-picklist [source]="sourceProducts" [target]="targetProducts" sourceHeader="Available" targetHeader="Selected" [responsive]="true" breakpoint="700px"><ng-template #item let-product>{{product.name}}</ng-template></p-picklist>
   </demo-showcase-section>
   <demo-showcase-section title="Popover" anchor="popover" themeKey="popover" (editTheme)="editTheme.emit($event)">
-    <div class="popover-host" #popoverHost><span #popoverAnchor>Primary color preview</span><p-popover #popover [appendTo]="popoverHost" [dismissable]="false"><strong>Primary color</strong><p>{{color}}</p></p-popover></div>
+    <div class="popover-host" #popoverHost><span #popoverAnchor>Primary color preview</span><p-popover #popover [appendTo]="popoverHost" [dismissable]="false" [focusOnShow]="false"><strong>Primary color</strong><p>{{color}}</p></p-popover></div>
   </demo-showcase-section>
   <demo-showcase-section title="ProgressBar" anchor="progressbar" themeKey="progressbar" (editTheme)="editTheme.emit($event)">
     <p-progressbar [value]="65" />
