@@ -41,6 +41,9 @@
   <demo-showcase-section title="Chip" anchor="chip" themeKey="chip" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-chip label="Material" icon="pi pi-palette" /><p-chip label="Dark mode" removable /></div>
   </demo-showcase-section>
+  <demo-showcase-section title="Chips" anchor="chips" themeKey="inputchips" (editTheme)="editTheme.emit($event)">
+    <p-chips [(ngModel)]="chipsValue" />
+  </demo-showcase-section>
   <demo-showcase-section title="ColorPicker" anchor="colorpicker" themeKey="colorpicker" (editTheme)="editTheme.emit($event)">
     <p-colorpicker [(ngModel)]="color" appendTo="body" /> <code>{{color}}</code>
   </demo-showcase-section>
@@ -220,6 +223,9 @@
   </demo-showcase-section>
   <demo-showcase-section title="Tag" anchor="tag" themeKey="tag" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-tag value="Stable" severity="success" /><p-tag value="Draft" severity="warn" icon="pi pi-pencil" /><p-tag value="Material" rounded /></div>
+  </demo-showcase-section>
+  <demo-showcase-section title="Terminal" anchor="terminal" themeKey="terminal" (editTheme)="editTheme.emit($event)">
+    <p-terminal welcomeMessage="Theme designer terminal" prompt="theme $" />
   </demo-showcase-section>
   <demo-showcase-section title="Textarea" anchor="textarea" themeKey="textarea" (editTheme)="editTheme.emit($event)">
     <textarea pTextarea [(ngModel)]="text" rows="4" cols="40" [autoResize]="true"></textarea>

@@ -16,6 +16,7 @@ import {CascadeSelectModule} from 'primeng/cascadeselect';
 import {ChartModule} from 'primeng/chart';
 import {CheckboxModule} from 'primeng/checkbox';
 import {ChipModule} from 'primeng/chip';
+import {ChipsModule} from 'primeng/chips';
 import {ColorPickerModule} from 'primeng/colorpicker';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmPopup, ConfirmPopupModule} from 'primeng/confirmpopup';
@@ -78,6 +79,7 @@ import {StepperModule} from 'primeng/stepper';
 import {TableModule} from 'primeng/table';
 import {TabsModule} from 'primeng/tabs';
 import {TagModule} from 'primeng/tag';
+import {TerminalModule, TerminalService} from 'primeng/terminal';
 import {TextareaModule} from 'primeng/textarea';
 import {TieredMenuModule} from 'primeng/tieredmenu';
 import {TimelineModule} from 'primeng/timeline';
@@ -93,7 +95,7 @@ import {CITIES, MENU_ITEMS, ORG_NODES, PRODUCTS, SCROLL_TOP_COPY, TIMELINE_EVENT
 
 const PRIME_MODULES = [AccordionModule, AutoCompleteModule, AvatarModule, BadgeModule, BlockUIModule,
   BreadcrumbModule, ButtonModule, ButtonGroupModule, CardModule, CarouselModule, CascadeSelectModule,
-  ChartModule, CheckboxModule, ChipModule, ColorPickerModule, ConfirmDialogModule, ConfirmPopupModule,
+  ChartModule, CheckboxModule, ChipModule, ChipsModule, ColorPickerModule, ConfirmDialogModule, ConfirmPopupModule,
   ContextMenuModule, DataViewModule, DatePickerModule, DialogModule, DividerModule, DockModule, DrawerModule,
   EditorModule, FieldsetModule, FileUploadModule, FloatLabelModule, FluidModule, GalleriaModule, IconFieldModule,
   InputIconModule, IftaLabelModule, ImageModule, ImageCompareModule, InplaceModule, InputGroupModule,
@@ -103,14 +105,14 @@ const PRIME_MODULES = [AccordionModule, AutoCompleteModule, AvatarModule, BadgeM
   PasswordModule, PickListModule, PopoverModule, ProgressBarModule, ProgressSpinnerModule, RadioButtonModule,
   RatingModule, ScrollPanelModule, ScrollTopModule, SelectModule, SelectButtonModule, SkeletonModule, SliderModule,
   SpeedDialModule, SplitButtonModule, SplitterModule, StepperModule, TableModule, TabsModule,
-  TagModule, TextareaModule, TieredMenuModule, TimelineModule, ToastModule, ToggleButtonModule, ToggleSwitchModule,
+  TagModule, TerminalModule, TextareaModule, TieredMenuModule, TimelineModule, ToastModule, ToggleButtonModule, ToggleSwitchModule,
   ToolbarModule, TreeModule, TreeSelectModule, TreeTableModule];
 
 @Component({
   selector: 'demo-component-showcase',
   standalone: true,
   imports: [CommonModule, FormsModule, ShowcaseSectionComponent, ...PRIME_MODULES],
-  providers: [ConfirmationService, MessageService],
+  providers: [ConfirmationService, MessageService, TerminalService],
   templateUrl: './component-showcase.component.html',
   styleUrl: './component-showcase.component.scss'
 })
@@ -145,6 +147,7 @@ export class ComponentShowcaseComponent implements AfterViewInit {
     {itemImageSrc: 'https://primefaces.org/cdn/primeng/images/galleria/galleria2.jpg', thumbnailImageSrc: 'https://primefaces.org/cdn/primeng/images/galleria/galleria2s.jpg', alt: 'Landscape'}
   ];
   selectedCity = this.cities[0]; selectedCities = [this.cities[0]]; text = 'PrimeNG'; numeric = 42; checked = true;
+  chipsValue = ['Material', 'Dark mode'];
   date = new Date(); color = '#3b82f6'; rating = 4; slider = 55; treeSelection: unknown; toggle = true;
   editorText = '<p>Edit this themed content.</p>';
   sourceProducts = [...PRODUCTS]; targetProducts = [PRODUCTS[2]];

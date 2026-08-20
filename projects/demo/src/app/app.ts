@@ -74,7 +74,7 @@ export class App implements AfterViewInit {
   }
 
   private anchorForThemeKey(themeKey: string): string {
-    return ({datatable: 'table', formfield: 'fluid'} as Record<string, string>)[themeKey] ?? themeKey;
+    return ({datatable: 'table', formfield: 'fluid', inputchips: 'chips'} as Record<string, string>)[themeKey] ?? themeKey;
   }
 
   private scrollToAnchor(anchor: string, smooth = true): void {
