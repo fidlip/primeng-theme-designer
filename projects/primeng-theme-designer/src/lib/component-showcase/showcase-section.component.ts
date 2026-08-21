@@ -17,20 +17,28 @@ const PRIMENG_DOCS_VERSION = 'v19';
   standalone: true,
   imports: [ButtonModule, TooltipModule, PtdTranslatePipe],
   template: `
-    <section class="showcase-section" [attr.aria-labelledby]="anchor() + '-title'">
+    <section class="showcase-section" [attr.aria-labelledby]="anchor() ? anchor() + '-title' : null">
       <header class="showcase-header">
-        <h2 [id]="anchor() + '-title'">
-          <a [id]="anchor()" class="showcase-anchor" [href]="'#' + anchor()">{{ title() }}</a>
+        <h2 [id]="anchor() ? anchor() + '-title' : null">
+          @if (anchor()) {
+            <a [id]="anchor()" class="showcase-anchor" [href]="'#' + anchor()">{{ title() }}</a>
+          } @else {
+            {{ title() }}
+          }
         </h2>
         <div class="showcase-header-actions">
-          <a pButton type="button" text rounded severity="secondary" icon="pi pi-question-circle"
-             [href]="docsUrl()" target="_blank" rel="noopener"
-             [attr.aria-label]="'showcaseSection.viewInDocs' | ptdTranslate:{title: title()}"
-             [pTooltip]="'showcaseSection.viewInDocs' | ptdTranslate:{title: title()}"></a>
-          <button pButton type="button" text rounded severity="secondary" icon="pi pi-palette"
-                  [attr.aria-label]="'showcaseSection.editTheme' | ptdTranslate:{title: title()}"
-                  [pTooltip]="'showcaseSection.openInDesigner' | ptdTranslate:{title: title()}"
-                  (click)="editTheme.emit(anchor())"></button>
+          @if (docsUrl(); as docsUrl) {
+            <a pButton type="button" text rounded severity="secondary" icon="pi pi-question-circle"
+               [href]="docsUrl" target="_blank" rel="noopener"
+               [attr.aria-label]="'showcaseSection.viewInDocs' | ptdTranslate:{title: title()}"
+               [pTooltip]="'showcaseSection.viewInDocs' | ptdTranslate:{title: title()}"></a>
+          }
+          @if (anchor()) {
+            <button pButton type="button" text rounded severity="secondary" icon="pi pi-palette"
+                    [attr.aria-label]="'showcaseSection.editTheme' | ptdTranslate:{title: title()}"
+                    [pTooltip]="'showcaseSection.openInDesigner' | ptdTranslate:{title: title()}"
+                    (click)="emitEditTheme()"></button>
+          }
         </div>
       </header>
       <div class="showcase-example"><ng-content /></div>
@@ -40,7 +48,18 @@ const PRIMENG_DOCS_VERSION = 'v19';
 })
 export class ShowcaseSectionComponent {
   readonly title = input.required<string>();
-  readonly anchor = input.required<string>();
+  readonly anchor = input<string>();
   readonly editTheme = output<string>();
-  readonly docsUrl = computed(() => `https://${PRIMENG_DOCS_VERSION}.primeng.org/${this.anchor()}`);
+  /** `undefined` (hiding the "view in docs" link) when `anchor` isn't set - no anchor usually means no matching PrimeNG docs page either (e.g. a consumer's own custom example section). */
+  readonly docsUrl = computed(() => {
+    const anchor = this.anchor();
+    return anchor ? `https://${PRIMENG_DOCS_VERSION}.primeng.org/${anchor}` : undefined;
+  });
+
+  protected emitEditTheme(): void {
+    const anchor = this.anchor();
+    if (anchor !== undefined) {
+      this.editTheme.emit(anchor);
+    }
+  }
 }
