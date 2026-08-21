@@ -46,7 +46,7 @@
     <p-colorpicker [(ngModel)]="color" [inline]="true" />
   </primeng-showcase-section>
   <primeng-showcase-section title="ConfirmDialog" anchor="confirmdialog" (editTheme)="editTheme.emit($event)">
-    <div class="confirmdialog-host" #confirmDialogHost><p-confirmdialog #confirmDialog key="confirmdialog-demo" [closable]="false" [appendTo]="confirmDialogHost" /></div>
+    <div class="confirmdialog-host" #confirmDialogHost><p-confirmdialog key="confirmdialog-demo" [closable]="false" [appendTo]="confirmDialogHost" /></div>
   </primeng-showcase-section>
   <primeng-showcase-section title="ConfirmPopup" anchor="confirmpopup" (editTheme)="editTheme.emit($event)">
     <div #confirmPopupAnchor class="confirmpopup-anchor"></div><p-confirmpopup #confirmPopup key="confirmpopup-demo" defaultFocus="none" />

@@ -19,7 +19,7 @@ import {ChartModule} from 'primeng/chart';
 import {CheckboxModule} from 'primeng/checkbox';
 import {ChipModule} from 'primeng/chip';
 import {ColorPickerModule} from 'primeng/colorpicker';
-import {ConfirmDialog, ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmPopup, ConfirmPopupModule} from 'primeng/confirmpopup';
 import {ContextMenu, ContextMenuModule} from 'primeng/contextmenu';
 import {DataViewModule} from 'primeng/dataview';
@@ -137,7 +137,6 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   @ViewChild('popover') popoverRef?: Popover;
   @ViewChild('popoverAnchor') popoverAnchor?: ElementRef<HTMLElement>;
   @ViewChild('confirmPopupAnchor') confirmPopupAnchor?: ElementRef<HTMLElement>;
-  @ViewChild('confirmDialog') confirmDialogRef?: ConfirmDialog;
   @ViewChild('confirmPopup') confirmPopupRef?: ConfirmPopup;
   @ViewChild('contextMenu') contextMenuRef?: ContextMenu;
   @ViewChild('contextTarget') contextTargetRef?: ElementRef<HTMLElement>;
@@ -197,39 +196,21 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.disableConfirmDialogRejectAutofocus();
     this.suppressFocusScrollUntilSettled();
     this.forceOpenOverlays();
     this.scheduleTerminalReveal();
   }
 
   /**
-   * PrimeNG v20's `pAutoFocus` directive (used internally by `p-button`) has a bug where it stamps
-   * a stray `autofocus="true"` attribute onto every button regardless of whether it asked for one
-   * (a strict `=== false` check that should be a truthiness check) - including this dialog's reject
-   * button, which the browser then autofocuses, and drags the page's scroll along with it, the
-   * moment the dialog becomes visible below. ConfirmDialog's own `defaultFocus` input can't help:
-   * the method that would read it is dead code in this PrimeNG version. The button already exists
-   * in the DOM at this point (Angular's void->visible show animation needs it there beforehand), so
-   * clearing its `autofocus` property once, up front, disarms the native autofocus before the
-   * dialog ever opens - cheaper and more direct than reacting to the scroll after the fact.
-   */
-  private disableConfirmDialogRejectAutofocus(): void {
-    const nativeElement = this.confirmDialogRef?.el.nativeElement as HTMLElement | undefined;
-    const rejectButton = nativeElement?.querySelector<HTMLButtonElement>('.p-confirmdialog-reject-button');
-    if (rejectButton) rejectButton.autofocus = false;
-  }
-
-  /**
-   * Belt-and-suspenders beyond the reject-button fix above: anything else in this page's ~90
-   * forced-open components that calls `focus()` without `preventScroll` during the same settling
-   * window would drag the page's scroll along with it too. Must run before forceOpenOverlays()
-   * triggers any of that. How long settling takes varies with machine load (a shorter window here
-   * meant a slower load, e.g. with devtools open, could let a late focus() land outside it and win)
-   * - a MutationObserver that waits for the DOM to go quiet would track that precisely, but
-   * watching this page's own subtree (~90 components' worth of ripple/toast/animation churn) is
-   * itself expensive enough to make things worse. A generously long flat window is the cheaper
-   * trade-off here.
+   * Belt-and-suspenders beyond the explicit `autofocus: false` passed to `confirm()` below:
+   * anything else in this page's ~90 forced-open components that calls `focus()` without
+   * `preventScroll` during the same settling window would drag the page's scroll along with it
+   * too. How long settling takes varies with machine load (a shorter window here meant a slower
+   * load, e.g. with devtools open, could let a late focus() land outside it and win) - a
+   * MutationObserver that waits for the DOM to go quiet would track that precisely, but watching
+   * this page's own subtree (~90 components' worth of ripple/toast/animation churn) is itself
+   * expensive enough to make things worse. A generously long flat window is the cheaper trade-off
+   * here.
    */
   private suppressFocusScrollUntilSettled(): void {
     const originalFocus = HTMLElement.prototype.focus;
@@ -251,7 +232,20 @@ export class ComponentShowcaseComponent implements AfterViewInit {
     const host = this.scrollTopHost?.nativeElement;
     if (host) host.scrollTop = (host.scrollHeight - host.clientHeight) / 2;
     this.messages.addAll(buildToastMessages(this.t()).map(message => ({...message, key: 'showcase', sticky: true, closable: false})));
-    this.confirmation.confirm({key: 'confirmdialog-demo', message: this.applyThemeConfirmMessage(), accept: () => undefined});
+    // PrimeNG v20's `pAutoFocus` directive (used internally by `p-button`) has a bug where it stamps
+    // a stray `autofocus="true"` attribute onto every button regardless of whether it asked for one
+    // (a strict `=== false` check that a button with no explicit `autofocus` input fails, since the
+    // resulting expression is `undefined`, not `false`) - the browser then autofocuses whichever
+    // button that lands on and drags the page's scroll along with it the moment the dialog becomes
+    // visible. ConfirmDialog's own `defaultFocus` input can't help: the method that would read it is
+    // dead code in this PrimeNG version. Passing an explicit `autofocus: false` here short-circuits
+    // the buggy check directly, so it doesn't matter when (or whether) the buttons actually land in
+    // the DOM - unlike clearing the rendered button's `.autofocus` property after the fact, which
+    // needs the button to already exist and runs too late anyway once the browser has autofocused it.
+    this.confirmation.confirm({
+      key: 'confirmdialog-demo', message: this.applyThemeConfirmMessage(), accept: () => undefined,
+      acceptButtonProps: {autofocus: false}, rejectButtonProps: {autofocus: false},
+    });
 
     // Popover/ConfirmPopup/ContextMenu position themselves off their anchor's current layout
     // position; deferring a tick lets the sections above (which just grew from the triggers
