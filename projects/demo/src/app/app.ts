@@ -95,7 +95,7 @@ export class App implements AfterViewInit {
    * component; these are the handful where they don't.
    */
   private static readonly THEME_KEY_TO_ANCHOR: Record<string, string> = {
-    datatable: 'table', formfield: 'fluid', inputchips: 'chips',
+    datatable: 'table', formfield: 'fluid',
   };
   private static readonly ANCHOR_TO_THEME_KEY: Record<string, string> = Object.fromEntries(
     Object.entries(App.THEME_KEY_TO_ANCHOR).map(([themeKey, anchor]) => [anchor, themeKey])

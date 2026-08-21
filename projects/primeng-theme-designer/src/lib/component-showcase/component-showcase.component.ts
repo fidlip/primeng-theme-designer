@@ -3,7 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {PtdTranslatePipe} from '../i18n/translate.pipe';
 import {PtdTranslateService} from '../i18n/translate.service';
-import {BlockableUI, ConfirmationService, MessageService} from 'primeng/api';
+import {BlockableUI, ConfirmationService, MessageService, TreeNode} from 'primeng/api';
 import {AccordionModule} from 'primeng/accordion';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {AvatarModule} from 'primeng/avatar';
@@ -18,9 +18,8 @@ import {CascadeSelectModule} from 'primeng/cascadeselect';
 import {ChartModule} from 'primeng/chart';
 import {CheckboxModule} from 'primeng/checkbox';
 import {ChipModule} from 'primeng/chip';
-import {ChipsModule} from 'primeng/chips';
 import {ColorPickerModule} from 'primeng/colorpicker';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmDialog, ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmPopup, ConfirmPopupModule} from 'primeng/confirmpopup';
 import {ContextMenu, ContextMenuModule} from 'primeng/contextmenu';
 import {DataViewModule} from 'primeng/dataview';
@@ -101,7 +100,7 @@ import {
 
 const PRIME_MODULES = [AccordionModule, AutoCompleteModule, AvatarModule, BadgeModule, BlockUIModule,
   BreadcrumbModule, ButtonModule, ButtonGroupModule, CardModule, CarouselModule, CascadeSelectModule,
-  ChartModule, CheckboxModule, ChipModule, ChipsModule, ColorPickerModule, ConfirmDialogModule, ConfirmPopupModule,
+  ChartModule, CheckboxModule, ChipModule, ColorPickerModule, ConfirmDialogModule, ConfirmPopupModule,
   ContextMenuModule, DataViewModule, DatePickerModule, DialogModule, DividerModule, DockModule, DrawerModule,
   EditorModule, FieldsetModule, FileUploadModule, FloatLabelModule, FluidModule, GalleriaModule, IconFieldModule,
   InputIconModule, IftaLabelModule, ImageModule, ImageCompareModule, InplaceModule, InputGroupModule,
@@ -138,10 +137,12 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   @ViewChild('popover') popoverRef?: Popover;
   @ViewChild('popoverAnchor') popoverAnchor?: ElementRef<HTMLElement>;
   @ViewChild('confirmPopupAnchor') confirmPopupAnchor?: ElementRef<HTMLElement>;
+  @ViewChild('confirmDialog') confirmDialogRef?: ConfirmDialog;
   @ViewChild('confirmPopup') confirmPopupRef?: ConfirmPopup;
   @ViewChild('contextMenu') contextMenuRef?: ContextMenu;
   @ViewChild('contextTarget') contextTargetRef?: ElementRef<HTMLElement>;
   @ViewChild('treeSelect') treeSelectRef?: TreeSelect;
+  @ViewChild('treeSelectHost') treeSelectHostRef?: ElementRef<HTMLElement>;
   @ViewChild('blockTarget') blockTargetRef?: ElementRef<HTMLElement>;
   private readonly translateService = inject(PtdTranslateService);
   /** Reactive translate function: recomputes every array below whenever the language changes. */
@@ -178,8 +179,7 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   readonly responsiveOptions = [{breakpoint: '1024px', numVisible: 2, numScroll: 1}, {breakpoint: '600px', numVisible: 1, numScroll: 1}];
   readonly chartOptions = {plugins: {legend: {display: false}}, maintainAspectRatio: false};
   selectedCity = this.cities[0]; selectedCities = [this.cities[0]]; text = 'PrimeNG'; numeric = 42; checked = true;
-  chipsValue = ['Material', 'Dark mode'];
-  date = new Date(); color = '#3b82f6'; rating = 4; slider = 55; treeSelection: unknown; toggle = true;
+  date = new Date(); color = '#3b82f6'; rating = 4; slider = 55; treeSelection?: TreeNode; toggle = true;
   editorText = `<p>${this.t()('showcase.editor.content')}</p>`;
   sourceProducts = [...PRODUCTS]; targetProducts = [PRODUCTS[2]];
 
@@ -197,20 +197,38 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.disableConfirmDialogRejectAutofocus();
     this.suppressFocusScrollUntilSettled();
     this.forceOpenOverlays();
     this.scheduleTerminalReveal();
   }
 
   /**
-   * ConfirmDialog, forced open below, autofocuses its reject button with no way to opt out (its
-   * defaultFocus input is dead code in this PrimeNG version) - that drags the page's scroll along
-   * with it, stomping whatever anchor scroll App just did. Must run before forceOpenOverlays()
-   * triggers that autofocus. How long settling takes varies with machine load (a shorter window
-   * here meant a slower load, e.g. with devtools open, could let the late focus() land outside it
-   * and win) - a MutationObserver that waits for the DOM to go quiet would track that precisely,
-   * but watching this page's own subtree (~90 components' worth of ripple/toast/animation churn)
-   * is itself expensive enough to make things worse. A generously long flat window is the cheaper
+   * PrimeNG v20's `pAutoFocus` directive (used internally by `p-button`) has a bug where it stamps
+   * a stray `autofocus="true"` attribute onto every button regardless of whether it asked for one
+   * (a strict `=== false` check that should be a truthiness check) - including this dialog's reject
+   * button, which the browser then autofocuses, and drags the page's scroll along with it, the
+   * moment the dialog becomes visible below. ConfirmDialog's own `defaultFocus` input can't help:
+   * the method that would read it is dead code in this PrimeNG version. The button already exists
+   * in the DOM at this point (Angular's void->visible show animation needs it there beforehand), so
+   * clearing its `autofocus` property once, up front, disarms the native autofocus before the
+   * dialog ever opens - cheaper and more direct than reacting to the scroll after the fact.
+   */
+  private disableConfirmDialogRejectAutofocus(): void {
+    const nativeElement = this.confirmDialogRef?.el.nativeElement as HTMLElement | undefined;
+    const rejectButton = nativeElement?.querySelector<HTMLButtonElement>('.p-confirmdialog-reject-button');
+    if (rejectButton) rejectButton.autofocus = false;
+  }
+
+  /**
+   * Belt-and-suspenders beyond the reject-button fix above: anything else in this page's ~90
+   * forced-open components that calls `focus()` without `preventScroll` during the same settling
+   * window would drag the page's scroll along with it too. Must run before forceOpenOverlays()
+   * triggers any of that. How long settling takes varies with machine load (a shorter window here
+   * meant a slower load, e.g. with devtools open, could let a late focus() land outside it and win)
+   * - a MutationObserver that waits for the DOM to go quiet would track that precisely, but
+   * watching this page's own subtree (~90 components' worth of ripple/toast/animation churn) is
+   * itself expensive enough to make things worse. A generously long flat window is the cheaper
    * trade-off here.
    */
   private suppressFocusScrollUntilSettled(): void {
@@ -249,7 +267,12 @@ export class ComponentShowcaseComponent implements AfterViewInit {
       });
     }
     this.popoverRef?.show(null, this.popoverAnchor?.nativeElement);
-    this.treeSelectRef?.containerEl?.nativeElement.click();
+    // TreeSelect.show() sets its internal state but - unlike hide() - never calls markForCheck(),
+    // so its OnPush view never repaints from that direct call. Dispatching the mousedown its own
+    // host listener actually reacts to (not click) opens it the same way a real user would.
+    this.treeSelectHostRef?.nativeElement
+      .querySelector('[data-pc-section="label"]')
+      ?.dispatchEvent(new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window}));
     const contextTarget = this.contextTargetRef?.nativeElement;
     if (contextTarget) {
       const rect = contextTarget.getBoundingClientRect();

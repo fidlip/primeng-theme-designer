@@ -6,7 +6,7 @@ export const TRANSLATIONS_CS: TranslationObject = {
   ptd: PTD_TRANSLATIONS_CS,
   demo: {
     hero: {
-      eyebrow: 'Hřiště motivů PrimeNG 19',
+      eyebrow: 'Hřiště motivů PrimeNG 20',
       title: 'Přehled komponent',
       description: 'Všechny vizuální komponenty PrimeNG s ukázkovými daty, seřazené abecedně. Ikonou palety upravíte odpovídající tokeny komponenty.',
     },

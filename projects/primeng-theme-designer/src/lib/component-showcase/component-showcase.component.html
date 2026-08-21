@@ -41,15 +41,12 @@
   <primeng-showcase-section title="Chip" anchor="chip" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-chip label="Material" icon="pi pi-palette" /><p-chip [label]="'showcase.chip.darkMode' | ptdTranslate" removable /></div>
   </primeng-showcase-section>
-  <primeng-showcase-section title="Chips" anchor="chips" (editTheme)="editTheme.emit($event)">
-    <p-chips [(ngModel)]="chipsValue" />
-  </primeng-showcase-section>
   <primeng-showcase-section title="ColorPicker" anchor="colorpicker" (editTheme)="editTheme.emit($event)">
     <div class="row"><p-colorpicker class="colorpicker-static-preview" [(ngModel)]="color" /></div>
     <p-colorpicker [(ngModel)]="color" [inline]="true" />
   </primeng-showcase-section>
   <primeng-showcase-section title="ConfirmDialog" anchor="confirmdialog" (editTheme)="editTheme.emit($event)">
-    <div class="confirmdialog-host" #confirmDialogHost><p-confirmdialog key="confirmdialog-demo" [closable]="false" [appendTo]="confirmDialogHost" /></div>
+    <div class="confirmdialog-host" #confirmDialogHost><p-confirmdialog #confirmDialog key="confirmdialog-demo" [closable]="false" [appendTo]="confirmDialogHost" /></div>
   </primeng-showcase-section>
   <primeng-showcase-section title="ConfirmPopup" anchor="confirmpopup" (editTheme)="editTheme.emit($event)">
     <div #confirmPopupAnchor class="confirmpopup-anchor"></div><p-confirmpopup #confirmPopup key="confirmpopup-demo" defaultFocus="none" />

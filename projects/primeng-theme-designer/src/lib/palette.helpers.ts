@@ -1,4 +1,4 @@
-import {PaletteDesignToken} from '@primeng/themes/types';
+import {PaletteDesignToken} from '@primeuix/themes/types';
 
 export enum PaletteKey {
   _50 = 50,

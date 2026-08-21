@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PaletteDesignToken } from '@primeng/themes/types';
+import { PaletteDesignToken } from '@primeuix/themes/types';
 import { IsJsonPipe } from '../is-json.pipe';
 import {hexToRgb, mixRGB, PaletteKey, RGB, rgbToHex} from '../palette.helpers';
 import { PtdTranslatePipe } from '../i18n/translate.pipe';

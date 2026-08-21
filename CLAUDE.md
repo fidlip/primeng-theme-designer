@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`primeng-theme-designer` is an Angular library (Angular 19) that provides a standalone visual theme editor component (`<primeng-theme-designer>`) for PrimeNG design tokens. It's an Angular CLI workspace with two projects:
+`primeng-theme-designer` is an Angular library (Angular 20) that provides a standalone visual theme editor component (`<primeng-theme-designer>`) for PrimeNG design tokens. It's an Angular CLI workspace with two projects:
 
 - `projects/primeng-theme-designer` — the publishable library (buildable with `ng-packagr`).
 - `projects/demo` — an Angular app that consumes the library and doubles as a live example/showcase (`projects/demo/src/app/component-showcase`) of PrimeNG components styled by the designer's output.

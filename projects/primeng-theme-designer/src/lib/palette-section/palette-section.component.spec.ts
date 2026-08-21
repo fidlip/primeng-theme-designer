@@ -1,4 +1,4 @@
-import { PaletteDesignToken } from '@primeng/themes/types';
+import { PaletteDesignToken } from '@primeuix/themes/types';
 import { PaletteSectionComponent } from './palette-section.component';
 
 describe('PaletteSectionComponent', () => {

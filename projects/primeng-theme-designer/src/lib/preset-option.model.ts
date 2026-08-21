@@ -3,11 +3,13 @@
  * `name` doubles as the `@primeng/themes/<name>` import path segment, so it must
  * match the lowercase package name of the preset it points to.
  *
- * `preset` is typed as `object` rather than `Json` because stock PrimeNG presets carry
- * function-valued `css` callbacks (per-component and top-level), which `Json` disallows.
+ * `preset` is typed as `Record<string, unknown>` rather than `Json` because stock PrimeNG presets
+ * carry function-valued `css` callbacks (per-component and top-level), which `Json` disallows.
+ * `Record<string, unknown>` also matches `definePreset`'s `T extends Record<string, unknown>`
+ * generic constraint, unlike the bare `object` type used before PrimeNG v20's typings tightened.
  */
 export interface PresetOption {
   name: string;
   label: string;
-  preset: object;
+  preset: Record<string, unknown>;
 }

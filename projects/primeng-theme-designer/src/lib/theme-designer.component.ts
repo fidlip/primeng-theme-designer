@@ -50,7 +50,8 @@ import {TitleCasePipe} from '@angular/common';
 })
 export class ThemeDesignerComponent implements OnChanges {
   @Input() title?: string;
-  @Input({required: true}) initialTheme!: Json;
+  /** Not typed `Json`: real presets carry function-valued `css` callbacks that `Json` excludes; cast below once `initializeTheme` has filtered those out. */
+  @Input({required: true}) initialTheme!: Record<string, unknown>;
   /** The stock preset `initialTheme` was derived from; used as the export/diff baseline. */
   @Input({required: true}) basePreset!: PresetOption;
   /** Dot-separated theme section, e.g. `components.button`. */
@@ -101,7 +102,10 @@ export class ThemeDesignerComponent implements OnChanges {
     setTimeout(scroll, 450);
   }
 
-  protected onTabChange(tab: string | number): void {
+  protected onTabChange(tab: string | number | undefined): void {
+    if (tab === undefined) {
+      return;
+    }
     this.switchTab(String(tab));
   }
 
@@ -221,7 +225,7 @@ export class ThemeDesignerComponent implements OnChanges {
 
     const initialTheme = cloneTheme(this.initialTheme);
     const savedTheme = restoreSavedTheme ? this.themeService.getSavedTheme() : undefined;
-    const theme = savedTheme ? definePreset(initialTheme, savedTheme) : initialTheme;
+    const theme = (savedTheme ? definePreset(initialTheme, savedTheme) : initialTheme) as Json;
     this.theme = theme;
     this.themeService.setBasePreset(this.basePreset);
     this.themeService.setTheme(theme);
