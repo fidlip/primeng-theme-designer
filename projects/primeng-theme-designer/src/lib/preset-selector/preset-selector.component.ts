@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Popover } from 'primeng/popover';
 import { Button } from 'primeng/button';
@@ -14,7 +14,7 @@ import { PtdTranslatePipe } from '../i18n/translate.pipe';
 @Component({
   selector: 'primeng-preset-selector',
   standalone: true,
-  imports: [CommonModule, Popover, Button, Tooltip, PtdTranslatePipe],
+  imports: [Popover, Button, Tooltip, PtdTranslatePipe],
   templateUrl: './preset-selector.component.html',
   styleUrl: './preset-selector.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

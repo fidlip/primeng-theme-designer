@@ -3,8 +3,8 @@ import {ButtonModule} from 'primeng/button';
 import {TooltipModule} from 'primeng/tooltip';
 import {PtdTranslatePipe} from '../i18n/translate.pipe';
 
-/** PrimeNG major version this component is built against; matches the version-pinned docs subdomain (e.g. v20.primeng.org). */
-const PRIMENG_DOCS_VERSION = 'v20';
+/** PrimeNG major version this component is built against; matches the version-pinned docs subdomain (e.g. v21.primeng.org). */
+const PRIMENG_DOCS_VERSION = 'v21';
 
 /**
  * Wraps one example inside `ComponentShowcaseComponent` with a heading, a link to that component's

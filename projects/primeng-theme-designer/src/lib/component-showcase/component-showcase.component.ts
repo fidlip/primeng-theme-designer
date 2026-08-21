@@ -232,16 +232,20 @@ export class ComponentShowcaseComponent implements AfterViewInit {
     const host = this.scrollTopHost?.nativeElement;
     if (host) host.scrollTop = (host.scrollHeight - host.clientHeight) / 2;
     this.messages.addAll(buildToastMessages(this.t()).map(message => ({...message, key: 'showcase', sticky: true, closable: false})));
-    // PrimeNG v20's `pAutoFocus` directive (used internally by `p-button`) has a bug where it stamps
+    // PrimeNG v20's `pAutoFocus` directive (used internally by `p-button`) had a bug where it stamped
     // a stray `autofocus="true"` attribute onto every button regardless of whether it asked for one
-    // (a strict `=== false` check that a button with no explicit `autofocus` input fails, since the
-    // resulting expression is `undefined`, not `false`) - the browser then autofocuses whichever
-    // button that lands on and drags the page's scroll along with it the moment the dialog becomes
-    // visible. ConfirmDialog's own `defaultFocus` input can't help: the method that would read it is
-    // dead code in this PrimeNG version. Passing an explicit `autofocus: false` here short-circuits
-    // the buggy check directly, so it doesn't matter when (or whether) the buttons actually land in
-    // the DOM - unlike clearing the rendered button's `.autofocus` property after the fact, which
-    // needs the button to already exist and runs too late anyway once the browser has autofocused it.
+    // (a strict `=== false` check that a button with no explicit `autofocus` input failed, since the
+    // resulting expression was `undefined`, not `false`) - the browser then autofocused whichever
+    // button that landed on and dragged the page's scroll along with it the moment the dialog became
+    // visible. Fixed upstream in v21 (the directive's `autofocus` field now defaults to `false`
+    // instead of `undefined`), but the explicit `autofocus: false` here is kept as a harmless,
+    // version-independent belt-and-suspenders against the same class of bug recurring.
+    // The template gives this ConfirmDialog `appendTo="self"` rather than an element-ref host
+    // (as it did before v21): PrimeNG v21's `Dialog.appendContainer()`/`restoreAppend()` only
+    // check `$appendTo() !== 'self'` and then unconditionally move the wrapper into
+    // `document.body` - an arbitrary element reference is silently treated the same as no
+    // append target at all, so it always ends up as a page-level modal instead of staying put.
+    // `'self'` is the one value that short-circuits that branch and actually keeps it inline.
     this.confirmation.confirm({
       key: 'confirmdialog-demo', message: this.applyThemeConfirmMessage(), accept: () => undefined,
       acceptButtonProps: {autofocus: false}, rejectButtonProps: {autofocus: false},

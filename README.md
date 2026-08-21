@@ -37,7 +37,7 @@ import Material from '@primeng/themes/material';
 <primeng-theme-designer [initialTheme]="theme" (closed)="showDesigner = false" />
 ```
 
-The package's major version tracks the PrimeNG major it targets (`primeng-theme-designer@^20` for PrimeNG 20, `@^19` for PrimeNG 19, etc.) — see the [library README](projects/primeng-theme-designer/README.md#versioning) for the full compatibility table and more usage details.
+The package's major version tracks the PrimeNG major it targets (`primeng-theme-designer@^21` for PrimeNG 21, `@^20` for PrimeNG 20, etc.) — see the [library README](projects/primeng-theme-designer/README.md#versioning) for the full compatibility table and more usage details.
 
 ----
 

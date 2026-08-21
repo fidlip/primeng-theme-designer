@@ -30,10 +30,14 @@ This package's major version tracks the PrimeNG major version it targets (the sa
 
 | primeng-theme-designer | PrimeNG |
 | --- | --- |
+| `^21.0.0` | `^21.0.0` |
 | `^20.0.0` | `^20.0.0` |
 | `^19.0.0` | `^19.1.3` |
 
 ```bash
+# PrimeNG 21
+npm install primeng-theme-designer@^21 primeng@^21 @primeng/themes@^21
+
 # PrimeNG 20
 npm install primeng-theme-designer@^20 primeng@^20 @primeng/themes@^20
 

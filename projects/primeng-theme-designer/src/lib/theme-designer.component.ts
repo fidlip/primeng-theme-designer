@@ -1,6 +1,6 @@
 import {Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+
 
 import {definePreset, Theme} from '@primeng/themes';
 import {ThemeStateService} from './theme-state.service';
@@ -27,7 +27,6 @@ import {TitleCasePipe} from '@angular/common';
   imports: [
     TabPanel,
     FormsModule,
-    CommonModule,
     Tabs,
     TabPanels,
     TabPanel,
