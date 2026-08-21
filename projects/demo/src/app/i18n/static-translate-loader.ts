@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { TranslateLoader, TranslationObject } from '@ngx-translate/core';
-import { TRANSLATIONS_EN } from './en';
-import { TRANSLATIONS_CS } from './cs';
-import { TRANSLATIONS_DE } from './de';
+import { TRANSLATIONS_EN } from './translations/en';
+import { TRANSLATIONS_CS } from './translations/cs';
+import { TRANSLATIONS_DE } from './translations/de';
 
 const DICTIONARIES: Record<string, TranslationObject> = {
   en: TRANSLATIONS_EN,

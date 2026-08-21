@@ -1,5 +1,5 @@
 import { TranslationObject } from '@ngx-translate/core';
-import { PTD_TRANSLATIONS_CS } from '../../../../primeng-theme-designer';
+import { PTD_TRANSLATIONS_CS } from '../../../../../primeng-theme-designer';
 
 /** Czech translations for the demo app - see en.ts for the namespace layout and why `ptd.*` reuses the library's own dictionary instead of duplicating it. */
 export const TRANSLATIONS_CS: TranslationObject = {

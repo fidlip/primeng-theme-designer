@@ -1,5 +1,5 @@
 import { TranslationObject } from '@ngx-translate/core';
-import { PTD_TRANSLATIONS_EN } from '../../../../primeng-theme-designer';
+import { PTD_TRANSLATIONS_EN } from '../../../../../primeng-theme-designer';
 
 /**
  * Default (English) translations for the demo app, loaded synchronously by `StaticTranslateLoader`
