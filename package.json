@@ -1,6 +1,7 @@
 {
   "name": "primeng-theme-designer",
   "version": "1.0.0",
+  "private": true,
   "description": "Standalone Theme Designer for PrimeNG",
   "scripts": {
     "ng": "ng",
