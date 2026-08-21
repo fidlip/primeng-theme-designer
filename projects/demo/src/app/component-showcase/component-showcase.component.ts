@@ -1,6 +1,7 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, computed, ElementRef, EventEmitter, inject, Output, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {BlockableUI, ConfirmationService, MessageService} from 'primeng/api';
 import {AccordionModule} from 'primeng/accordion';
 import {AutoCompleteModule} from 'primeng/autocomplete';
@@ -91,7 +92,11 @@ import {TreeModule} from 'primeng/tree';
 import {TreeSelect, TreeSelectModule} from 'primeng/treeselect';
 import {TreeTableModule} from 'primeng/treetable';
 import {ShowcaseSectionComponent} from './showcase-section.component';
-import {CITIES, MENU_ITEMS, ORG_NODES, PRODUCTS, SCROLL_TOP_COPY, TIMELINE_EVENTS, TOAST_MESSAGES, TREE_NODES, TREE_TABLE_NODES} from './showcase-data';
+import {
+  buildBreadcrumbItems, buildChartData, buildCountries, buildGalleryImages, buildMegaMenuItems, buildMenuItems,
+  buildMeterValues, buildOrgNodes, buildPanelMenuItems, buildScrollTopCopy, buildTieredMenuItems, buildTimelineEvents,
+  buildToastMessages, buildTreeNodes, buildTreeTableNodes, CITIES, PRODUCTS,
+} from './showcase-data';
 
 const PRIME_MODULES = [AccordionModule, AutoCompleteModule, AvatarModule, BadgeModule, BlockUIModule,
   BreadcrumbModule, ButtonModule, ButtonGroupModule, CardModule, CarouselModule, CascadeSelectModule,
@@ -111,7 +116,7 @@ const PRIME_MODULES = [AccordionModule, AutoCompleteModule, AvatarModule, BadgeM
 @Component({
   selector: 'demo-component-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, ShowcaseSectionComponent, ...PRIME_MODULES],
+  imports: [CommonModule, FormsModule, TranslatePipe, ShowcaseSectionComponent, ...PRIME_MODULES],
   providers: [ConfirmationService, MessageService, TerminalService],
   templateUrl: './component-showcase.component.html',
   styleUrl: './component-showcase.component.scss'
@@ -127,29 +132,37 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   @ViewChild('contextTarget') contextTargetRef?: ElementRef<HTMLElement>;
   @ViewChild('treeSelect') treeSelectRef?: TreeSelect;
   @ViewChild('blockTarget') blockTargetRef?: ElementRef<HTMLElement>;
+  private readonly translateService = inject(TranslateService);
+  /** Reactive translate function: recomputes every array below whenever the language changes. */
+  private readonly t = computed(() => {
+    this.translateService.currentLang();
+    return (key: string) => this.translateService.instant(key) as string;
+  });
+
   readonly blockUiTarget: BlockableUI = {getBlockableElement: () => this.blockTargetRef!.nativeElement};
   readonly products = PRODUCTS;
-  readonly scrollTopCopy = SCROLL_TOP_COPY;
   readonly cities = CITIES;
-  readonly menuItems = MENU_ITEMS;
-  readonly actionItems = MENU_ITEMS.filter(item => !item.separator);
-  readonly countries = [{name: 'Czechia', cities: CITIES}];
-  readonly treeNodes = TREE_NODES;
-  readonly treeTableNodes = TREE_TABLE_NODES;
-  readonly orgNodes = ORG_NODES;
-  readonly timelineEvents = TIMELINE_EVENTS;
+  readonly scrollTopCopy = computed(() => buildScrollTopCopy(this.t()));
+  readonly menuItems = computed(() => buildMenuItems(this.t()));
+  readonly actionItems = computed(() => this.menuItems().filter(item => !item.separator));
+  readonly countries = computed(() => buildCountries(this.t()));
+  readonly treeNodes = computed(() => buildTreeNodes(this.t()));
+  readonly treeTableNodes = computed(() => buildTreeTableNodes(this.t()));
+  readonly orgNodes = computed(() => buildOrgNodes(this.t()));
+  readonly timelineEvents = computed(() => buildTimelineEvents(this.t()));
+  readonly breadcrumbItems = computed(() => buildBreadcrumbItems(this.t()));
+  readonly megaMenuItems = computed(() => buildMegaMenuItems(this.t()));
+  readonly panelMenuItems = computed(() => buildPanelMenuItems(this.t()));
+  readonly tieredMenuItems = computed(() => buildTieredMenuItems(this.t()));
+  readonly meterValues = computed(() => buildMeterValues(this.t()));
+  readonly chartData = computed(() => buildChartData(this.t()));
+  readonly galleryImages = computed(() => buildGalleryImages(this.t()));
   readonly responsiveOptions = [{breakpoint: '1024px', numVisible: 2, numScroll: 1}, {breakpoint: '600px', numVisible: 1, numScroll: 1}];
-  readonly chartData = {labels: ['Primary', 'Surface', 'Accent'], datasets: [{label: 'Tokens', data: [65, 42, 78], backgroundColor: ['#3b82f6', '#64748b', '#a855f7']}]};
   readonly chartOptions = {plugins: {legend: {display: false}}, maintainAspectRatio: false};
-  readonly meterValues = [{label: 'Primary', value: 45, color: '#3b82f6'}, {label: 'Surface', value: 30, color: '#64748b'}];
-  readonly galleryImages = [
-    {itemImageSrc: 'https://primefaces.org/cdn/primeng/images/galleria/galleria1.jpg', thumbnailImageSrc: 'https://primefaces.org/cdn/primeng/images/galleria/galleria1s.jpg', alt: 'Mountain'},
-    {itemImageSrc: 'https://primefaces.org/cdn/primeng/images/galleria/galleria2.jpg', thumbnailImageSrc: 'https://primefaces.org/cdn/primeng/images/galleria/galleria2s.jpg', alt: 'Landscape'}
-  ];
   selectedCity = this.cities[0]; selectedCities = [this.cities[0]]; text = 'PrimeNG'; numeric = 42; checked = true;
   chipsValue = ['Material', 'Dark mode'];
   date = new Date(); color = '#3b82f6'; rating = 4; slider = 55; treeSelection: unknown; toggle = true;
-  editorText = '<p>Edit this themed content.</p>';
+  editorText = `<p>${this.translateService.instant('demo.showcase.editor.content')}</p>`;
   sourceProducts = [...PRODUCTS]; targetProducts = [PRODUCTS[2]];
 
   /**
@@ -199,8 +212,8 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   private forceOpenOverlays(): void {
     const host = this.scrollTopHost?.nativeElement;
     if (host) host.scrollTop = (host.scrollHeight - host.clientHeight) / 2;
-    this.messages.addAll(TOAST_MESSAGES.map(message => ({...message, key: 'showcase', sticky: true, closable: false})));
-    this.confirmation.confirm({key: 'confirmdialog-demo', message: 'Apply this theme?', accept: () => undefined});
+    this.messages.addAll(buildToastMessages(this.t()).map(message => ({...message, key: 'showcase', sticky: true, closable: false})));
+    this.confirmation.confirm({key: 'confirmdialog-demo', message: this.applyThemeConfirmMessage(), accept: () => undefined});
 
     // Popover/ConfirmPopup/ContextMenu position themselves off their anchor's current layout
     // position; deferring a tick lets the sections above (which just grew from the triggers
@@ -212,7 +225,7 @@ export class ComponentShowcaseComponent implements AfterViewInit {
     if (this.confirmPopupAnchor) {
       this.confirmation.confirm({
         key: 'confirmpopup-demo', target: this.confirmPopupAnchor.nativeElement,
-        message: 'Apply this theme?', accept: () => undefined,
+        message: this.applyThemeConfirmMessage(), accept: () => undefined,
       });
     }
     this.popoverRef?.show(null, this.popoverAnchor?.nativeElement);
@@ -252,4 +265,8 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   }
   filterCities(event: {query: string}): void { this.filteredCities = this.cities.filter(city => city.name.toLowerCase().includes(event.query.toLowerCase())); }
   filteredCities = [...this.cities];
+
+  private applyThemeConfirmMessage(): string {
+    return this.t()('demo.showcase.shared.applyThemeConfirm');
+  }
 }

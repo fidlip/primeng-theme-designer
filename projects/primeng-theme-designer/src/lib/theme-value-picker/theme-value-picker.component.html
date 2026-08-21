@@ -1,5 +1,5 @@
 <div #wrapper class="ptd-theme-value-picker">
-  <label class="ptd-theme-value-picker__label" [for]="inputId" (dblclick)="copyTokenPath()" title="Double-click to copy the token path">
+  <label class="ptd-theme-value-picker__label" [for]="inputId" (dblclick)="copyTokenPath()" [title]="'valuePicker.copyTokenPath' | ptdTranslate">
     <span>{{ label }}</span>
     <ptd-value-preview [value]="inputText" [data]="tokenTree">&nbsp;→&nbsp;</ptd-value-preview>
   </label>
@@ -10,7 +10,7 @@
     class="ptd-theme-value-picker__input"
     [id]="inputId"
     [(ngModel)]="inputText"
-    [placeholder]="placeholder"
+    [placeholder]="placeholder ?? ('valuePicker.placeholder' | ptdTranslate)"
     [disabled]="disabled"
     [pSize]="'small'"
     (input)="filterTokens($event)"
@@ -32,7 +32,7 @@
         }
       </button>
     } @empty {
-      <span class="ptd-theme-value-picker__placeholder">No tokens to display</span>
+      <span class="ptd-theme-value-picker__placeholder">{{ 'valuePicker.noTokens' | ptdTranslate }}</span>
     }
   </div>
 </p-popover>

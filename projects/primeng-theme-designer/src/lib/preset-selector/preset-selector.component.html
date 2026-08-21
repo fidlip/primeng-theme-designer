@@ -1,6 +1,6 @@
 <p-button icon="pi pi-images" [rounded]="true" severity="secondary"
           class="primeng-preset-selector__trigger"
-          [pTooltip]="label" tooltipPosition="left"
+          [pTooltip]="label || ('presetSelector.label' | ptdTranslate)" tooltipPosition="left"
           (click)="onTriggerClick($event)"></p-button>
 <p-popover #popover [dismissable]="true">
   <div class="primeng-preset-selector__list">
@@ -14,7 +14,7 @@
         }
       </button>
     } @empty {
-      <span class="primeng-preset-selector__placeholder">No presets available</span>
+      <span class="primeng-preset-selector__placeholder">{{ 'presetSelector.empty' | ptdTranslate }}</span>
     }
   </div>
 </p-popover>

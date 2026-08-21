@@ -1,19 +1,22 @@
 <header class="page-hero">
   <div>
-    <p class="eyebrow">PrimeNG 19 theme playground</p>
-    <h1>Component showcase</h1>
-    <p>All visual PrimeNG components with mock data, ordered alphabetically. Use the palette icon to edit the matching component tokens.</p>
+    <p class="eyebrow">{{ 'demo.hero.eyebrow' | translate }}</p>
+    <h1>{{ 'demo.hero.title' | translate }}</h1>
+    <p>{{ 'demo.hero.description' | translate }}</p>
   </div>
   <div class="page-hero-actions">
+    <p-selectbutton class="lang-switcher" [options]="languages" [ngModel]="currentLang()"
+                     (ngModelChange)="switchLanguage($event)"
+                     [pTooltip]="'demo.langSwitcher.label' | translate" tooltipPosition="left" />
     <primeng-preset-selector
         [presets]="themePresets"
         [selected]="basePreset"
-        label="Choose theme preset"
+        [label]="'demo.presetSelector.label' | translate"
         (presetSelected)="onPresetSelected($event)" />
     <button pButton type="button" rounded icon="pi pi-palette"
             class="open-theme-designer"
-            aria-label="Open theme designer"
-            pTooltip="Open theme designer"
+            [attr.aria-label]="'demo.openDesigner' | translate"
+            [pTooltip]="'demo.openDesigner' | translate"
             tooltipPosition="left"
             (click)="openThemeDesigner()"></button>
   </div>
@@ -23,7 +26,7 @@
   <demo-component-showcase (editTheme)="selectComponent($event)">
     <demo-showcase-section title="CustomTest" anchor="customtest" (editTheme)="selectComponent($event)">
       <!--suppress CssUnresolvedCustomProperty -->
-      <i style="color: var(--p-test-color)">... custom content </i>
+      <i style="color: var(--p-test-color)">{{ 'demo.customTest.content' | translate }}</i>
     </demo-showcase-section>
 
   </demo-component-showcase>

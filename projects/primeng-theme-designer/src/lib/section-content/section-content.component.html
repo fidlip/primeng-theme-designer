@@ -9,7 +9,7 @@
       <ptd-theme-value-picker
         [inputId]="'ptd-theme-field-' + key"
         [label]="header | camelToTokens"
-        [placeholder]="'Select a value for ' + (header | camelToTokens)"
+        [placeholder]="'valuePicker.selectValueFor' | ptdTranslate:{name: (header | camelToTokens)}"
         [(ngModel)]="owner[propertyKey]"
         [name]="key"
         [tokenTree]="(availableTokensTree | async) ?? []"

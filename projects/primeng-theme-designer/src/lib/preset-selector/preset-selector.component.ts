@@ -4,6 +4,7 @@ import { Popover } from 'primeng/popover';
 import { Button } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { PresetOption } from '../preset-option.model';
+import { PtdTranslatePipe } from '../i18n/translate.pipe';
 
 /**
  * Icon-button + popover for picking which stock PrimeNG preset (Material, Aura, Lara, Nora, ...)
@@ -13,7 +14,7 @@ import { PresetOption } from '../preset-option.model';
 @Component({
   selector: 'primeng-preset-selector',
   standalone: true,
-  imports: [CommonModule, Popover, Button, Tooltip],
+  imports: [CommonModule, Popover, Button, Tooltip, PtdTranslatePipe],
   templateUrl: './preset-selector.component.html',
   styleUrl: './preset-selector.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,7 +22,7 @@ import { PresetOption } from '../preset-option.model';
 export class PresetSelectorComponent {
   @Input({ required: true }) presets: PresetOption[] = [];
   @Input() selected?: PresetOption;
-  @Input() label = 'Theme preset';
+  @Input() label?: string;
 
   @Output() presetSelected = new EventEmitter<PresetOption>();
 

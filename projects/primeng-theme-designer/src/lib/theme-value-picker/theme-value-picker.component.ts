@@ -6,13 +6,14 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Popover } from 'primeng/popover';
 import { ThemeTokenOption } from '../token-tree-builder';
 import { ValuePreviewComponent } from '../value-preview/value-preview.component';
+import { PtdTranslatePipe } from '../i18n/translate.pipe';
 
 const NON_TOKEN_CHARACTER = /[.A-Za-z0-9]/;
 
 @Component({
   selector: 'ptd-theme-value-picker',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputTextModule, Popover, ValuePreviewComponent],
+  imports: [CommonModule, FormsModule, InputTextModule, Popover, ValuePreviewComponent, PtdTranslatePipe],
   templateUrl: './theme-value-picker.component.html',
   styleUrl: './theme-value-picker.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,7 +28,7 @@ export class ThemeValuePickerComponent implements ControlValueAccessor {
   @Input({ required: true }) inputId?: string;
   @Input() tokenTree: TreeNode[] = [];
   @Input() tokens: ThemeTokenOption[] = [];
-  @Input() placeholder = 'Value or {token.path}';
+  @Input() placeholder?: string;
   @Input() name?: string;
   @Output() valueChange = new EventEmitter<string>();
 

@@ -1,6 +1,7 @@
 import {Component, computed, input, output} from '@angular/core';
 import {ButtonModule} from 'primeng/button';
 import {TooltipModule} from 'primeng/tooltip';
+import {TranslatePipe} from '@ngx-translate/core';
 
 /** PrimeNG major version this demo is built against; matches the version-pinned docs subdomain (e.g. v19.primeng.org). */
 const PRIMENG_DOCS_VERSION = 'v19';
@@ -8,7 +9,7 @@ const PRIMENG_DOCS_VERSION = 'v19';
 @Component({
   selector: 'demo-showcase-section',
   standalone: true,
-  imports: [ButtonModule, TooltipModule],
+  imports: [ButtonModule, TooltipModule, TranslatePipe],
   template: `
     <section class="showcase-section" [attr.aria-labelledby]="anchor() + '-title'">
       <header class="showcase-header">
@@ -18,11 +19,11 @@ const PRIMENG_DOCS_VERSION = 'v19';
         <div class="showcase-header-actions">
           <a pButton type="button" text rounded severity="secondary" icon="pi pi-question-circle"
              [href]="docsUrl()" target="_blank" rel="noopener"
-             [attr.aria-label]="'View ' + title() + ' in the PrimeNG docs'"
-             [pTooltip]="'View ' + title() + ' in the PrimeNG docs'"></a>
+             [attr.aria-label]="'demo.showcaseSection.viewInDocs' | translate:{title: title()}"
+             [pTooltip]="'demo.showcaseSection.viewInDocs' | translate:{title: title()}"></a>
           <button pButton type="button" text rounded severity="secondary" icon="pi pi-palette"
-                  [attr.aria-label]="'Edit ' + title() + ' theme'"
-                  [pTooltip]="'Open ' + title() + ' in theme designer'"
+                  [attr.aria-label]="'demo.showcaseSection.editTheme' | translate:{title: title()}"
+                  [pTooltip]="'demo.showcaseSection.openInDesigner' | translate:{title: title()}"
                   (click)="editTheme.emit(anchor())"></button>
         </div>
       </header>

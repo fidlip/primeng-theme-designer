@@ -17,6 +17,9 @@ import {TrackUserInteractionsDirective} from './track-user-interactions.directiv
 import {ConfirmDialog} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
 import {cloneTheme} from './theme-clone.helper';
+import {PtdTranslateService} from './i18n/translate.service';
+import {PtdTranslatePipe} from './i18n/translate.pipe';
+import {TitleCasePipe} from '@angular/common';
 
 @Component({
   selector: 'primeng-theme-designer',
@@ -39,13 +42,14 @@ import {cloneTheme} from './theme-clone.helper';
     IsJsonPipe,
     TrackUserInteractionsDirective,
     ConfirmDialog,
+    PtdTranslatePipe,
   ],
   providers: [ConfirmationService],
   styleUrls: ['./theme-designer.component.scss'],
   standalone: true,
 })
 export class ThemeDesignerComponent implements OnChanges {
-  @Input() title: string = 'Designer';
+  @Input() title?: string;
   @Input({required: true}) initialTheme!: Json;
   /** The stock preset `initialTheme` was derived from; used as the export/diff baseline. */
   @Input({required: true}) basePreset!: PresetOption;
@@ -68,6 +72,8 @@ export class ThemeDesignerComponent implements OnChanges {
 
   private readonly themeService = inject(ThemeStateService);
   private readonly confirmationService = inject(ConfirmationService);
+  protected readonly translateService = inject(PtdTranslateService);
+  private readonly titleCasePipe = new TitleCasePipe();
 
   ngOnChanges(changes: SimpleChanges) {
     if ((changes['initialTheme'] || changes['basePreset']) && this.initialTheme && this.basePreset) {
@@ -179,12 +185,27 @@ export class ThemeDesignerComponent implements OnChanges {
     }
   }
 
+  /**
+   * Falls back to a title-cased key for arbitrary/custom top-level sections a preset may add
+   * beyond primitive/semantic/components. Checked against a fixed set rather than by comparing
+   * `translate()`'s return value to the input key: a `PTD_TRANSLATE_ADAPTER` is free to namespace
+   * or otherwise transform the key before handing it to its own i18n system, so a miss there
+   * doesn't necessarily come back as the exact key this method passed in.
+   */
+  private static readonly KNOWN_SECTIONS = new Set(['primitive', 'semantic', 'components']);
+
+  protected sectionLabel(key: string): string {
+    return ThemeDesignerComponent.KNOWN_SECTIONS.has(key)
+      ? this.translateService.translate(`section.${key}`)
+      : this.titleCasePipe.transform(key);
+  }
+
   resetThemeToDefault(): void {
     this.confirmationService.confirm({
-      header: 'Confirmation',
-      message: 'Do you want to discard the current theme and restore the default theme?',
-      acceptLabel: 'Discard',
-      rejectLabel: 'Back',
+      header: this.translateService.translate('designer.confirmReset.header'),
+      message: this.translateService.translate('designer.confirmReset.message'),
+      acceptLabel: this.translateService.translate('designer.confirmReset.accept'),
+      rejectLabel: this.translateService.translate('designer.confirmReset.reject'),
       accept: () => {
         this.themeService.clearThemeInLocalStorage();
         this.initializeTheme(false);

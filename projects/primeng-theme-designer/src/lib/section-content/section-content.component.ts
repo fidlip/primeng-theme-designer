@@ -9,6 +9,7 @@ import {ThemeValuePickerComponent} from '../theme-value-picker/theme-value-picke
 import {ThemeStateService} from '../theme-state.service';
 import {CamelToTokensPipe} from '../camel-to-tokens.pipe';
 import {IftaLabel} from 'primeng/iftalabel';
+import {PtdTranslatePipe} from '../i18n/translate.pipe';
 
 @Component({
   selector: 'ptd-section-content',
@@ -21,6 +22,7 @@ import {IftaLabel} from 'primeng/iftalabel';
     ThemeValuePickerComponent,
     CamelToTokensPipe,
     IftaLabel,
+    PtdTranslatePipe,
   ],
   templateUrl: './section-content.component.html',
   styleUrl: './section-content.component.scss',

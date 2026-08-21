@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { PaletteDesignToken } from '@primeng/themes/types';
 import { IsJsonPipe } from '../is-json.pipe';
 import {hexToRgb, mixRGB, PaletteKey, RGB, rgbToHex} from '../palette.helpers';
+import { PtdTranslatePipe } from '../i18n/translate.pipe';
 
 @Component({
   selector: 'ptd-palette-section',
-  imports: [CommonModule, FormsModule, IsJsonPipe],
+  imports: [CommonModule, FormsModule, IsJsonPipe, PtdTranslatePipe],
   templateUrl: './palette-section.component.html',
   styleUrl: './palette-section.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

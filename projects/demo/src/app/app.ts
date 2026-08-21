@@ -7,19 +7,29 @@ import {ComponentShowcaseComponent} from './component-showcase/component-showcas
 import {ButtonModule} from 'primeng/button';
 import {TooltipModule} from 'primeng/tooltip';
 import {ShowcaseSectionComponent} from './component-showcase/showcase-section.component';
-import {TreeTableModule} from 'primeng/treetable';
-import {TREE_TABLE_NODES} from './component-showcase/showcase-data';
+import {SelectButtonModule} from 'primeng/selectbutton';
+import {FormsModule} from '@angular/forms';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+
+/** Demonstrates the library's optional translate-adapter extension point: German only exists for the designer's own texts (see translations.ts), not for this demo's own copy. */
+const LANGUAGES = ['en', 'cs', 'de'];
 
 @Component({
   selector: 'app-root',
-  imports: [ThemeDesignerComponent, PresetSelectorComponent, ComponentShowcaseComponent, ButtonModule, TooltipModule, ShowcaseSectionComponent],
+  imports: [
+    ThemeDesignerComponent, PresetSelectorComponent, ComponentShowcaseComponent, ButtonModule, TooltipModule,
+    ShowcaseSectionComponent, SelectButtonModule, FormsModule, TranslatePipe,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   standalone: true
 })
 export class App implements AfterViewInit {
   private readonly themeService = inject(ThemeStateService);
+  private readonly translateService = inject(TranslateService);
 
+  protected readonly languages = LANGUAGES;
+  protected readonly currentLang = this.translateService.currentLang;
   protected readonly themePresets = THEME_PRESETS;
   protected basePreset: PresetOption = DEFAULT_THEME_PRESET;
   pngTheme = definePNgThemePreset(this.basePreset, false);
@@ -51,6 +61,10 @@ export class App implements AfterViewInit {
 
   protected onDemoPage(): void {
     this.selectComponent(window.location.hash.slice(1) || 'accordion');
+  }
+
+  switchLanguage(lang: string): void {
+    this.translateService.use(lang);
   }
 
   openThemeDesigner(): void {
@@ -111,5 +125,4 @@ export class App implements AfterViewInit {
     window.history.replaceState({}, '', url);
   }
 
-  protected readonly treeTableNodes = TREE_TABLE_NODES;
 }
