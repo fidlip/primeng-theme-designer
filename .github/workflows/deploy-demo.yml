@@ -24,6 +24,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: npx ng build primeng-theme-designer
       - run: npx ng build demo --base-href /primeng-theme-designer/
       - uses: actions/upload-pages-artifact@v3
         with:
