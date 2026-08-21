@@ -56,7 +56,7 @@ Pass any object built with `@primeng/themes`' `definePreset(...)` (or a stock pr
 | Input | Type | Default | Description |
 | --- | --- | --- | --- |
 | `initialTheme` | `MaterialBaseDesignTokens` | *required* | The PrimeNG preset to edit. |
-| `title` | `string` | `'Designer'` | Panel header text. |
+| `title` | `string` | `undefined` | Panel header text. Falls back to a translated "Designer" (see [Internationalization](#internationalization-i18n)) when not set. |
 | `activeSection` | `string` | — | Dot-separated section to open and scroll to, e.g. `components.button`. |
 | `collapsed` | `boolean` | `false` | Whether the panel is collapsed to a small tab. Supports two-way binding: `[(collapsed)]`. |
 
@@ -69,9 +69,53 @@ Pass any object built with `@primeng/themes`' `definePreset(...)` (or a stock pr
 | `componentSectionSelected` | `string` | Emitted with a component key (e.g. `'button'`) when the user opens a `components.*` section — handy for syncing a showcase anchor. |
 | `collapsedChange` | `boolean` | Companion to `[(collapsed)]`. |
 
+## Component showcase
+
+> **Developer tool, not for production end-user UI.** `ComponentShowcaseComponent` and
+> `ShowcaseSectionComponent` — like the theme designer itself — are meant for previewing a theme
+> while you build it, not for shipping to your app's users. The showcase force-opens overlays
+> (popovers, confirm dialogs, ...) that would otherwise render nothing until interacted with,
+> temporarily patches `HTMLElement.prototype.focus` to stop that from stealing scroll position, and
+> renders one instance of nearly every PrimeNG component at once — none of which is a trade-off you
+> want in a real page.
+
+```ts
+import { Component } from '@angular/core';
+import { ComponentShowcaseComponent, ShowcaseSectionComponent } from 'primeng-theme-designer';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [ComponentShowcaseComponent, ShowcaseSectionComponent],
+  template: `
+    <primeng-component-showcase (editTheme)="openDesignerFor($event)">
+      <primeng-showcase-section title="MyComponent" anchor="mycomponent" (editTheme)="openDesignerFor($event)">
+        <!-- your own component, previewed alongside the built-in PrimeNG ones -->
+      </primeng-showcase-section>
+    </primeng-component-showcase>
+  `,
+})
+export class AppComponent {
+  openDesignerFor(anchor: string) { /* e.g. sync with ThemeDesignerComponent's activeSection */ }
+}
+```
+
+`editTheme` emits the clicked section's anchor string — wire it up the same way as
+`componentSectionSelected` above to jump the designer to the matching `components.*` section.
+
+## Internationalization (i18n)
+
+Every string the designer and showcase render is looked up through `PtdTranslateService`
+(`translate(key, params?)`), bundled with built-in English and Czech dictionaries — no i18n library
+is a hard dependency of this package. To use a different language your app already has translations
+for, provide the `PTD_TRANSLATE_ADAPTER` injection token with an object implementing
+`translate(key, params?): string` (and, optionally, a reactive `lang: Signal<string>`) to redirect
+lookups to your own i18n solution (ngx-translate, Transloco, ...). See the `demo` project's
+`app.config.ts` and `i18n/ngx-ptd-translate-adapter.ts` for a complete example.
+
 ## Demo
 
-See the `demo` project in the [GitHub repository](https://github.com/fidlip/primeng-theme-designer/tree/main/projects/demo) for a full example, including a complete PrimeNG component showcase wired up to the designer.
+See the `demo` project in the [GitHub repository](https://github.com/fidlip/primeng-theme-designer/tree/main/projects/demo) for a full example, including a language switcher and the component showcase above wired up to the designer.
 
 ## License
 

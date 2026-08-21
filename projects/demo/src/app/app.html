@@ -23,13 +23,13 @@
 </header>
 
 <main>
-  <demo-component-showcase (editTheme)="selectComponent($event)">
-    <demo-showcase-section title="CustomTest" anchor="customtest" (editTheme)="selectComponent($event)">
+  <primeng-component-showcase (editTheme)="selectComponent($event)">
+    <primeng-showcase-section title="CustomTest" anchor="customtest" (editTheme)="selectComponent($event)">
       <!--suppress CssUnresolvedCustomProperty -->
       <i style="color: var(--p-test-color)">{{ 'demo.customTest.content' | translate }}</i>
-    </demo-showcase-section>
+    </primeng-showcase-section>
 
-  </demo-component-showcase>
+  </primeng-component-showcase>
 </main>
 
 @if (showThemeDesigner && pngTheme) {

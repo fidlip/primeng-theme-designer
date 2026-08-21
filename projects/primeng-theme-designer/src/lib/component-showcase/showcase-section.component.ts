@@ -1,15 +1,21 @@
 import {Component, computed, input, output} from '@angular/core';
 import {ButtonModule} from 'primeng/button';
 import {TooltipModule} from 'primeng/tooltip';
-import {TranslatePipe} from '@ngx-translate/core';
+import {PtdTranslatePipe} from '../i18n/translate.pipe';
 
-/** PrimeNG major version this demo is built against; matches the version-pinned docs subdomain (e.g. v19.primeng.org). */
+/** PrimeNG major version this component is built against; matches the version-pinned docs subdomain (e.g. v19.primeng.org). */
 const PRIMENG_DOCS_VERSION = 'v19';
 
+/**
+ * Wraps one example inside `ComponentShowcaseComponent` with a heading, a link to that component's
+ * PrimeNG docs page, and a palette icon that emits `editTheme` with `anchor()`. Also usable
+ * standalone to add a custom example section next to the showcase (see the README) - like the rest
+ * of the showcase, it's a developer/reference tool, not meant for a production end-user UI.
+ */
 @Component({
-  selector: 'demo-showcase-section',
+  selector: 'primeng-showcase-section',
   standalone: true,
-  imports: [ButtonModule, TooltipModule, TranslatePipe],
+  imports: [ButtonModule, TooltipModule, PtdTranslatePipe],
   template: `
     <section class="showcase-section" [attr.aria-labelledby]="anchor() + '-title'">
       <header class="showcase-header">
@@ -19,11 +25,11 @@ const PRIMENG_DOCS_VERSION = 'v19';
         <div class="showcase-header-actions">
           <a pButton type="button" text rounded severity="secondary" icon="pi pi-question-circle"
              [href]="docsUrl()" target="_blank" rel="noopener"
-             [attr.aria-label]="'demo.showcaseSection.viewInDocs' | translate:{title: title()}"
-             [pTooltip]="'demo.showcaseSection.viewInDocs' | translate:{title: title()}"></a>
+             [attr.aria-label]="'showcaseSection.viewInDocs' | ptdTranslate:{title: title()}"
+             [pTooltip]="'showcaseSection.viewInDocs' | ptdTranslate:{title: title()}"></a>
           <button pButton type="button" text rounded severity="secondary" icon="pi pi-palette"
-                  [attr.aria-label]="'demo.showcaseSection.editTheme' | translate:{title: title()}"
-                  [pTooltip]="'demo.showcaseSection.openInDesigner' | translate:{title: title()}"
+                  [attr.aria-label]="'showcaseSection.editTheme' | ptdTranslate:{title: title()}"
+                  [pTooltip]="'showcaseSection.openInDesigner' | ptdTranslate:{title: title()}"
                   (click)="editTheme.emit(anchor())"></button>
         </div>
       </header>

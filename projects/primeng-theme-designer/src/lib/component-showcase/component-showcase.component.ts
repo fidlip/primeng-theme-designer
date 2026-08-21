@@ -1,7 +1,8 @@
 import {AfterViewInit, Component, computed, ElementRef, EventEmitter, inject, Output, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {PtdTranslatePipe} from '../i18n/translate.pipe';
+import {PtdTranslateService} from '../i18n/translate.service';
 import {BlockableUI, ConfirmationService, MessageService} from 'primeng/api';
 import {AccordionModule} from 'primeng/accordion';
 import {AutoCompleteModule} from 'primeng/autocomplete';
@@ -113,10 +114,20 @@ const PRIME_MODULES = [AccordionModule, AutoCompleteModule, AvatarModule, BadgeM
   TagModule, TerminalModule, TextareaModule, TieredMenuModule, TimelineModule, ToastModule, ToggleButtonModule, ToggleSwitchModule,
   ToolbarModule, TreeModule, TreeSelectModule, TreeTableModule];
 
+/**
+ * Renders one instance of (almost) every visual PrimeNG component, pre-populated with mock data
+ * and forced open where an overlay would otherwise render nothing until interacted with, next to
+ * a palette icon that emits `editTheme` with the component's theme-object anchor.
+ *
+ * **Developer/reference tool only** - like `ThemeDesignerComponent` itself, this is meant for
+ * building and previewing a theme during development (see the README), not for shipping to end
+ * users as part of a production UI. It force-opens overlays, patches `HTMLElement.prototype.focus`
+ * temporarily to suppress scroll-stealing, and renders a large amount of DOM at once.
+ */
 @Component({
-  selector: 'demo-component-showcase',
+  selector: 'primeng-component-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslatePipe, ShowcaseSectionComponent, ...PRIME_MODULES],
+  imports: [CommonModule, FormsModule, PtdTranslatePipe, ShowcaseSectionComponent, ...PRIME_MODULES],
   providers: [ConfirmationService, MessageService, TerminalService],
   templateUrl: './component-showcase.component.html',
   styleUrl: './component-showcase.component.scss'
@@ -132,11 +143,11 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   @ViewChild('contextTarget') contextTargetRef?: ElementRef<HTMLElement>;
   @ViewChild('treeSelect') treeSelectRef?: TreeSelect;
   @ViewChild('blockTarget') blockTargetRef?: ElementRef<HTMLElement>;
-  private readonly translateService = inject(TranslateService);
+  private readonly translateService = inject(PtdTranslateService);
   /** Reactive translate function: recomputes every array below whenever the language changes. */
   private readonly t = computed(() => {
-    this.translateService.currentLang();
-    return (key: string) => this.translateService.instant(key) as string;
+    this.translateService.lang();
+    return (key: string) => this.translateService.translate(key);
   });
 
   readonly blockUiTarget: BlockableUI = {getBlockableElement: () => this.blockTargetRef!.nativeElement};
@@ -162,7 +173,7 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   selectedCity = this.cities[0]; selectedCities = [this.cities[0]]; text = 'PrimeNG'; numeric = 42; checked = true;
   chipsValue = ['Material', 'Dark mode'];
   date = new Date(); color = '#3b82f6'; rating = 4; slider = 55; treeSelection: unknown; toggle = true;
-  editorText = `<p>${this.translateService.instant('demo.showcase.editor.content')}</p>`;
+  editorText = `<p>${this.translateService.translate('showcase.editor.content')}</p>`;
   sourceProducts = [...PRODUCTS]; targetProducts = [PRODUCTS[2]];
 
   /**
@@ -267,6 +278,6 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   filteredCities = [...this.cities];
 
   private applyThemeConfirmMessage(): string {
-    return this.t()('demo.showcase.shared.applyThemeConfirm');
+    return this.t()('showcase.shared.applyThemeConfirm');
   }
 }

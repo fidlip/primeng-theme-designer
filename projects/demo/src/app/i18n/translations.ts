@@ -3,10 +3,12 @@ import { TranslationObject } from '@ngx-translate/core';
 /**
  * Static translation dictionaries for the demo app, loaded synchronously by `StaticTranslateLoader`
  * (see `static-translate-loader.ts`). Two namespaces:
- *  - `ptd.*` mirrors the theme designer library's own translation keys (see
- *    `primeng-theme-designer/src/lib/i18n/translations`) and is consumed by `NgxPtdTranslateAdapter`,
- *    which forwards the library's `PtdTranslateService` lookups here.
- *  - `demo.*` covers the demo app's own copy (hero header, component showcase).
+ *  - `ptd.*` mirrors the theme designer library's own translation keys - including its bundled
+ *    `ComponentShowcaseComponent`/`ShowcaseSectionComponent` (see
+ *    `primeng-theme-designer/src/lib/i18n/translations`) - and is consumed by
+ *    `NgxPtdTranslateAdapter`, which forwards the library's `PtdTranslateService` lookups here.
+ *  - `demo.*` covers this app's own copy that isn't part of the library (hero header, preset
+ *    selector label, language switcher, the "CustomTest" example section).
  *
  * German intentionally only has the `ptd` subtree populated, to demonstrate that a consuming app's
  * own i18n library can extend the designer's language set beyond what the library ships (en/cs)
@@ -42,17 +44,6 @@ export const TRANSLATIONS_EN: TranslationObject = {
     },
     palette: { invalid: 'Invalid palette' },
     presetSelector: { label: 'Theme preset', empty: 'No presets available' },
-  },
-  demo: {
-    hero: {
-      eyebrow: 'PrimeNG 19 theme playground',
-      title: 'Component showcase',
-      description: 'All visual PrimeNG components with mock data, ordered alphabetically. Use the palette icon to edit the matching component tokens.',
-    },
-    presetSelector: { label: 'Choose theme preset' },
-    openDesigner: 'Open theme designer',
-    langSwitcher: { label: 'Language' },
-    customTest: { content: '... custom content' },
     showcaseSection: {
       viewInDocs: 'View {{title}} in the PrimeNG docs',
       editTheme: 'Edit {{title}} theme',
@@ -132,6 +123,17 @@ export const TRANSLATIONS_EN: TranslationObject = {
       },
     },
   },
+  demo: {
+    hero: {
+      eyebrow: 'PrimeNG 19 theme playground',
+      title: 'Component showcase',
+      description: 'All visual PrimeNG components with mock data, ordered alphabetically. Use the palette icon to edit the matching component tokens.',
+    },
+    presetSelector: { label: 'Choose theme preset' },
+    openDesigner: 'Open theme designer',
+    langSwitcher: { label: 'Language' },
+    customTest: { content: '... custom content' },
+  },
 };
 
 export const TRANSLATIONS_CS: TranslationObject = {
@@ -162,17 +164,6 @@ export const TRANSLATIONS_CS: TranslationObject = {
     },
     palette: { invalid: 'Neplatná paleta' },
     presetSelector: { label: 'Přednastavení motivu', empty: 'Žádná přednastavení nejsou k dispozici' },
-  },
-  demo: {
-    hero: {
-      eyebrow: 'Hřiště motivů PrimeNG 19',
-      title: 'Přehled komponent',
-      description: 'Všechny vizuální komponenty PrimeNG s ukázkovými daty, seřazené abecedně. Ikonou palety upravíte odpovídající tokeny komponenty.',
-    },
-    presetSelector: { label: 'Vyberte přednastavení motivu' },
-    openDesigner: 'Otevřít návrháře motivu',
-    langSwitcher: { label: 'Jazyk' },
-    customTest: { content: '... vlastní obsah' },
     showcaseSection: {
       viewInDocs: 'Zobrazit {{title}} v dokumentaci PrimeNG',
       editTheme: 'Upravit motiv {{title}}',
@@ -251,6 +242,17 @@ export const TRANSLATIONS_CS: TranslationObject = {
         detail: 'Ukázkové oznámení',
       },
     },
+  },
+  demo: {
+    hero: {
+      eyebrow: 'Hřiště motivů PrimeNG 19',
+      title: 'Přehled komponent',
+      description: 'Všechny vizuální komponenty PrimeNG s ukázkovými daty, seřazené abecedně. Ikonou palety upravíte odpovídající tokeny komponenty.',
+    },
+    presetSelector: { label: 'Vyberte přednastavení motivu' },
+    openDesigner: 'Otevřít návrháře motivu',
+    langSwitcher: { label: 'Jazyk' },
+    customTest: { content: '... vlastní obsah' },
   },
 };
 

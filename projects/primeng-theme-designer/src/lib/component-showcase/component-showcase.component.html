@@ -1,0 +1,265 @@
+<div class="showcase-list" [class.terminal-ready]="terminalReady">
+  <primeng-showcase-section title="Accordion" anchor="accordion" (editTheme)="editTheme.emit($event)">
+    <p-accordion value="0"><p-accordion-panel value="0"><p-accordion-header>{{ 'showcase.accordion.header' | ptdTranslate }}</p-accordion-header><p-accordion-content><p>{{ 'showcase.accordion.content' | ptdTranslate }}</p></p-accordion-content></p-accordion-panel></p-accordion>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="AutoComplete" anchor="autocomplete" (editTheme)="editTheme.emit($event)">
+    <p-autocomplete [(ngModel)]="selectedCity" [suggestions]="filteredCities" optionLabel="name" (completeMethod)="filterCities($event)" appendTo="body" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Avatar" anchor="avatar" (editTheme)="editTheme.emit($event)">
+    <div class="row"><p-avatar label="PT" size="large" shape="circle" /><p-avatar icon="pi pi-user" size="large" /></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Badge" anchor="badge" (editTheme)="editTheme.emit($event)">
+    <div class="row"><p-badge value="2" /><p-badge value="8" severity="success" /><p-badge value="9" severity="warn" /><p-badge value="3" severity="danger" /><i class="pi pi-bell overlay-icon" pBadge value="2"></i></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="BlockUI" anchor="blockui" (editTheme)="editTheme.emit($event)">
+    <div class="block-target" #blockTarget>{{ 'showcase.blockui.target' | ptdTranslate }}</div><p-blockui [blocked]="true" [target]="blockUiTarget"><i class="pi pi-spin pi-spinner overlay-icon"></i></p-blockui>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Breadcrumb" anchor="breadcrumb" (editTheme)="editTheme.emit($event)">
+    <p-breadcrumb [model]="breadcrumbItems()" [home]="{icon:'pi pi-home'}" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Button" anchor="button" (editTheme)="editTheme.emit($event)">
+    <div class="row"><p-button [label]="'showcase.button.primary' | ptdTranslate" icon="pi pi-check" /><p-button [label]="'showcase.button.secondary' | ptdTranslate" severity="secondary" /><p-button icon="pi pi-heart" rounded /></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="ButtonGroup" anchor="buttongroup" (editTheme)="editTheme.emit($event)">
+    <p-buttonGroup><p-button [label]="'showcase.shared.actions.save' | ptdTranslate" icon="pi pi-check" /><p-button [label]="'showcase.shared.actions.edit' | ptdTranslate" icon="pi pi-pencil" /><p-button [label]="'showcase.shared.actions.delete' | ptdTranslate" icon="pi pi-trash" /></p-buttonGroup>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Card" anchor="card" (editTheme)="editTheme.emit($event)">
+    <p-card [header]="'showcase.card.header' | ptdTranslate" [subheader]="'showcase.card.subheader' | ptdTranslate"><p>{{ 'showcase.card.content' | ptdTranslate }}</p><ng-template #footer><p-button [label]="'showcase.card.open' | ptdTranslate" /></ng-template></p-card>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Carousel" anchor="carousel" (editTheme)="editTheme.emit($event)">
+    <p-carousel [value]="products" [numVisible]="2" [numScroll]="1" [responsiveOptions]="responsiveOptions"><ng-template #item let-product><div class="product-tile"><strong>{{product.name}}</strong><span>{{product.price | currency:'EUR'}}</span></div></ng-template></p-carousel>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="CascadeSelect" anchor="cascadeselect" (editTheme)="editTheme.emit($event)">
+    <p-cascadeselect [(ngModel)]="selectedCity" [options]="$any(countries())" optionLabel="name" optionGroupLabel="name" [optionGroupChildren]="['cities']" [placeholder]="'showcase.shared.selectACity' | ptdTranslate" appendTo="body" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Chart" anchor="chart" (editTheme)="editTheme.emit($event)">
+    <p-chart type="bar" [data]="chartData()" [options]="chartOptions" height="220px" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Checkbox" anchor="checkbox" (editTheme)="editTheme.emit($event)">
+    <div class="row"><p-checkbox [(ngModel)]="checked" [binary]="true" inputId="mock-check" /><label for="mock-check">{{ 'showcase.checkbox.label' | ptdTranslate }}</label></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Chip" anchor="chip" (editTheme)="editTheme.emit($event)">
+    <div class="row"><p-chip label="Material" icon="pi pi-palette" /><p-chip [label]="'showcase.chip.darkMode' | ptdTranslate" removable /></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Chips" anchor="chips" (editTheme)="editTheme.emit($event)">
+    <p-chips [(ngModel)]="chipsValue" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="ColorPicker" anchor="colorpicker" (editTheme)="editTheme.emit($event)">
+    <div class="row"><p-colorpicker class="colorpicker-static-preview" [(ngModel)]="color" /></div>
+    <p-colorpicker [(ngModel)]="color" [inline]="true" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="ConfirmDialog" anchor="confirmdialog" (editTheme)="editTheme.emit($event)">
+    <div class="confirmdialog-host" #confirmDialogHost><p-confirmdialog key="confirmdialog-demo" [closable]="false" [appendTo]="confirmDialogHost" /></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="ConfirmPopup" anchor="confirmpopup" (editTheme)="editTheme.emit($event)">
+    <div #confirmPopupAnchor class="confirmpopup-anchor"></div><p-confirmpopup #confirmPopup key="confirmpopup-demo" defaultFocus="none" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="ContextMenu" anchor="contextmenu" (editTheme)="editTheme.emit($event)">
+    <div class="contextmenu-host" #contextMenuHost><div #contextTarget class="context-target"></div><p-contextmenu #contextMenu [target]="contextTarget" [model]="menuItems()" [appendTo]="contextMenuHost" /></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="DataView" anchor="dataview" (editTheme)="editTheme.emit($event)">
+    <p-dataview [value]="products"><ng-template #list let-items><div class="stack">@for (item of items; track item.code) {<div class="product-row"><strong>{{item.name}}</strong><p-tag [value]="item.inventoryStatus" /></div>}</div></ng-template></p-dataview>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="DatePicker" anchor="datepicker" (editTheme)="editTheme.emit($event)">
+    <p-datepicker [(ngModel)]="date" [showIcon]="true" appendTo="body" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Dialog" anchor="dialog" (editTheme)="editTheme.emit($event)">
+    <div class="dialog-host"><p-dialog [header]="'showcase.dialog.header' | ptdTranslate" [visible]="true" [modal]="false" [closable]="false" [focusOnShow]="false"><p>{{ 'showcase.dialog.content' | ptdTranslate }}</p></p-dialog></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Divider" anchor="divider" (editTheme)="editTheme.emit($event)">
+    <span>{{ 'showcase.divider.primitiveTokens' | ptdTranslate }}</span><p-divider align="center"><p-tag [value]="'showcase.divider.to' | ptdTranslate" /></p-divider><span>{{ 'showcase.divider.componentTokens' | ptdTranslate }}</span>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Dock" anchor="dock" (editTheme)="editTheme.emit($event)">
+    <div class="dock-host"><p-dock [model]="actionItems()" position="bottom" /></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Drawer" anchor="drawer" (editTheme)="editTheme.emit($event)">
+    <div class="drawer-host" #drawerHost><p-drawer [header]="'showcase.drawer.header' | ptdTranslate" [visible]="true" [modal]="false" [closable]="false" [appendTo]="drawerHost"><p>{{ 'showcase.drawer.content' | ptdTranslate }}</p></p-drawer></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Editor" anchor="editor" (editTheme)="editTheme.emit($event)">
+    <p-editor [(ngModel)]="editorText" [style]="{height:'160px'}" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Fieldset" anchor="fieldset" (editTheme)="editTheme.emit($event)">
+    <p-fieldset [legend]="'showcase.fieldset.legend' | ptdTranslate" [toggleable]="true"><p>{{ 'showcase.fieldset.content' | ptdTranslate }}</p></p-fieldset>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="FileUpload" anchor="fileupload" (editTheme)="editTheme.emit($event)">
+    <p-fileupload mode="basic" name="theme" [chooseLabel]="'showcase.fileupload.chooseLabel' | ptdTranslate" accept=".json,.ts" [customUpload]="true" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="FloatLabel" anchor="floatlabel" (editTheme)="editTheme.emit($event)">
+    <p-floatlabel><input pInputText id="float-value" [(ngModel)]="text" /><label for="float-value">{{ 'showcase.shared.themeName' | ptdTranslate }}</label></p-floatlabel>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Fluid" anchor="fluid" (editTheme)="editTheme.emit($event)">
+    <p-fluid><input pInputText [(ngModel)]="text" /><p-button [label]="'showcase.shared.themeName' | ptdTranslate" /></p-fluid>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Galleria" anchor="galleria" (editTheme)="editTheme.emit($event)">
+    <p-galleria [value]="galleryImages()" [numVisible]="2" [containerStyle]="{'max-width':'420px'}"><ng-template #item let-item><img [src]="item.itemImageSrc" [alt]="item.alt" class="gallery-image" /></ng-template><ng-template #thumbnail let-item><img [src]="item.thumbnailImageSrc" [alt]="item.alt" class="gallery-thumb" /></ng-template></p-galleria>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="IconField" anchor="iconfield" (editTheme)="editTheme.emit($event)">
+    <p-iconfield><p-inputicon class="pi pi-search" /><input pInputText [placeholder]="'showcase.iconfield.placeholder' | ptdTranslate" /></p-iconfield>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="IftaLabel" anchor="iftalabel" (editTheme)="editTheme.emit($event)">
+    <p-iftalabel><input pInputText id="ifta-value" [(ngModel)]="text" /><label for="ifta-value">{{ 'showcase.shared.themeName' | ptdTranslate }}</label></p-iftalabel>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Image" anchor="image" (editTheme)="editTheme.emit($event)">
+    <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria1.jpg" [alt]="'showcase.shared.altMountain' | ptdTranslate" width="240" [preview]="true" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="ImageCompare" anchor="imagecompare" (editTheme)="editTheme.emit($event)">
+    <p-imagecompare class="image-compare"><ng-template #left><img src="https://primefaces.org/cdn/primeng/images/galleria/galleria1.jpg" [alt]="'showcase.imagecompare.altBefore' | ptdTranslate" /></ng-template><ng-template #right><img src="https://primefaces.org/cdn/primeng/images/galleria/galleria2.jpg" [alt]="'showcase.imagecompare.altAfter' | ptdTranslate" /></ng-template></p-imagecompare>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Inplace" anchor="inplace" (editTheme)="editTheme.emit($event)">
+    <p-inplace><ng-template #display><span class="inplace-display">{{ 'showcase.inplace.display' | ptdTranslate }}</span></ng-template><ng-template #content><input pInputText [(ngModel)]="text" /></ng-template></p-inplace>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="InputGroup" anchor="inputgroup" (editTheme)="editTheme.emit($event)">
+    <p-inputgroup><p-inputgroup-addon><i class="pi pi-at"></i></p-inputgroup-addon><input pInputText [placeholder]="'showcase.inputgroup.placeholder' | ptdTranslate" /><p-inputgroup-addon>.theme</p-inputgroup-addon></p-inputgroup>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="InputMask" anchor="inputmask" (editTheme)="editTheme.emit($event)">
+    <p-inputmask mask="aaa-999" placeholder="ABC-123" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="InputNumber" anchor="inputnumber" (editTheme)="editTheme.emit($event)">
+    <p-inputnumber [(ngModel)]="numeric" mode="currency" currency="EUR" [showButtons]="true" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="InputOtp" anchor="inputotp" (editTheme)="editTheme.emit($event)">
+    <p-inputotp [(ngModel)]="text" [length]="6" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="InputText" anchor="inputtext" (editTheme)="editTheme.emit($event)">
+    <input pInputText [(ngModel)]="text" [placeholder]="'showcase.shared.themeName' | ptdTranslate" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Knob" anchor="knob" (editTheme)="editTheme.emit($event)">
+    <p-knob [(ngModel)]="numeric" valueTemplate="{value}%" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Listbox" anchor="listbox" (editTheme)="editTheme.emit($event)">
+    <p-listbox [options]="cities" [(ngModel)]="selectedCity" optionLabel="name" [filter]="true" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="MegaMenu" anchor="megamenu" (editTheme)="editTheme.emit($event)">
+    <p-megamenu [model]="megaMenuItems()" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Menu" anchor="menu" (editTheme)="editTheme.emit($event)">
+    <p-menu [model]="menuItems()" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Menubar" anchor="menubar" (editTheme)="editTheme.emit($event)">
+    <p-menubar [model]="actionItems()" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Message" anchor="message" (editTheme)="editTheme.emit($event)">
+    <div class="stack"><p-message severity="success">{{ 'showcase.message.success' | ptdTranslate }}</p-message><p-message severity="warn">{{ 'showcase.message.warn' | ptdTranslate }}</p-message></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="MeterGroup" anchor="metergroup" (editTheme)="editTheme.emit($event)">
+    <p-metergroup [value]="meterValues()" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="MultiSelect" anchor="multiselect" (editTheme)="editTheme.emit($event)">
+    <p-multiselect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name" [placeholder]="'showcase.multiselect.placeholder' | ptdTranslate" display="chip" appendTo="body" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="OrderList" anchor="orderlist" (editTheme)="editTheme.emit($event)">
+    <p-orderlist [value]="sourceProducts" dataKey="code" breakpoint="700px"><ng-template #item let-product>{{product.name}}</ng-template></p-orderlist>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="OrganizationChart" anchor="organizationchart" (editTheme)="editTheme.emit($event)">
+    <p-organization-chart [value]="orgNodes()"><ng-template #default let-node><strong>{{node?.label}}</strong></ng-template></p-organization-chart>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="OverlayBadge" anchor="overlaybadge" (editTheme)="editTheme.emit($event)">
+    <div class="row"><p-overlaybadge value="2"><i class="pi pi-bell overlay-icon"></i></p-overlaybadge><p-overlaybadge value="4" severity="danger"><i class="pi pi-calendar overlay-icon"></i></p-overlaybadge><p-overlaybadge severity="danger"><i class="pi pi-envelope overlay-icon"></i></p-overlaybadge></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Paginator" anchor="paginator" (editTheme)="editTheme.emit($event)">
+    <p-paginator [first]="0" [rows]="10" [totalRecords]="120" [rowsPerPageOptions]="[10,20,30]" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Panel" anchor="panel" (editTheme)="editTheme.emit($event)">
+    <p-panel [header]="'showcase.panel.header' | ptdTranslate" [toggleable]="true"><p>{{ 'showcase.panel.content' | ptdTranslate }}</p></p-panel>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="PanelMenu" anchor="panelmenu" (editTheme)="editTheme.emit($event)">
+    <p-panelmenu [model]="panelMenuItems()" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Password" anchor="password" (editTheme)="editTheme.emit($event)">
+    <p-password [(ngModel)]="text" [toggleMask]="true" [promptLabel]="'showcase.password.promptLabel' | ptdTranslate" appendTo="body" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="PickList" anchor="picklist" (editTheme)="editTheme.emit($event)">
+    <p-picklist [source]="sourceProducts" [target]="targetProducts" [sourceHeader]="'showcase.picklist.source' | ptdTranslate" [targetHeader]="'showcase.picklist.target' | ptdTranslate" [responsive]="true" breakpoint="700px"><ng-template #item let-product>{{product.name}}</ng-template></p-picklist>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Popover" anchor="popover" (editTheme)="editTheme.emit($event)">
+    <div class="popover-host" #popoverHost><span #popoverAnchor>{{ 'showcase.popover.anchor' | ptdTranslate }}</span><p-popover #popover [appendTo]="popoverHost" [dismissable]="false" [focusOnShow]="false"><strong>{{ 'showcase.popover.title' | ptdTranslate }}</strong><p>{{color}}</p></p-popover></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="ProgressBar" anchor="progressbar" (editTheme)="editTheme.emit($event)">
+    <p-progressbar [value]="65" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="ProgressSpinner" anchor="progressspinner" (editTheme)="editTheme.emit($event)">
+    <p-progressspinner strokeWidth="5" [style]="{width:'48px',height:'48px'}" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="RadioButton" anchor="radiobutton" (editTheme)="editTheme.emit($event)">
+    <div class="row"><p-radiobutton name="preset" value="Material" [(ngModel)]="text" inputId="material" /><label for="material">Material</label><p-radiobutton name="preset" value="Aura" [(ngModel)]="text" inputId="aura" /><label for="aura">Aura</label></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Rating" anchor="rating" (editTheme)="editTheme.emit($event)">
+    <p-rating [(ngModel)]="rating" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="ScrollPanel" anchor="scrollpanel" (editTheme)="editTheme.emit($event)">
+    <p-scrollpanel [style]="{width:'100%',height:'140px'}"><p class="long-copy">{{ 'showcase.scrollpanel.content' | ptdTranslate }}</p></p-scrollpanel>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="ScrollTop" anchor="scrolltop" (editTheme)="editTheme.emit($event)">
+    <div class="scrolltop-host" #scrollTopHost>@for (paragraph of scrollTopCopy(); track paragraph) {<p>{{paragraph}}</p>}<p-scrolltop target="parent" [threshold]="30" /></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Select" anchor="select" (editTheme)="editTheme.emit($event)">
+    <p-select [options]="cities" [(ngModel)]="selectedCity" optionLabel="name" [placeholder]="'showcase.shared.selectACity' | ptdTranslate" appendTo="body" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="SelectButton" anchor="selectbutton" (editTheme)="editTheme.emit($event)">
+    <p-selectbutton [options]="[('showcase.selectbutton.light' | ptdTranslate), ('showcase.selectbutton.dark' | ptdTranslate), ('showcase.selectbutton.system' | ptdTranslate)]" [(ngModel)]="text" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Skeleton" anchor="skeleton" (editTheme)="editTheme.emit($event)">
+    <div class="row"><p-skeleton shape="circle" size="3rem" /><div class="stack grow"><p-skeleton width="60%" /><p-skeleton width="90%" /></div></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Slider" anchor="slider" (editTheme)="editTheme.emit($event)">
+    <p-slider [(ngModel)]="slider" /><p>{{slider}}%</p>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="SpeedDial" anchor="speeddial" (editTheme)="editTheme.emit($event)">
+    <div class="speed-host"><p-speeddial [model]="actionItems()" direction="right" [hideOnClickOutside]="false" [visible]="true" /></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="SplitButton" anchor="splitbutton" (editTheme)="editTheme.emit($event)">
+    <p-splitbutton [label]="'showcase.splitbutton.saveTheme' | ptdTranslate" icon="pi pi-save" [model]="actionItems()" appendTo="body" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Splitter" anchor="splitter" (editTheme)="editTheme.emit($event)">
+    <p-splitter [style]="{height:'140px'}"><ng-template #panel><div class="center">{{ 'showcase.splitter.preview' | ptdTranslate }}</div></ng-template><ng-template #panel><div class="center">{{ 'showcase.splitter.tokens' | ptdTranslate }}</div></ng-template></p-splitter>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Stepper" anchor="stepper" (editTheme)="editTheme.emit($event)">
+    <p-stepper [value]="1"><p-step-list><p-step [value]="1">{{ 'showcase.stepper.preset' | ptdTranslate }}</p-step><p-step [value]="2">{{ 'showcase.stepper.tokens' | ptdTranslate }}</p-step><p-step [value]="3">{{ 'showcase.stepper.export' | ptdTranslate }}</p-step></p-step-list><p-step-panels><p-step-panel [value]="1"><ng-template #content let-activateCallback="activateCallback"><p>{{ 'showcase.stepper.selectPreset' | ptdTranslate }}</p><p-button [label]="'showcase.stepper.next' | ptdTranslate" (click)="activateCallback(2)" /></ng-template></p-step-panel><p-step-panel [value]="2"><ng-template #content><p>{{ 'showcase.stepper.editTokens' | ptdTranslate }}</p></ng-template></p-step-panel></p-step-panels></p-stepper>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Table" anchor="table" (editTheme)="editTheme.emit($event)">
+    <p-table [value]="products" [paginator]="true" [rows]="2"><ng-template #header><tr><th>{{ 'showcase.table.code' | ptdTranslate }}</th><th>{{ 'showcase.table.name' | ptdTranslate }}</th><th>{{ 'showcase.table.price' | ptdTranslate }}</th></tr></ng-template><ng-template #body let-product><tr><td>{{product.code}}</td><td>{{product.name}}</td><td>{{product.price | currency:'EUR'}}</td></tr></ng-template></p-table>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Tabs" anchor="tabs" (editTheme)="editTheme.emit($event)">
+    <p-tabs value="0"><p-tablist><p-tab value="0">{{ 'showcase.tabs.light' | ptdTranslate }}</p-tab><p-tab value="1">{{ 'showcase.tabs.dark' | ptdTranslate }}</p-tab></p-tablist><p-tabpanels><p-tabpanel value="0">{{ 'showcase.tabs.lightPreview' | ptdTranslate }}</p-tabpanel><p-tabpanel value="1">{{ 'showcase.tabs.darkPreview' | ptdTranslate }}</p-tabpanel></p-tabpanels></p-tabs>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Tag" anchor="tag" (editTheme)="editTheme.emit($event)">
+    <div class="row"><p-tag [value]="'showcase.tag.stable' | ptdTranslate" severity="success" /><p-tag [value]="'showcase.tag.draft' | ptdTranslate" severity="warn" icon="pi pi-pencil" /><p-tag value="Material" rounded /></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Terminal" anchor="terminal" (editTheme)="editTheme.emit($event)">
+    <p-terminal [welcomeMessage]="'showcase.terminal.welcome' | ptdTranslate" prompt="theme $" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Textarea" anchor="textarea" (editTheme)="editTheme.emit($event)">
+    <textarea pTextarea [(ngModel)]="text" rows="4" cols="40" [autoResize]="true"></textarea>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="TieredMenu" anchor="tieredmenu" (editTheme)="editTheme.emit($event)">
+    <p-tieredmenu [model]="tieredMenuItems()" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Timeline" anchor="timeline" (editTheme)="editTheme.emit($event)">
+    <p-timeline [value]="timelineEvents()"><ng-template #content let-event><strong>{{event.status}}</strong><small>{{event.date}}</small></ng-template></p-timeline>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Toast" anchor="toast" (editTheme)="editTheme.emit($event)">
+    <div class="toast-host"><p-toast key="showcase" [baseZIndex]="0" /></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="ToggleButton" anchor="togglebutton" (editTheme)="editTheme.emit($event)">
+    <p-togglebutton [(ngModel)]="toggle" [onLabel]="'showcase.togglebutton.onLabel' | ptdTranslate" [offLabel]="'showcase.togglebutton.offLabel' | ptdTranslate" onIcon="pi pi-moon" offIcon="pi pi-sun" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="ToggleSwitch" anchor="toggleswitch" (editTheme)="editTheme.emit($event)">
+    <div class="row"><p-toggleswitch [(ngModel)]="toggle" inputId="animations" /><label for="animations">{{ 'showcase.toggleswitch.label' | ptdTranslate }}</label></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Toolbar" anchor="toolbar" (editTheme)="editTheme.emit($event)">
+    <p-toolbar><ng-template #start><p-button [label]="'showcase.shared.actions.new' | ptdTranslate" icon="pi pi-plus" /></ng-template><ng-template #center><strong>{{ 'showcase.toolbar.center' | ptdTranslate }}</strong></ng-template><ng-template #end><p-button icon="pi pi-download" /></ng-template></p-toolbar>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Tooltip" anchor="tooltip" (editTheme)="editTheme.emit($event)">
+    <div class="tooltip-host"><p-button [label]="'showcase.tooltip.hoverMe' | ptdTranslate" /><div class="p-tooltip p-component p-tooltip-right" role="tooltip"><div class="p-tooltip-arrow"></div><div class="p-tooltip-text">{{ 'showcase.tooltip.text' | ptdTranslate }}</div></div></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="Tree" anchor="tree" (editTheme)="editTheme.emit($event)">
+    <p-tree [value]="treeNodes()" selectionMode="single" [(selection)]="treeSelection" />
+  </primeng-showcase-section>
+  <primeng-showcase-section title="TreeSelect" anchor="treeselect" (editTheme)="editTheme.emit($event)">
+    <div class="treeselect-host" #treeSelectHost><p-treeselect #treeSelect [options]="treeNodes()" [(ngModel)]="treeSelection" [placeholder]="'showcase.treeselect.placeholder' | ptdTranslate" [appendTo]="treeSelectHost" /></div>
+  </primeng-showcase-section>
+  <primeng-showcase-section title="TreeTable" anchor="treetable" (editTheme)="editTheme.emit($event)">
+    <p-treetable [value]="treeTableNodes()"><ng-template #header><tr><th>{{ 'showcase.treetable.name' | ptdTranslate }}</th><th>{{ 'showcase.treetable.type' | ptdTranslate }}</th></tr></ng-template><ng-template #body let-rowNode let-rowData="rowData"><tr [ttRow]="rowNode"><td><p-treetable-toggler [rowNode]="rowNode" />{{rowData?.name}}</td><td>{{rowData?.type}}</td></tr></ng-template></p-treetable>
+  </primeng-showcase-section>
+  <ng-content></ng-content>
+</div>

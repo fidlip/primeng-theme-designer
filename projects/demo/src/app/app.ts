@@ -1,12 +1,13 @@
 import {AfterViewInit, Component, inject} from '@angular/core';
 import { definePNgThemePreset } from './theme';
 import { DEFAULT_THEME_PRESET, THEME_PRESETS } from './theme-presets';
-import { PresetOption, PresetSelectorComponent, ThemeDesignerComponent, ThemeStateService} from '../../../primeng-theme-designer';
+import {
+  ComponentShowcaseComponent, PresetOption, PresetSelectorComponent, ShowcaseSectionComponent, ThemeDesignerComponent,
+  ThemeStateService,
+} from '../../../primeng-theme-designer';
 import { Theme } from '@primeng/themes';
-import {ComponentShowcaseComponent} from './component-showcase/component-showcase.component';
 import {ButtonModule} from 'primeng/button';
 import {TooltipModule} from 'primeng/tooltip';
-import {ShowcaseSectionComponent} from './component-showcase/showcase-section.component';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
