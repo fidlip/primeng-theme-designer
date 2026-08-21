@@ -24,6 +24,25 @@ npm install primeng-theme-designer primeng @primeng/themes
 
 `@angular/core`, `@angular/common`, and `@angular/forms` are expected to already be present in an Angular app; PrimeNG's own peer dependencies (such as animations support) apply as usual.
 
+## Versioning
+
+This package's major version tracks the PrimeNG major version it targets (the same way Angular Material tracks Angular) — install the major that matches your PrimeNG version:
+
+| primeng-theme-designer | PrimeNG |
+| --- | --- |
+| `^20.0.0` | `^20.0.0` |
+| `^19.0.0` | `^19.1.3` |
+
+```bash
+# PrimeNG 20
+npm install primeng-theme-designer@^20 primeng@^20 @primeng/themes@^20
+
+# PrimeNG 19
+npm install primeng-theme-designer@^19 primeng@^19 @primeng/themes@^19
+```
+
+Because the major version is dictated by PrimeNG compatibility rather than this library's own API, a major bump doesn't necessarily mean breaking changes here — check the [releases](https://github.com/fidlip/primeng-theme-designer/releases) for what actually changed. Older majors are maintained on their own `release/<major>.x` branch for backports; `main` tracks the latest supported PrimeNG major.
+
 ## Usage
 
 ```ts
