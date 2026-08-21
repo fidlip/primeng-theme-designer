@@ -5,5 +5,7 @@ export * from './lib/theme-state.service';
 export * from './lib/json.model';
 export * from './lib/i18n/translate.service';
 export * from './lib/i18n/translate.types';
+export * from './lib/i18n/translations/en';
+export * from './lib/i18n/translations/cs';
 export * from './lib/component-showcase/component-showcase.component';
 export * from './lib/component-showcase/showcase-section.component';

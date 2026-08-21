@@ -1,14 +1,26 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { PTD_TRANSLATE_ADAPTER, PtdTranslateParams } from './translate.types';
+import { PTD_TRANSLATE_ADAPTER, PtdTranslateParams, PtdTranslationTree } from './translate.types';
 import { PTD_TRANSLATIONS_EN } from './translations/en';
 import { PTD_TRANSLATIONS_CS } from './translations/cs';
 
 const DEFAULT_LANG = 'en';
 
-const DICTIONARIES: Record<string, Record<string, string>> = {
+const DICTIONARIES: Record<string, PtdTranslationTree> = {
   en: PTD_TRANSLATIONS_EN,
   cs: PTD_TRANSLATIONS_CS,
 };
+
+/** Resolves a dot-path key (e.g. `"designer.tooltip.close"`) against a nested translation tree. */
+function resolve(tree: PtdTranslationTree, key: string): string | undefined {
+  let node: string | PtdTranslationTree = tree;
+  for (const segment of key.split('.')) {
+    if (typeof node !== 'object' || node === null || !(segment in node)) {
+      return undefined;
+    }
+    node = node[segment];
+  }
+  return typeof node === 'string' ? node : undefined;
+}
 
 /**
  * Translates the designer's own UI text. Defaults to the bundled en/cs dictionaries; a
@@ -36,7 +48,7 @@ export class PtdTranslateService {
       return this.adapter.translate(key, params);
     }
     const dictionary = DICTIONARIES[this.lang()] ?? DICTIONARIES[DEFAULT_LANG];
-    const template = dictionary[key] ?? DICTIONARIES[DEFAULT_LANG][key] ?? key;
+    const template = resolve(dictionary, key) ?? resolve(DICTIONARIES[DEFAULT_LANG], key) ?? key;
     return this.interpolate(template, params);
   }
 
