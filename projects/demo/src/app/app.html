@@ -5,8 +5,8 @@
     <p>{{ 'demo.hero.description' | translate }}</p>
   </div>
   <div class="page-hero-actions">
-    <p-selectbutton class="lang-switcher" [options]="languages" [ngModel]="currentLang()"
-                     (ngModelChange)="switchLanguage($event)"
+    <p-selectbutton class="lang-switcher" [options]="langs" [ngModel]="currentLang()"
+                     (ngModelChange)="switchLang($event)"
                      [pTooltip]="'demo.langSwitcher.label' | translate" tooltipPosition="left" />
     <primeng-preset-selector
         [presets]="themePresets"

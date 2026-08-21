@@ -13,7 +13,7 @@ import {FormsModule} from '@angular/forms';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 /** Demonstrates the library's optional translate-adapter extension point: German only exists for the designer's own texts (see translations.ts), not for this demo's own copy. */
-const LANGUAGES = ['en', 'cs', 'de'];
+const LANGS = ['en', 'cs', 'de'];
 
 @Component({
   selector: 'app-root',
@@ -29,7 +29,7 @@ export class App implements AfterViewInit {
   private readonly themeService = inject(ThemeStateService);
   private readonly translateService = inject(TranslateService);
 
-  protected readonly languages = LANGUAGES;
+  protected readonly langs = LANGS;
   protected readonly currentLang = this.translateService.currentLang;
   protected readonly themePresets = THEME_PRESETS;
   protected basePreset: PresetOption = DEFAULT_THEME_PRESET;
@@ -64,7 +64,7 @@ export class App implements AfterViewInit {
     this.selectComponent(window.location.hash.slice(1) || 'accordion');
   }
 
-  switchLanguage(lang: string): void {
+  switchLang(lang: string): void {
     this.translateService.use(lang);
   }
 
