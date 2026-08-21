@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, computed, ElementRef, EventEmitter, inject, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, computed, effect, ElementRef, EventEmitter, inject, Output, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {PtdTranslatePipe} from '../i18n/translate.pipe';
@@ -94,9 +94,9 @@ import {TreeSelect, TreeSelectModule} from 'primeng/treeselect';
 import {TreeTableModule} from 'primeng/treetable';
 import {ShowcaseSectionComponent} from './showcase-section.component';
 import {
-  buildBreadcrumbItems, buildChartData, buildCountries, buildGalleryImages, buildMegaMenuItems, buildMenuItems,
+  applyTreeNodeLabels, buildBreadcrumbItems, buildChartData, buildGalleryImages, buildMegaMenuItems, buildMenuItems,
   buildMeterValues, buildOrgNodes, buildPanelMenuItems, buildScrollTopCopy, buildTieredMenuItems, buildTimelineEvents,
-  buildToastMessages, buildTreeNodes, buildTreeTableNodes, CITIES, PRODUCTS,
+  buildToastMessages, buildTreeTableNodes, CITIES, COUNTRIES, createTreeNodesBase, PRODUCTS,
 } from './showcase-data';
 
 const PRIME_MODULES = [AccordionModule, AutoCompleteModule, AvatarModule, BadgeModule, BlockUIModule,
@@ -156,8 +156,15 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   readonly scrollTopCopy = computed(() => buildScrollTopCopy(this.t()));
   readonly menuItems = computed(() => buildMenuItems(this.t()));
   readonly actionItems = computed(() => this.menuItems().filter(item => !item.separator));
-  readonly countries = computed(() => buildCountries(this.t()));
-  readonly treeNodes = computed(() => buildTreeNodes(this.t()));
+  /**
+   * Not translated (proper noun) and not recreated on language change - see the module doc
+   * comment on `createTreeNodesBase`/`applyTreeNodeLabels` in showcase-data.ts for why CascadeSelect
+   * needs `countries` to keep a stable identity across language switches.
+   */
+  readonly countries = COUNTRIES;
+  /** Stable node identity (see showcase-data.ts); labels are kept in sync by the effect below. */
+  private readonly treeNodesBase = createTreeNodesBase();
+  readonly treeNodes = this.treeNodesBase;
   readonly treeTableNodes = computed(() => buildTreeTableNodes(this.t()));
   readonly orgNodes = computed(() => buildOrgNodes(this.t()));
   readonly timelineEvents = computed(() => buildTimelineEvents(this.t()));
@@ -173,7 +180,7 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   selectedCity = this.cities[0]; selectedCities = [this.cities[0]]; text = 'PrimeNG'; numeric = 42; checked = true;
   chipsValue = ['Material', 'Dark mode'];
   date = new Date(); color = '#3b82f6'; rating = 4; slider = 55; treeSelection: unknown; toggle = true;
-  editorText = `<p>${this.translateService.translate('showcase.editor.content')}</p>`;
+  editorText = `<p>${this.t()('showcase.editor.content')}</p>`;
   sourceProducts = [...PRODUCTS]; targetProducts = [PRODUCTS[2]];
 
   /**
@@ -185,7 +192,9 @@ export class ComponentShowcaseComponent implements AfterViewInit {
    */
   protected terminalReady = false;
 
-  constructor(private readonly confirmation: ConfirmationService, private readonly messages: MessageService) {}
+  constructor(private readonly confirmation: ConfirmationService, private readonly messages: MessageService) {
+    effect(() => applyTreeNodeLabels(this.treeNodesBase, this.t()));
+  }
 
   ngAfterViewInit(): void {
     this.suppressFocusScrollUntilSettled();

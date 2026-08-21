@@ -30,7 +30,7 @@
     <p-carousel [value]="products" [numVisible]="2" [numScroll]="1" [responsiveOptions]="responsiveOptions"><ng-template #item let-product><div class="product-tile"><strong>{{product.name}}</strong><span>{{product.price | currency:'EUR'}}</span></div></ng-template></p-carousel>
   </primeng-showcase-section>
   <primeng-showcase-section title="CascadeSelect" anchor="cascadeselect" (editTheme)="editTheme.emit($event)">
-    <p-cascadeselect [(ngModel)]="selectedCity" [options]="$any(countries())" optionLabel="name" optionGroupLabel="name" [optionGroupChildren]="['cities']" [placeholder]="'showcase.shared.selectACity' | ptdTranslate" appendTo="body" />
+    <p-cascadeselect [(ngModel)]="selectedCity" [options]="$any(countries)" optionLabel="name" optionGroupLabel="name" [optionGroupChildren]="['cities']" [placeholder]="'showcase.shared.selectACity' | ptdTranslate" appendTo="body" />
   </primeng-showcase-section>
   <primeng-showcase-section title="Chart" anchor="chart" (editTheme)="editTheme.emit($event)">
     <p-chart type="bar" [data]="chartData()" [options]="chartOptions" height="220px" />
@@ -190,7 +190,7 @@
     <p-scrollpanel [style]="{width:'100%',height:'140px'}"><p class="long-copy">{{ 'showcase.scrollpanel.content' | ptdTranslate }}</p></p-scrollpanel>
   </primeng-showcase-section>
   <primeng-showcase-section title="ScrollTop" anchor="scrolltop" (editTheme)="editTheme.emit($event)">
-    <div class="scrolltop-host" #scrollTopHost>@for (paragraph of scrollTopCopy(); track paragraph) {<p>{{paragraph}}</p>}<p-scrolltop target="parent" [threshold]="30" /></div>
+    <div class="scrolltop-host" #scrollTopHost>@for (paragraph of scrollTopCopy(); track $index) {<p>{{paragraph}}</p>}<p-scrolltop target="parent" [threshold]="30" /></div>
   </primeng-showcase-section>
   <primeng-showcase-section title="Select" anchor="select" (editTheme)="editTheme.emit($event)">
     <p-select [options]="cities" [(ngModel)]="selectedCity" optionLabel="name" [placeholder]="'showcase.shared.selectACity' | ptdTranslate" appendTo="body" />
@@ -253,10 +253,10 @@
     <div class="tooltip-host"><p-button [label]="'showcase.tooltip.hoverMe' | ptdTranslate" /><div class="p-tooltip p-component p-tooltip-right" role="tooltip"><div class="p-tooltip-arrow"></div><div class="p-tooltip-text">{{ 'showcase.tooltip.text' | ptdTranslate }}</div></div></div>
   </primeng-showcase-section>
   <primeng-showcase-section title="Tree" anchor="tree" (editTheme)="editTheme.emit($event)">
-    <p-tree [value]="treeNodes()" selectionMode="single" [(selection)]="treeSelection" />
+    <p-tree [value]="treeNodes" selectionMode="single" [(selection)]="treeSelection" />
   </primeng-showcase-section>
   <primeng-showcase-section title="TreeSelect" anchor="treeselect" (editTheme)="editTheme.emit($event)">
-    <div class="treeselect-host" #treeSelectHost><p-treeselect #treeSelect [options]="treeNodes()" [(ngModel)]="treeSelection" [placeholder]="'showcase.treeselect.placeholder' | ptdTranslate" [appendTo]="treeSelectHost" /></div>
+    <div class="treeselect-host" #treeSelectHost><p-treeselect #treeSelect [options]="treeNodes" [(ngModel)]="treeSelection" [placeholder]="'showcase.treeselect.placeholder' | ptdTranslate" [appendTo]="treeSelectHost" /></div>
   </primeng-showcase-section>
   <primeng-showcase-section title="TreeTable" anchor="treetable" (editTheme)="editTheme.emit($event)">
     <p-treetable [value]="treeTableNodes()"><ng-template #header><tr><th>{{ 'showcase.treetable.name' | ptdTranslate }}</th><th>{{ 'showcase.treetable.type' | ptdTranslate }}</th></tr></ng-template><ng-template #body let-rowNode let-rowData="rowData"><tr [ttRow]="rowNode"><td><p-treetable-toggler [rowNode]="rowNode" />{{rowData?.name}}</td><td>{{rowData?.type}}</td></tr></ng-template></p-treetable>

@@ -34,7 +34,6 @@ export const PTD_TRANSLATIONS_CS: Record<string, string> = {
   'showcase.shared.actions.edit': 'Upravit',
   'showcase.shared.actions.delete': 'Smazat',
   'showcase.shared.actions.save': 'Uložit',
-  'showcase.shared.countryCzechia': 'Česko',
   'showcase.chart.primary': 'Primární',
   'showcase.chart.surface': 'Povrch',
   'showcase.chart.accent': 'Akcent',

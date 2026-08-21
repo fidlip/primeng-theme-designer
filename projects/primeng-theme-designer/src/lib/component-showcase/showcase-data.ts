@@ -13,11 +13,22 @@ export const CITIES = [
   {name: 'Prague', code: 'PRG'}, {name: 'Brno', code: 'BRQ'}, {name: 'Ostrava', code: 'OSR'}
 ];
 
+/** Not translated (proper noun), same as CITIES - see buildCountries's caller for why it must also stay a stable, non-recreated reference. */
+export const COUNTRIES = [{name: 'Czechia', cities: CITIES}];
+
 /**
  * The functions below build UI-copy mock data (menu labels, tree labels, toast text, ...) from
  * translation keys instead of hardcoded English, via the `t` translate function the caller
  * supplies (see `component-showcase.component.ts`'s `t` computed signal). File/format names
  * (`Design.pdf`, `PDF`, ...) and proper nouns (`Material`, `Button`, `CEO`, ...) are left literal.
+ *
+ * `createTreeNodesBase`/`applyTreeNodeLabels` are the one exception to "rebuild a fresh array per
+ * language": `Tree`/`TreeSelect` both bind the same `treeNodes` to a two-way `[(selection)]`/
+ * `[(ngModel)]`, and PrimeNG resolves the selected node by walking the *same* options array/object
+ * graph. Handing it a brand-new array on every language change made it lose track of the selected
+ * node and reset the model mid change-detection cycle (NG0100). Building the node objects once and
+ * mutating their `label` in place keeps their identity stable for PrimeNG's selection-matching while
+ * still updating the rendered text via Angular's own change detection.
  */
 
 export function buildMenuItems(t: (key: string) => string): MenuItem[] {
@@ -29,14 +40,19 @@ export function buildMenuItems(t: (key: string) => string): MenuItem[] {
   ];
 }
 
-export function buildTreeNodes(t: (key: string) => string): TreeNode[] {
+export function createTreeNodesBase(): TreeNode[] {
   return [
-    {key: '0', label: t('showcase.tree.documents'), icon: 'pi pi-folder', expanded: true, children: [
+    {key: '0', label: '', icon: 'pi pi-folder', expanded: true, children: [
       {key: '0-0', label: 'Design.pdf', icon: 'pi pi-file-pdf'},
       {key: '0-1', label: 'Theme.json', icon: 'pi pi-file'}
     ]},
-    {key: '1', label: t('showcase.tree.images'), icon: 'pi pi-images', children: [{key: '1-0', label: 'preview.png', icon: 'pi pi-image'}]}
+    {key: '1', label: '', icon: 'pi pi-images', children: [{key: '1-0', label: 'preview.png', icon: 'pi pi-image'}]}
   ];
+}
+
+export function applyTreeNodeLabels(nodes: TreeNode[], t: (key: string) => string): void {
+  nodes[0].label = t('showcase.tree.documents');
+  nodes[1].label = t('showcase.tree.images');
 }
 
 export function buildTreeTableNodes(t: (key: string) => string): TreeNode[] {
@@ -118,10 +134,6 @@ export function buildChartData(t: (key: string) => string) {
     labels: [t('showcase.chart.primary'), t('showcase.chart.surface'), t('showcase.chart.accent')],
     datasets: [{label: 'Tokens', data: [65, 42, 78], backgroundColor: ['#3b82f6', '#64748b', '#a855f7']}]
   };
-}
-
-export function buildCountries(t: (key: string) => string) {
-  return [{name: t('showcase.shared.countryCzechia'), cities: CITIES}];
 }
 
 export function buildGalleryImages(t: (key: string) => string) {
