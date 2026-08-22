@@ -15,9 +15,43 @@
   cursor: copy;
 }
 
+.ptd-theme-value-picker__input-wrapper {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+}
+
 .ptd-theme-value-picker__input {
   min-width: 0;
   width: 100%;
+}
+
+.ptd-theme-value-picker__input--has-reset {
+  padding-right: 1.75rem;
+}
+
+.ptd-theme-value-picker__reset {
+  position: absolute;
+  top: 50%;
+  right: 0.35rem;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--p-text-muted-color, inherit);
+  cursor: pointer;
+  font-size: 0.7rem;
+
+  &:hover {
+    background: var(--p-content-hover-background);
+    color: inherit;
+  }
 }
 
 .ptd-theme-value-picker__popover-content {

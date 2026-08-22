@@ -3,22 +3,32 @@
     <span>{{ label }}</span>
     <ptd-value-preview [value]="inputText" [data]="tokenTree">&nbsp;→&nbsp;</ptd-value-preview>
   </label>
-  <input
-    #input
-    pInputText
-    autocomplete="off"
-    class="ptd-theme-value-picker__input"
-    [id]="inputId"
-    [(ngModel)]="inputText"
-    [placeholder]="placeholder ?? ('valuePicker.placeholder' | ptdTranslate)"
-    [disabled]="disabled"
-    [pSize]="'small'"
-    (input)="filterTokens($event)"
-    (click)="filterTokens($event)"
-    (keyup.arrowLeft)="filterTokens($event)"
-    (keyup.arrowRight)="filterTokens($event)"
-    (blur)="onInputBlur()"
-  />
+  <div class="ptd-theme-value-picker__input-wrapper">
+    <input
+      #input
+      pInputText
+      autocomplete="off"
+      class="ptd-theme-value-picker__input"
+      [class.ptd-theme-value-picker__input--has-reset]="showResetButton"
+      [id]="inputId"
+      [(ngModel)]="inputText"
+      [placeholder]="placeholder ?? ('valuePicker.placeholder' | ptdTranslate)"
+      [disabled]="disabled"
+      [pSize]="'small'"
+      (input)="filterTokens($event)"
+      (click)="filterTokens($event)"
+      (keyup.arrowLeft)="filterTokens($event)"
+      (keyup.arrowRight)="filterTokens($event)"
+      (blur)="onInputBlur()"
+    />
+    @if (showResetButton) {
+      <button type="button" class="ptd-theme-value-picker__reset"
+              [title]="resetTooltip"
+              (mousedown)="resetToDefault($event)">
+        <i class="pi pi-undo"></i>
+      </button>
+    }
+  </div>
 </div>
 <p-popover #popover [dismissable]="true">
   <div class="ptd-theme-value-picker__popover-content">
