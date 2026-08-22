@@ -1,4 +1,4 @@
-import {Component, computed, input, output} from '@angular/core';
+import {Component, computed, input, output, ChangeDetectionStrategy} from '@angular/core';
 import {ButtonModule} from 'primeng/button';
 import {TooltipModule} from 'primeng/tooltip';
 import {PtdTranslatePipe} from '../i18n/translate.pipe';
@@ -27,23 +27,33 @@ const PRIMENG_DOCS_VERSION = 'v21';
           }
         </h2>
         <div class="showcase-header-actions">
+          <!-- PrimeNG v22's [pButton] directive dropped its icon/label inputs (still present on the
+               p-button component, which is why preset-selector's icon still works unchanged) - an
+               icon attribute on a [pButton]-hosted element is now silently ignored rather than
+               erroring, so this rendered as an empty icon-less button until switched to a pButtonIcon
+               content child, the new required pattern. -->
           @if (docsUrl(); as docsUrl) {
-            <a pButton type="button" text rounded severity="secondary" icon="pi pi-question-circle"
+            <a pButton type="button" text rounded severity="secondary"
                [href]="docsUrl" target="_blank" rel="noopener"
                [attr.aria-label]="'showcaseSection.viewInDocs' | ptdTranslate:{title: title()}"
-               [pTooltip]="'showcaseSection.viewInDocs' | ptdTranslate:{title: title()}"></a>
+               [pTooltip]="'showcaseSection.viewInDocs' | ptdTranslate:{title: title()}">
+              <span pButtonIcon class="pi pi-question-circle"></span>
+            </a>
           }
           @if (anchor()) {
-            <button pButton type="button" text rounded severity="secondary" icon="pi pi-palette"
+            <button pButton type="button" text rounded severity="secondary"
                     [attr.aria-label]="'showcaseSection.editTheme' | ptdTranslate:{title: title()}"
                     [pTooltip]="'showcaseSection.openInDesigner' | ptdTranslate:{title: title()}"
-                    (click)="emitEditTheme()"></button>
+                    (click)="emitEditTheme()">
+              <span pButtonIcon class="pi pi-palette"></span>
+            </button>
           }
         </div>
       </header>
       <div class="showcase-example"><ng-content /></div>
     </section>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './showcase-section.component.scss'
 })
 export class ShowcaseSectionComponent {

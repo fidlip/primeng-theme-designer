@@ -37,7 +37,7 @@ export class ThemeStateService {
    */
   private generateThemeBlob(themeConfig: Json): string {
     const { importName, importPath } = this.getBasePresetImport();
-    let themeContent = `import { definePreset } from '@primeng/themes';\n`;
+    let themeContent = `import { definePreset } from '@primeuix/themes';\n`;
     themeContent += `import ${importName} from '${importPath}';\n\n`;
     themeContent += `export const MyPreset = definePreset(${importName}, ${JSON.stringify(themeConfig, null, 2)
       .replace(/"([^"]+)":/g, "$1:")
@@ -117,7 +117,7 @@ export class ThemeStateService {
     const { name } = this.getBasePreset();
     return {
       importName: name.charAt(0).toUpperCase() + name.slice(1),
-      importPath: `@primeng/themes/${name}`,
+      importPath: `@primeuix/themes/${name}`,
     };
   }
 }

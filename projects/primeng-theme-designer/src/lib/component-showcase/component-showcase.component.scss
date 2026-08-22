@@ -36,8 +36,26 @@
   width: 100% !important; margin-top: .5rem;
 }
 .scrolltop-host { height: 200px; overflow-y: auto; }
-.toast-host ::ng-deep .p-toast { display: flex; flex-wrap: wrap; gap: .75rem; position: static !important; inset: auto !important; width: 100% !important; }
-.toast-host ::ng-deep .p-toast-message { margin: 0; }
+/* PrimeNG v22's Toast lays each `.p-toast-message` out via `position: absolute` + a `translate`
+   transform (its new hover-to-expand stacking design), anchored to the `.p-toast` root. Forcing
+   just the root to `position: static` (as every other overlay override in this file does) leaves
+   the messages with no positioned ancestor to anchor to, so they fall back to the page's initial
+   containing block - which is why they used to render pinned near the very top of the whole page
+   instead of inline here. Un-stacking them back to normal flow needs both: a positioned `.p-toast`
+   (so it *could* anchor, though it no longer needs to) and each `.p-toast-message` pinned back to
+   `position: static`. The extra `.p-toast` ancestor in the second selector isn't just scoping -
+   it's required to out-specificity PrimeNG's own unprefixed `.p-toast-message { transform: ... }`
+   rule, which otherwise ties with a plain `.toast-host ::ng-deep .p-toast-message` selector and
+   wins on source order (PrimeNG's dynamic stylesheet re-inserts after this one).
+
+   That alone still leaves every message but the most recent one collapsed to zero height: v22's
+   default `mode="stacked"` only measures/shows the top-most toast at full height and keeps the
+   rest at `height: 0` until hovered (its "peek a stack, expand on hover" design) - the CSS above
+   only un-does the *positioning* half of that, not the JS-driven height collapse. The template's
+   `mode="expanded"` on `<p-toast>` is the other half - it renders every message at full height
+   simultaneously, which is what this always-open showcase needs. */
+.toast-host ::ng-deep .p-toast { display: flex; flex-wrap: wrap; gap: .75rem; position: relative !important; inset: auto !important; width: 100% !important; }
+.toast-host ::ng-deep .p-toast .p-toast-message { position: static !important; inset: auto !important; opacity: 1 !important; transform: none !important; margin: 0; }
 .dialog-host ::ng-deep .p-dialog-mask, .confirmdialog-host ::ng-deep .p-dialog-mask {
   position: static !important; inset: auto !important; height: auto !important; width: auto !important;
 }

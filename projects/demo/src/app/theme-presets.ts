@@ -1,7 +1,7 @@
-import Material from '@primeng/themes/material';
-import Aura from '@primeng/themes/aura';
-import Lara from '@primeng/themes/lara';
-import Nora from '@primeng/themes/nora';
+import Material from '@primeuix/themes/material';
+import Aura from '@primeuix/themes/aura';
+import Lara from '@primeuix/themes/lara';
+import Nora from '@primeuix/themes/nora';
 import { PresetOption } from 'primeng-theme-designer';
 
 export const THEME_PRESETS: PresetOption[] = [

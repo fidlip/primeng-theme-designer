@@ -16,7 +16,7 @@ export const TRANSLATIONS_EN: TranslationObject = {
   ptd: PTD_TRANSLATIONS_EN,
   demo: {
     hero: {
-      eyebrow: 'PrimeNG 21 theme playground',
+      eyebrow: 'PrimeNG 22 theme playground',
       title: 'Component showcase',
       description: 'All visual PrimeNG components with mock data, ordered alphabetically. Use the palette icon to edit the matching component tokens.',
     },

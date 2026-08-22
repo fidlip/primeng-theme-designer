@@ -13,12 +13,17 @@
         [selected]="basePreset"
         [label]="'demo.presetSelector.label' | translate"
         (presetSelected)="onPresetSelected($event)" />
-    <button pButton type="button" rounded icon="pi pi-palette"
+    <!-- PrimeNG v22's [pButton] directive dropped its `icon` input (see primeng-theme-designer's
+         showcase-section.component.ts for the full explanation) - icon is now a `pButtonIcon`
+         content child instead of an attribute. -->
+    <button pButton type="button" rounded
             class="open-theme-designer"
             [attr.aria-label]="'demo.openDesigner' | translate"
             [pTooltip]="'demo.openDesigner' | translate"
             tooltipPosition="left"
-            (click)="openThemeDesigner()"></button>
+            (click)="openThemeDesigner()">
+      <span pButtonIcon class="pi pi-palette"></span>
+    </button>
   </div>
 </header>
 

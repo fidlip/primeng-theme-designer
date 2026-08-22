@@ -1,8 +1,8 @@
-import {Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ChangeDetectionStrategy} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
 
-import {definePreset, Theme} from '@primeng/themes';
+import {definePreset, Theme} from '@primeuix/themes';
 import {ThemeStateService} from './theme-state.service';
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 import {Tooltip} from 'primeng/tooltip';
@@ -45,6 +45,7 @@ import {TitleCasePipe} from '@angular/common';
   ],
   providers: [ConfirmationService],
   styleUrls: ['./theme-designer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class ThemeDesignerComponent implements OnChanges {

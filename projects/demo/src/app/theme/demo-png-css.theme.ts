@@ -4,7 +4,7 @@ export const DemoPNgCSSTheme = {
     button: {
       // workaround because of the error in primeng. Tokens `button.sm.font.size` and `button.sm.font.size` are well
       // documented but nonfunctional.
-      css: ({ dt }: { dt: (token: string) => string }) => `
+      css: ({ dt }: { dt: (token: string) => string | number | undefined } = { dt: () => undefined }) => `
         p-button button:not(.p-button-large)  .p-button-label,
         button.p-button:not(.p-button-large) .p-button-label,
         button.p-button:not(.p-button-large) {
@@ -18,14 +18,14 @@ export const DemoPNgCSSTheme = {
       `
     },
     inputtext: {
-      css: ({ dt }: { dt: (token: string) => string }) => `
+      css: ({ dt }: { dt: (token: string) => string | number | undefined } = { dt: () => undefined }) => `
         .p-inputtext.ng-invalid {
           color: ${dt('inputtext.invalid.text.color')};
         }
       `
     },
     password: {
-      css: ({ dt }: { dt: (token: string) => string }) => `
+      css: ({ dt }: { dt: (token: string) => string | number | undefined } = { dt: () => undefined }) => `
         input.p-password-input.ng-invalid {
           color: ${dt('password.invalid.text.color')};
         }

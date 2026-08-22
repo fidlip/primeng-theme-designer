@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, computed, effect, ElementRef, EventEmitter, inject, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, computed, effect, ElementRef, EventEmitter, inject, Output, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {PtdTranslatePipe} from '../i18n/translate.pipe';
@@ -129,6 +129,7 @@ const PRIME_MODULES = [AccordionModule, AutoCompleteModule, AvatarModule, BadgeM
   imports: [CommonModule, FormsModule, PtdTranslatePipe, ShowcaseSectionComponent, ...PRIME_MODULES],
   providers: [ConfirmationService, MessageService, TerminalService],
   templateUrl: './component-showcase.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './component-showcase.component.scss'
 })
 export class ComponentShowcaseComponent implements AfterViewInit {
@@ -151,6 +152,16 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   });
 
   readonly blockUiTarget: BlockableUI = {getBlockableElement: () => this.blockTargetRef!.nativeElement};
+  /**
+   * PrimeNG v22's BlockUI blocks itself from a constructor-time `effect()` reacting to `[blocked]`
+   * as soon as its own host element exists - which happens before this component's `ngAfterViewInit`
+   * populates `blockTargetRef`, so a statically-`true` `[blocked]` binding calls `getBlockableElement()`
+   * while it's still undefined. Starting `false` and flipping it inside the same deferred tick as
+   * `forceOpenDeferredOverlays()` (rather than directly in `ngAfterViewInit`) avoids both that crash
+   * and an ExpressionChangedAfterItHasBeenCheckedError from mutating it within the same CD pass that
+   * already checked it as `false`.
+   */
+  blockUiVisible = false;
   readonly products = PRODUCTS;
   readonly cities = CITIES;
   readonly scrollTopCopy = computed(() => buildScrollTopCopy(this.t()));
@@ -258,6 +269,7 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   }
 
   private forceOpenDeferredOverlays(): void {
+    this.blockUiVisible = true;
     if (this.confirmPopupAnchor) {
       this.confirmation.confirm({
         key: 'confirmpopup-demo', target: this.confirmPopupAnchor.nativeElement,
@@ -295,7 +307,8 @@ export class ComponentShowcaseComponent implements AfterViewInit {
   private preventOverlaysClosingOnOutsideClick(): void {
     if (this.confirmPopupRef) this.confirmPopupRef.hide = () => undefined;
     if (this.contextMenuRef) this.contextMenuRef.hide = () => undefined;
-    if (this.treeSelectRef?.overlayViewChild) this.treeSelectRef.overlayViewChild.hide = () => undefined;
+    const treeSelectOverlay = this.treeSelectRef?.overlayViewChild();
+    if (treeSelectOverlay) treeSelectOverlay.hide = () => undefined;
   }
 
   /** See the terminalReady doc comment - unrelated to the overlay-forcing above. */

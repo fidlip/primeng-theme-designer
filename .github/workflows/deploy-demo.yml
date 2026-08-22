@@ -21,9 +21,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
+      - name: Write PrimeNG license key
+        env:
+          PRIMENG_LICENSE_KEY: ${{ secrets.PRIMENG_LICENSE_KEY }}
+        run: |
+          cat > projects/demo/src/app/primeng-license.local.ts <<EOF
+          export const PRIMENG_LICENSE_KEY = '${PRIMENG_LICENSE_KEY}';
+          EOF
       - run: npx ng build primeng-theme-designer
       - run: npx ng build demo --base-href /primeng-theme-designer/
       - uses: actions/upload-pages-artifact@v3

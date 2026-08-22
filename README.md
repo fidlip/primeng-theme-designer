@@ -25,19 +25,19 @@ Then open `http://localhost:4200` — the demo app shows a full PrimeNG componen
 ## Installing the library in your own app
 
 ```bash
-npm install primeng-theme-designer primeng @primeng/themes
+npm install primeng-theme-designer primeng @primeuix/themes
 ```
 
 ```ts
 import { ThemeDesignerComponent } from 'primeng-theme-designer';
-import Material from '@primeng/themes/material';
+import Material from '@primeuix/themes/material';
 ```
 
 ```html
 <primeng-theme-designer [initialTheme]="theme" (closed)="showDesigner = false" />
 ```
 
-The package's major version tracks the PrimeNG major it targets (`primeng-theme-designer@^21` for PrimeNG 21, `@^20` for PrimeNG 20, etc.) — see the [library README](projects/primeng-theme-designer/README.md#versioning) for the full compatibility table and more usage details.
+The package's major version tracks the PrimeNG major it targets (`primeng-theme-designer@^22` for PrimeNG 22, `@^21` for PrimeNG 21, etc.) — see the [library README](projects/primeng-theme-designer/README.md#versioning) for the full compatibility table and more usage details.
 
 ----
 

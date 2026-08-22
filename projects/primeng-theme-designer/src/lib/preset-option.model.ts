@@ -1,6 +1,6 @@
 /**
  * Describes a selectable PrimeNG theme preset (e.g. Material, Aura, Lara, Nora).
- * `name` doubles as the `@primeng/themes/<name>` import path segment, so it must
+ * `name` doubles as the `@primeuix/themes/<name>` import path segment, so it must
  * match the lowercase package name of the preset it points to.
  *
  * `preset` is typed as `Record<string, unknown>` rather than `Json` because stock PrimeNG presets

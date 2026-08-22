@@ -311,7 +311,11 @@ export const DemoPNgDiffTheme = {
       700: "#8699b2",
       800: "#69788c",
       900: "#4c5866",
-      950: "#303740"
+      950: "#303740",
+      color: "light-dark({primary.500}, {primary.400})",
+      contrastColor: "light-dark(#475569, {surface.900})",
+      hoverColor: "light-dark({primary.600}, {primary.300})",
+      activeColor: "light-dark({primary.700}, {primary.200})"
     },
     formField: {
       paddingX: "0.75rem",
@@ -334,7 +338,26 @@ export const DemoPNgDiffTheme = {
         offset: "0",
         shadow: "none"
       },
-      transitionDuration: "{transition.duration}"
+      transitionDuration: "{transition.duration}",
+      background: "light-dark({surface.0}, {surface.950})",
+      disabledBackground: "light-dark({surface.200}, {surface.700})",
+      filledBackground: "light-dark({surface.50}, {surface.800})",
+      filledHoverBackground: "light-dark({surface.50}, {surface.800})",
+      filledFocusBackground: "light-dark({surface.50}, {surface.800})",
+      borderColor: "light-dark({surface.300}, {surface.600})",
+      hoverBorderColor: "light-dark({surface.400}, {surface.500})",
+      focusBorderColor: "{primary.color}",
+      invalidBorderColor: "light-dark({red.400}, {red.300})",
+      color: "light-dark({surface.700}, {surface.0})",
+      disabledColor: "light-dark({surface.500}, {surface.400})",
+      placeholderColor: "light-dark({surface.500}, {surface.400})",
+      invalidPlaceholderColor: "light-dark({red.600}, {red.400})",
+      floatLabelColor: "light-dark({surface.500}, {surface.400})",
+      floatLabelFocusColor: "light-dark({primary.600}, {primary.color})",
+      floatLabelActiveColor: "light-dark({surface.500}, {surface.400})",
+      floatLabelInvalidColor: "{form.field.invalid.placeholder.color}",
+      iconColor: "{surface.400}",
+      shadow: "0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgba(18, 18, 23, 0.05)"
     },
     list: {
       padding: "0.25rem 0.25rem",
@@ -344,18 +367,38 @@ export const DemoPNgDiffTheme = {
       },
       option: {
         padding: "0.5rem 0.75rem",
-        borderRadius: "{border.radius.sm}"
+        borderRadius: "{border.radius.sm}",
+        focusBackground: "light-dark({surface.100}, {surface.800})",
+        selectedBackground: "{highlight.background}",
+        selectedFocusBackground: "{highlight.focus.background}",
+        color: "{text.color}",
+        focusColor: "{text.hover.color}",
+        selectedColor: "{highlight.color}",
+        selectedFocusColor: "{highlight.focus.color}",
+        icon: {
+          color: "light-dark({surface.400}, {surface.500})",
+          focusColor: "light-dark({surface.500}, {surface.400})"
+        }
       },
       optionGroup: {
         padding: "0.5rem 0.75rem",
-        fontWeight: "600"
+        fontWeight: "600",
+        background: "transparent",
+        color: "{text.muted.color}"
       }
     },
     content: {
-      borderRadius: "{border.radius.md}"
+      borderRadius: "{border.radius.md}",
+      background: "light-dark({surface.0}, {surface.900})",
+      hoverBackground: "light-dark({surface.100}, {surface.800})",
+      borderColor: "light-dark({surface.200}, {surface.700})",
+      color: "{text.color}",
+      hoverColor: "{text.hover.color}"
     },
     mask: {
-      transitionDuration: "0.15s"
+      transitionDuration: "0.15s",
+      background: "light-dark(rgba(0,0,0,0.4), rgba(0,0,0,0.6))",
+      color: "{surface.200}"
     },
     navigation: {
       list: {
@@ -365,340 +408,126 @@ export const DemoPNgDiffTheme = {
       item: {
         padding: "0.5rem 0.75rem",
         borderRadius: "{border.radius.sm}",
-        gap: "0.5rem"
+        gap: "0.5rem",
+        focusBackground: "light-dark({surface.100}, {surface.800})",
+        activeBackground: "light-dark({surface.100}, {surface.800})",
+        color: "{text.color}",
+        focusColor: "{text.hover.color}",
+        activeColor: "{text.hover.color}",
+        icon: {
+          color: "light-dark({surface.400}, {surface.500})",
+          focusColor: "light-dark({surface.500}, {surface.400})",
+          activeColor: "light-dark({surface.500}, {surface.400})"
+        }
       },
       submenuLabel: {
         padding: "0.5rem 0.75rem",
-        fontWeight: "600"
+        fontWeight: "600",
+        background: "transparent",
+        color: "{text.muted.color}"
       },
       submenuIcon: {
-        size: "0.875rem"
+        size: "0.875rem",
+        color: "light-dark({surface.400}, {surface.500})",
+        focusColor: "light-dark({surface.500}, {surface.400})",
+        activeColor: "light-dark({surface.500}, {surface.400})"
       }
     },
     overlay: {
       select: {
         borderRadius: "{border.radius.md}",
-        shadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)"
+        shadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)",
+        background: "light-dark({surface.0}, {surface.900})",
+        borderColor: "light-dark({surface.200}, {surface.700})",
+        color: "{text.color}"
       },
       popover: {
         borderRadius: "{border.radius.md}",
         padding: "0.75rem",
-        shadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)"
+        shadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)",
+        background: "light-dark({surface.0}, {surface.900})",
+        borderColor: "light-dark({surface.200}, {surface.700})",
+        color: "{text.color}"
       },
       modal: {
         borderRadius: "{border.radius.xl}",
         padding: "1.25rem",
-        shadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
+        shadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
+        background: "light-dark({surface.0}, {surface.900})",
+        borderColor: "light-dark({surface.200}, {surface.700})",
+        color: "{text.color}"
       },
       navigation: {
         shadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)"
       }
     },
-    colorScheme: {
-      light: {
-        surface: {
-          0: "#ffffff",
-          50: "#f8fafc",
-          100: "#f1f5f9",
-          200: "#e2e8f0",
-          300: "#cbd5e1",
-          400: "#94a3b8",
-          500: "#64748b",
-          600: "#475569",
-          700: "#334155",
-          800: "#1e293b",
-          900: "#0f172a",
-          950: "#020617"
-        },
-        primary: {
-          color: "{primary.500}",
-          contrastColor: "#475569",
-          hoverColor: "{primary.600}",
-          activeColor: "{primary.700}"
-        },
-        highlight: {
-          background: "{primary.50}",
-          focusBackground: "{primary.100}",
-          color: "{primary.700}",
-          focusColor: "{primary.800}"
-        },
-        mask: {
-          background: "rgba(0,0,0,0.4)",
-          color: "{surface.200}"
-        },
-        formField: {
-          background: "{surface.0}",
-          disabledBackground: "{surface.200}",
-          filledBackground: "{surface.50}",
-          filledHoverBackground: "{surface.50}",
-          filledFocusBackground: "{surface.50}",
-          borderColor: "{surface.300}",
-          hoverBorderColor: "{surface.400}",
-          focusBorderColor: "{primary.color}",
-          invalidBorderColor: "{red.400}",
-          color: "{surface.700}",
-          disabledColor: "{surface.500}",
-          placeholderColor: "{surface.500}",
-          invalidPlaceholderColor: "{red.600}",
-          floatLabelColor: "{surface.500}",
-          floatLabelFocusColor: "{primary.600}",
-          floatLabelActiveColor: "{surface.500}",
-          floatLabelInvalidColor: "{form.field.invalid.placeholder.color}",
-          iconColor: "{surface.400}",
-          shadow: "0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgba(18, 18, 23, 0.05)"
-        },
-        text: {
-          color: "#4C4C4C",
-          hoverColor: "{surface.800}",
-          mutedColor: "{surface.500}",
-          hoverMutedColor: "{surface.600}"
-        },
-        content: {
-          background: "{surface.0}",
-          hoverBackground: "{surface.100}",
-          borderColor: "{surface.200}",
-          color: "{text.color}",
-          hoverColor: "{text.hover.color}"
-        },
-        overlay: {
-          select: {
-            background: "{surface.0}",
-            borderColor: "{surface.200}",
-            color: "{text.color}"
-          },
-          popover: {
-            background: "{surface.0}",
-            borderColor: "{surface.200}",
-            color: "{text.color}"
-          },
-          modal: {
-            background: "{surface.0}",
-            borderColor: "{surface.200}",
-            color: "{text.color}"
-          }
-        },
-        list: {
-          option: {
-            focusBackground: "{surface.100}",
-            selectedBackground: "{highlight.background}",
-            selectedFocusBackground: "{highlight.focus.background}",
-            color: "{text.color}",
-            focusColor: "{text.hover.color}",
-            selectedColor: "{highlight.color}",
-            selectedFocusColor: "{highlight.focus.color}",
-            icon: {
-              color: "{surface.400}",
-              focusColor: "{surface.500}"
-            }
-          },
-          optionGroup: {
-            background: "transparent",
-            color: "{text.muted.color}"
-          }
-        },
-        navigation: {
-          item: {
-            focusBackground: "{surface.100}",
-            activeBackground: "{surface.100}",
-            color: "{text.color}",
-            focusColor: "{text.hover.color}",
-            activeColor: "{text.hover.color}",
-            icon: {
-              color: "{surface.400}",
-              focusColor: "{surface.500}",
-              activeColor: "{surface.500}"
-            }
-          },
-          submenuLabel: {
-            background: "transparent",
-            color: "{text.muted.color}"
-          },
-          submenuIcon: {
-            color: "{surface.400}",
-            focusColor: "{surface.500}",
-            activeColor: "{surface.500}"
-          }
-        }
-      },
-      dark: {
-        surface: {
-          0: "#ffffff",
-          50: "#fafafa",
-          100: "#f4f4f5",
-          200: "#e4e4e7",
-          300: "#d4d4d8",
-          400: "#a1a1aa",
-          500: "#71717a",
-          600: "#52525b",
-          700: "#3f3f46",
-          800: "#27272a",
-          900: "#18181b",
-          950: "#09090b"
-        },
-        primary: {
-          color: "{primary.400}",
-          contrastColor: "{surface.900}",
-          hoverColor: "{primary.300}",
-          activeColor: "{primary.200}"
-        },
-        highlight: {
-          background: "color-mix(in srgb, {primary.400}, transparent 84%)",
-          focusBackground: "color-mix(in srgb, {primary.400}, transparent 76%)",
-          color: "rgba(255,255,255,.87)",
-          focusColor: "rgba(255,255,255,.87)"
-        },
-        mask: {
-          background: "rgba(0,0,0,0.6)",
-          color: "{surface.200}"
-        },
-        formField: {
-          background: "{surface.950}",
-          disabledBackground: "{surface.700}",
-          filledBackground: "{surface.800}",
-          filledHoverBackground: "{surface.800}",
-          filledFocusBackground: "{surface.800}",
-          borderColor: "{surface.600}",
-          hoverBorderColor: "{surface.500}",
-          focusBorderColor: "{primary.color}",
-          invalidBorderColor: "{red.300}",
-          color: "{surface.0}",
-          disabledColor: "{surface.400}",
-          placeholderColor: "{surface.400}",
-          invalidPlaceholderColor: "{red.400}",
-          floatLabelColor: "{surface.400}",
-          floatLabelFocusColor: "{primary.color}",
-          floatLabelActiveColor: "{surface.400}",
-          floatLabelInvalidColor: "{form.field.invalid.placeholder.color}",
-          iconColor: "{surface.400}",
-          shadow: "0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgba(18, 18, 23, 0.05)"
-        },
-        text: {
-          color: "{surface.0}",
-          hoverColor: "{surface.0}",
-          mutedColor: "{surface.400}",
-          hoverMutedColor: "{surface.300}"
-        },
-        content: {
-          background: "{surface.900}",
-          hoverBackground: "{surface.800}",
-          borderColor: "{surface.700}",
-          color: "{text.color}",
-          hoverColor: "{text.hover.color}"
-        },
-        overlay: {
-          select: {
-            background: "{surface.900}",
-            borderColor: "{surface.700}",
-            color: "{text.color}"
-          },
-          popover: {
-            background: "{surface.900}",
-            borderColor: "{surface.700}",
-            color: "{text.color}"
-          },
-          modal: {
-            background: "{surface.900}",
-            borderColor: "{surface.700}",
-            color: "{text.color}"
-          }
-        },
-        list: {
-          option: {
-            focusBackground: "{surface.800}",
-            selectedBackground: "{highlight.background}",
-            selectedFocusBackground: "{highlight.focus.background}",
-            color: "{text.color}",
-            focusColor: "{text.hover.color}",
-            selectedColor: "{highlight.color}",
-            selectedFocusColor: "{highlight.focus.color}",
-            icon: {
-              color: "{surface.500}",
-              focusColor: "{surface.400}"
-            }
-          },
-          optionGroup: {
-            background: "transparent",
-            color: "{text.muted.color}"
-          }
-        },
-        navigation: {
-          item: {
-            focusBackground: "{surface.800}",
-            activeBackground: "{surface.800}",
-            color: "{text.color}",
-            focusColor: "{text.hover.color}",
-            activeColor: "{text.hover.color}",
-            icon: {
-              color: "{surface.500}",
-              focusColor: "{surface.400}",
-              activeColor: "{surface.400}"
-            }
-          },
-          submenuLabel: {
-            background: "transparent",
-            color: "{text.muted.color}"
-          },
-          submenuIcon: {
-            color: "{surface.500}",
-            focusColor: "{surface.400}",
-            activeColor: "{surface.400}"
-          }
-        }
-      }
+    surface: {
+      0: "#ffffff",
+      50: "light-dark(#f8fafc, #fafafa)",
+      100: "light-dark(#f1f5f9, #f4f4f5)",
+      200: "light-dark(#e2e8f0, #e4e4e7)",
+      300: "light-dark(#cbd5e1, #d4d4d8)",
+      400: "light-dark(#94a3b8, #a1a1aa)",
+      500: "light-dark(#64748b, #71717a)",
+      600: "light-dark(#475569, #52525b)",
+      700: "light-dark(#334155, #3f3f46)",
+      800: "light-dark(#1e293b, #27272a)",
+      900: "light-dark(#0f172a, #18181b)",
+      950: "light-dark(#020617, #09090b)"
+    },
+    highlight: {
+      background: "light-dark({primary.50}, color-mix(in srgb, {primary.400}, transparent 84%))",
+      focusBackground: "light-dark({primary.100}, color-mix(in srgb, {primary.400}, transparent 76%))",
+      color: "light-dark({primary.700}, rgba(255,255,255,.87))",
+      focusColor: "light-dark({primary.800}, rgba(255,255,255,.87))"
+    },
+    text: {
+      color: "light-dark(#4C4C4C, {surface.0})",
+      hoverColor: "light-dark({surface.800}, {surface.0})",
+      mutedColor: "light-dark({surface.500}, {surface.400})",
+      hoverMutedColor: "light-dark({surface.600}, {surface.300})"
     }
   },
   components: {
     button: {
-      colorScheme: {
-        light: {
-          padding: {
-            x: '10px',
-            y: '7px',
-          },
+      root: {
+        paddingX: '10px',
+        paddingY: '7px',
+        sm: {
+          fontSize: '14px',
         },
-      },
-      sm: {
-        font: {
-          size: '14px',
-        }
-      },
-      label: {
-        font: {
-          weight: '400',
+        label: {
+          fontWeight: '400',
         }
       }
     },
     panelmenu: {
-      colorScheme: {
-        light: {
-          submenu: {
-            indent: '2rem',
-          },
-        },
+      submenu: {
+        indent: '2rem',
       },
     },
     card: {
-      colorScheme: {
-        light: {
-          body: {
-            padding: '32px 64px 64px',
-            gap: '32px'
+      body: {
+        padding: '32px 64px 64px',
+        gap: '32px'
+      },
+    },
+    inputtext: {
+      extend: {
+        invalid: {
+          text: {
+            color: "{form.field.invalid.placeholder.color}",
           },
         }
       }
     },
-    inputtext: {
-      invalid: {
-        text: {
-          color: "{form.field.invalid.placeholder.color}",
-        },
-      }
-    },
     password: {
-      invalid: {
-        text: {
-          color: "{form.field.invalid.placeholder.color}",
-        },
+      extend: {
+        invalid: {
+          text: {
+            color: "{form.field.invalid.placeholder.color}",
+          },
+        }
       }
     },
   },

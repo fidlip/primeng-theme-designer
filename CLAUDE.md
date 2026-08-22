@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`primeng-theme-designer` is an Angular library (Angular 21) that provides a standalone visual theme editor component (`<primeng-theme-designer>`) for PrimeNG design tokens. It's an Angular CLI workspace with two projects:
+`primeng-theme-designer` is an Angular library (Angular 22) that provides a standalone visual theme editor component (`<primeng-theme-designer>`) for PrimeNG design tokens. It's an Angular CLI workspace with two projects:
 
 - `projects/primeng-theme-designer` — the publishable library (buildable with `ng-packagr`).
 - `projects/demo` — an Angular app that consumes the library and doubles as a live example/showcase (`projects/demo/src/app/component-showcase`) of PrimeNG components styled by the designer's output.
@@ -50,7 +50,7 @@ When adding features that touch tokens, keep this pipeline in mind: raw theme ob
 
 `ThemeStateService` (`theme-state.service.ts`) is a root-provided singleton that:
 - Maintains the `availableTokensTree` / `availableTokens` streams (used for the `{token}` autocomplete across the whole editor) via `setTheme()`.
-- Generates downloadable preset files: a full preset (`downloadThemeFile`) or a diff against the stock `@primeng/themes/material` preset (`downloadThemeDiffFile`, using `deep-object-diff`), both serialized as TypeScript `definePreset(...)` source via string templates (not an AST — be careful with the `JSON.stringify` + regex post-processing if changing the output format, especially the `"__REF__..."` → `{...}` unwrapping for token references).
+- Generates downloadable preset files: a full preset (`downloadThemeFile`) or a diff against the stock `@primeuix/themes/material` preset (`downloadThemeDiffFile`, using `deep-object-diff`), both serialized as TypeScript `definePreset(...)` source via string templates (not an AST — be careful with the `JSON.stringify` + regex post-processing if changing the output format, especially the `"__REF__..."` → `{...}` unwrapping for token references).
 - Persists/restores the working theme to/from `localStorage` under the key `primeng-theme-designer-saved-theme`, and merges it onto the caller-supplied `initialTheme` via PrimeNG's `definePreset` on load.
 
 `TrackUserInteractionsDirective` is used on the root template to trigger the localStorage save whenever the user edits something.

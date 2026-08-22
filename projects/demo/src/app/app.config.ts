@@ -3,12 +3,13 @@ import {providePrimeNG} from 'primeng/config';
 import {definePNgThemePreset} from './theme';
 import {DEFAULT_THEME_PRESET} from './theme-presets';
 import {provideAnimations} from '@angular/platform-browser/animations';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withXhr} from '@angular/common/http';
 import {provideRouter} from '@angular/router';
 import {provideTranslateLoader, provideTranslateService} from '@ngx-translate/core';
 import {PTD_TRANSLATE_ADAPTER} from '../../../primeng-theme-designer';
 import {StaticTranslateLoader} from './i18n/static-translate-loader';
 import {NgxPtdTranslateAdapter} from './i18n/ngx-ptd-translate-adapter';
+import {PRIMENG_LICENSE_KEY} from './primeng-license.local';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,9 +27,10 @@ export const appConfig: ApplicationConfig = {
     // drawer's enter animation gets queued and replayed once it loads, which snaps
     // the already-visible drawer back to its hidden start state before animating in.
     provideAnimations(),
-    provideHttpClient(),
+    provideHttpClient(withXhr()),
     provideRouter([]),
     providePrimeNG({
+      license: PRIMENG_LICENSE_KEY || undefined,
       theme: {
         preset: definePNgThemePreset(DEFAULT_THEME_PRESET),
         options: {

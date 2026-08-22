@@ -19,7 +19,7 @@ A standalone visual theme editor for [PrimeNG](https://primeng.org) design token
 ## Installation
 
 ```bash
-npm install primeng-theme-designer primeng @primeng/themes
+npm install primeng-theme-designer primeng @primeuix/themes
 ```
 
 `@angular/core`, `@angular/common`, and `@angular/forms` are expected to already be present in an Angular app; PrimeNG's own peer dependencies (such as animations support) apply as usual.
@@ -30,11 +30,15 @@ This package's major version tracks the PrimeNG major version it targets (the sa
 
 | primeng-theme-designer | PrimeNG |
 | --- | --- |
+| `^22.0.0` | `^22.0.0` |
 | `^21.0.0` | `^21.0.0` |
 | `^20.0.0` | `^20.0.0` |
 | `^19.0.0` | `^19.1.3` |
 
 ```bash
+# PrimeNG 22
+npm install primeng-theme-designer@^22 primeng@^22 @primeuix/themes@^3
+
 # PrimeNG 21
 npm install primeng-theme-designer@^21 primeng@^21 @primeng/themes@^21
 
@@ -52,7 +56,7 @@ Because the major version is dictated by PrimeNG compatibility rather than this 
 ```ts
 import { Component } from '@angular/core';
 import { ThemeDesignerComponent } from 'primeng-theme-designer';
-import Material from '@primeng/themes/material';
+import Material from '@primeuix/themes/material';
 
 @Component({
   selector: 'app-root',
@@ -70,7 +74,7 @@ export class AppComponent {
 }
 ```
 
-Pass any object built with `@primeng/themes`' `definePreset(...)` (or a stock preset like `Material`) as `initialTheme` — that's the only required input.
+Pass any object built with `@primeuix/themes`' `definePreset(...)` (or a stock preset like `Material`) as `initialTheme` — that's the only required input.
 
 ## API
 

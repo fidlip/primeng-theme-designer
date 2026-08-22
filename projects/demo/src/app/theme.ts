@@ -1,4 +1,4 @@
-import { definePreset } from '@primeng/themes';
+import { definePreset } from '@primeuix/themes';
 import { PresetOption } from 'primeng-theme-designer';
 import { DemoPNgDiffTheme } from './theme/demo-png-diff.theme';
 import { DemoPNgCSSTheme } from './theme/demo-png-css.theme';

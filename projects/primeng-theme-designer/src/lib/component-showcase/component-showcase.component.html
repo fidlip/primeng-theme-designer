@@ -12,7 +12,7 @@
     <div class="row"><p-badge value="2" /><p-badge value="8" severity="success" /><p-badge value="9" severity="warn" /><p-badge value="3" severity="danger" /><i class="pi pi-bell overlay-icon" pBadge value="2"></i></div>
   </primeng-showcase-section>
   <primeng-showcase-section title="BlockUI" anchor="blockui" (editTheme)="editTheme.emit($event)">
-    <div class="block-target" #blockTarget>{{ 'showcase.blockui.target' | ptdTranslate }}</div><p-blockui [blocked]="true" [target]="blockUiTarget"><i class="pi pi-spin pi-spinner overlay-icon"></i></p-blockui>
+    <div class="block-target" #blockTarget>{{ 'showcase.blockui.target' | ptdTranslate }}</div><p-blockui [blocked]="blockUiVisible" [target]="blockUiTarget"><i class="pi pi-spin pi-spinner overlay-icon"></i></p-blockui>
   </primeng-showcase-section>
   <primeng-showcase-section title="Breadcrumb" anchor="breadcrumb" (editTheme)="editTheme.emit($event)">
     <p-breadcrumb [model]="breadcrumbItems()" [home]="{icon:'pi pi-home'}" />
@@ -21,7 +21,7 @@
     <div class="row"><p-button [label]="'showcase.button.primary' | ptdTranslate" icon="pi pi-check" /><p-button [label]="'showcase.button.secondary' | ptdTranslate" severity="secondary" /><p-button icon="pi pi-heart" rounded /></div>
   </primeng-showcase-section>
   <primeng-showcase-section title="ButtonGroup" anchor="buttongroup" (editTheme)="editTheme.emit($event)">
-    <p-buttonGroup><p-button [label]="'showcase.shared.actions.save' | ptdTranslate" icon="pi pi-check" /><p-button [label]="'showcase.shared.actions.edit' | ptdTranslate" icon="pi pi-pencil" /><p-button [label]="'showcase.shared.actions.delete' | ptdTranslate" icon="pi pi-trash" /></p-buttonGroup>
+    <p-buttongroup><p-button [label]="'showcase.shared.actions.save' | ptdTranslate" icon="pi pi-check" /><p-button [label]="'showcase.shared.actions.edit' | ptdTranslate" icon="pi pi-pencil" /><p-button [label]="'showcase.shared.actions.delete' | ptdTranslate" icon="pi pi-trash" /></p-buttongroup>
   </primeng-showcase-section>
   <primeng-showcase-section title="Card" anchor="card" (editTheme)="editTheme.emit($event)">
     <p-card [header]="'showcase.card.header' | ptdTranslate" [subheader]="'showcase.card.subheader' | ptdTranslate"><p>{{ 'showcase.card.content' | ptdTranslate }}</p><ng-template #footer><p-button [label]="'showcase.card.open' | ptdTranslate" /></ng-template></p-card>
@@ -235,7 +235,7 @@
     <p-timeline [value]="timelineEvents()"><ng-template #content let-event><strong>{{event.status}}</strong><small>{{event.date}}</small></ng-template></p-timeline>
   </primeng-showcase-section>
   <primeng-showcase-section title="Toast" anchor="toast" (editTheme)="editTheme.emit($event)">
-    <div class="toast-host"><p-toast key="showcase" [baseZIndex]="0" /></div>
+    <div class="toast-host"><p-toast key="showcase" [baseZIndex]="0" mode="expanded" /></div>
   </primeng-showcase-section>
   <primeng-showcase-section title="ToggleButton" anchor="togglebutton" (editTheme)="editTheme.emit($event)">
     <p-togglebutton [(ngModel)]="toggle" [onLabel]="'showcase.togglebutton.onLabel' | ptdTranslate" [offLabel]="'showcase.togglebutton.offLabel' | ptdTranslate" onIcon="pi pi-moon" offIcon="pi pi-sun" />

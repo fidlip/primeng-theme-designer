@@ -1,5 +1,5 @@
 <p-fieldset class="w-full mb-3" [legend]="header" [toggleable]="true" [collapsed]="collapsed"
-            [transitionOptions]="'0ms'" (collapsedChange)="onCollapsedChange($event)">
+            [motionOptions]="{duration: 0}" (collapsedChange)="onCollapsedChange($event)">
   @if (expanded) {
     <div class="ptd-section-grid">
       @for (entry of sectionConfig | keyvalue:null; track entry.key) {

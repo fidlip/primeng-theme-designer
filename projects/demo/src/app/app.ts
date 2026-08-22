@@ -1,11 +1,11 @@
-import {AfterViewInit, Component, inject} from '@angular/core';
+import {AfterViewInit, Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import { definePNgThemePreset } from './theme';
 import { DEFAULT_THEME_PRESET, THEME_PRESETS } from './theme-presets';
 import {
   ComponentShowcaseComponent, PresetOption, PresetSelectorComponent, ShowcaseSectionComponent, ThemeDesignerComponent,
   ThemeStateService,
 } from '../../../primeng-theme-designer';
-import { Theme } from '@primeng/themes';
+import { Theme } from '@primeuix/themes';
 import {ButtonModule} from 'primeng/button';
 import {TooltipModule} from 'primeng/tooltip';
 import {SelectButtonModule} from 'primeng/selectbutton';
@@ -23,6 +23,7 @@ const LANGS = ['en', 'cs', 'de'];
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class App implements AfterViewInit {
