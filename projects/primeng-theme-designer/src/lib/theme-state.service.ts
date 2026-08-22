@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Json } from './json.model';
+import { Json, JsonPropertyType } from './json.model';
 import { detailedDiff } from 'deep-object-diff';
 import { BehaviorSubject, map } from 'rxjs';
 import { TreeNode } from 'primeng/api';
 import { buildTokenTree, flattenTokenTree, ThemeTokenOption } from './token-tree-builder';
 import { PresetOption } from './preset-option.model';
+import { cloneTheme } from './theme-clone.helper';
+import { countChangedLeaves } from './theme-diff.helper';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +20,72 @@ export class ThemeStateService {
   /** The stock preset the working theme was derived from; used as the export/diff baseline. */
   private basePreset?: PresetOption;
 
+  /** The stock preset (`basePreset`, before the host app's own customizations or any saved/local edits); used to detect and undo per-field edits. */
+  private defaultTheme?: Json;
+
+  /** The theme as it was last pushed live via `Theme.setTheme` (either on load or via the Apply button); used to count pending unapplied edits. */
+  private lastAppliedTheme?: Json;
+
+  /** The theme as the host app itself defines it (`initialTheme`, before any locally-saved edits are merged in); used to count changes for the Download badge. */
+  private appLoadTheme?: Json;
+
   setTheme(theme: Json): void {
     this.availableTokensTree.next(buildTokenTree(theme));
+  }
+
+  /**
+   * Sets the baseline theme that per-field reset buttons compare against and restore from.
+   * Must be the raw stock preset (`basePreset.preset`), not the host app's `initialTheme` -
+   * otherwise reverting a field would only undo the designer's own edits, not the app's
+   * customizations layered onto the stock preset via `definePreset`. Clones the given theme so
+   * later in-place edits to the working theme can't also mutate this baseline.
+   */
+  setDefaultTheme(theme: Json): void {
+    this.defaultTheme = cloneTheme(theme);
+  }
+
+  /** Looks up the default value at a dot-path (e.g. `"components.button.root.paddingX"`) in the baseline theme set via `setDefaultTheme`. */
+  getDefaultValue(path: string): JsonPropertyType | undefined {
+    if (!this.defaultTheme) {
+      return undefined;
+    }
+    let current: unknown = this.defaultTheme;
+    for (const segment of path.split('.')) {
+      if (current === null || typeof current !== 'object') {
+        return undefined;
+      }
+      current = (current as Record<string, unknown>)[segment];
+    }
+    return current as JsonPropertyType | undefined;
+  }
+
+  /** Records the theme snapshot most recently pushed live, so `countChangesSinceLastApply` has a baseline. Clones defensively, same as `setDefaultTheme`. */
+  setLastAppliedTheme(theme: Json): void {
+    this.lastAppliedTheme = cloneTheme(theme);
+  }
+
+  /** Number of leaf token values that differ from the theme's default (baseline set via `setDefaultTheme`). */
+  countChangesFromDefault(theme: Json): number {
+    return this.defaultTheme ? countChangedLeaves(theme, this.defaultTheme) : 0;
+  }
+
+  /** Records the theme snapshot as the host app itself defines it, so `countChangesFromAppLoad` has a baseline. Clones defensively, same as `setDefaultTheme`. */
+  setAppLoadTheme(theme: Json): void {
+    this.appLoadTheme = cloneTheme(theme);
+  }
+
+  /** Number of leaf token values that differ from what was last pushed live (baseline set via `setLastAppliedTheme`). */
+  countChangesSinceLastApply(theme: Json): number {
+    return this.lastAppliedTheme ? countChangedLeaves(theme, this.lastAppliedTheme) : 0;
+  }
+
+  /**
+   * Number of leaf token values that differ from the theme as the host app itself defines it
+   * (baseline set via `setAppLoadTheme`, unaffected by any locally-saved edits merged onto it) -
+   * so a value restored from local storage still counts, since it isn't in that definition yet.
+   */
+  countChangesFromAppLoad(theme: Json): number {
+    return this.appLoadTheme ? countChangedLeaves(theme, this.appLoadTheme) : 0;
   }
 
   /**

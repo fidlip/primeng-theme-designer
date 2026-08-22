@@ -1,10 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PaletteDesignToken } from '@primeuix/themes/types';
 import { IsJsonPipe } from '../is-json.pipe';
-import {hexToRgb, mixRGB, PaletteKey, RGB, rgbToHex} from '../palette.helpers';
+import {hexToRgb, isPalette, mixRGB, PaletteKey, RGB, rgbToHex} from '../palette.helpers';
 import { PtdTranslatePipe } from '../i18n/translate.pipe';
+import { ThemeStateService } from '../theme-state.service';
+
+const PALETTE_KEYS = Object.values(PaletteKey).filter((key): key is PaletteKey => typeof key === 'number');
 
 @Component({
   selector: 'ptd-palette-section',
@@ -18,6 +21,44 @@ export class PaletteSectionComponent {
   @Input({ required: true }) keyBase?: string;
   @Input({ required: true }) header?: string;
   protected readonly PaletteKey = PaletteKey;
+
+  private readonly themeState = inject(ThemeStateService);
+
+  /** Whether any shade of the palette differs from the theme's default; drives the reset button's visibility. */
+  protected get showResetButton(): boolean {
+    const defaultPalette = this.getDefaultPalette();
+    if (!this.palette || !defaultPalette) {
+      return false;
+    }
+    return PALETTE_KEYS.some(key => this.palette![key] !== defaultPalette[key]);
+  }
+
+  /** "current → default" tooltip shown on the reset button, based on the base (500) shade; only meaningful while `showResetButton` is true. */
+  protected get resetTooltip(): string {
+    const defaultPalette = this.getDefaultPalette();
+    const currentBase = this.palette?.[PaletteKey._500] ?? '';
+    const defaultBase = defaultPalette?.[PaletteKey._500] ?? '';
+    return `${currentBase} → ${defaultBase}`;
+  }
+
+  protected resetToDefault(event: Event): void {
+    event.preventDefault();
+    const defaultPalette = this.getDefaultPalette();
+    if (!this.palette || !defaultPalette) {
+      return;
+    }
+    for (const key of PALETTE_KEYS) {
+      this.palette[key] = defaultPalette[key];
+    }
+  }
+
+  private getDefaultPalette(): PaletteDesignToken | undefined {
+    if (!this.keyBase) {
+      return undefined;
+    }
+    const defaultValue = this.themeState.getDefaultValue(this.keyBase);
+    return isPalette(defaultValue) ? defaultValue : undefined;
+  }
 
   /**
    * Updates the theme palette with the selected base color
