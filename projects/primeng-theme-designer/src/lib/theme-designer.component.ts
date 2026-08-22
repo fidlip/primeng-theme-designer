@@ -11,6 +11,7 @@ import {PresetOption} from './preset-option.model';
 import {ProgressSpinner} from 'primeng/progressspinner';
 import {Drawer} from 'primeng/drawer';
 import {Button} from 'primeng/button';
+import {OverlayBadge} from 'primeng/overlaybadge';
 import {TabSectionComponent} from './tab-section/tab-section.component';
 import {IsJsonPipe} from './is-json.pipe';
 import {TrackUserInteractionsDirective} from './track-user-interactions.directive';
@@ -38,6 +39,7 @@ import {TitleCasePipe} from '@angular/common';
     ProgressSpinner,
     Drawer,
     Button,
+    OverlayBadge,
     TabSectionComponent,
     IsJsonPipe,
     TrackUserInteractionsDirective,
@@ -66,6 +68,12 @@ export class ThemeDesignerComponent implements OnChanges {
   protected theme?: Json;
   protected themeSections: Array<{ key: string; value: unknown }> = [];
   protected loading = true;
+  /** Leaf token values differing from what was last pushed live; shown as a badge on the Apply button. */
+  protected changesSinceApply = 0;
+  /** Leaf token values differing from the theme's default; shown as a badge on the Reset button. */
+  protected changesFromDefault = 0;
+  /** Leaf token values differing from the theme as it stood right after the app loaded; shown as a badge on the Download button. */
+  protected changesFromAppLoad = 0;
   protected activeTab = 'primitive';
   /** Tab whose content is actually built; lags behind `activeTab` by one tick so a switch can paint a spinner first. */
   protected renderedTab = this.activeTab;
@@ -165,7 +173,14 @@ export class ThemeDesignerComponent implements OnChanges {
   }
 
   onApplyTheme(): void {
-    Theme.setTheme({preset: this.theme});
+    // `Theme.setTheme` replaces `options` wholesale (falling back to library defaults for
+    // anything not passed) rather than merging onto what's already active - omitting it here
+    // would silently discard the consuming app's own `darkModeSelector`/`cssLayer`/... config.
+    Theme.setTheme({preset: this.theme, options: Theme.getOptions()});
+    if (isJson(this.theme)) {
+      this.themeService.setLastAppliedTheme(this.theme);
+    }
+    this.refreshChangeCounts();
   }
 
   onDemoPage(): void {
@@ -183,6 +198,30 @@ export class ThemeDesignerComponent implements OnChanges {
     if (isJson(this.theme)) {
       this.themeService.saveToLocalStorage(this.theme);
     }
+    this.refreshChangeCounts();
+  }
+
+  /** Recomputes the Apply/Reset/Download badge counts from the current working theme. */
+  private refreshChangeCounts(): void {
+    if (!isJson(this.theme)) {
+      return;
+    }
+    this.changesSinceApply = this.themeService.countChangesSinceLastApply(this.theme);
+    this.changesFromDefault = this.themeService.countChangesFromDefault(this.theme);
+    this.changesFromAppLoad = this.themeService.countChangesFromAppLoad(this.theme);
+  }
+
+  /** `p-overlaybadge`'s `badgeDisabled` input hides the badge when true, so an empty count maps to `undefined`. */
+  protected get applyBadge(): string | undefined {
+    return this.changesSinceApply > 0 ? String(this.changesSinceApply) : undefined;
+  }
+
+  protected get resetBadge(): string | undefined {
+    return this.changesFromDefault > 0 ? String(this.changesFromDefault) : undefined;
+  }
+
+  protected get downloadBadge(): string | undefined {
+    return this.changesFromAppLoad > 0 ? String(this.changesFromAppLoad) : undefined;
   }
 
   /**
@@ -200,6 +239,11 @@ export class ThemeDesignerComponent implements OnChanges {
       : this.titleCasePipe.transform(key);
   }
 
+  /**
+   * Discards not just local edits but the host app's own preset customizations too, restoring
+   * the raw stock preset (`basePreset`) - consistent with the per-field undo buttons and the
+   * Reset badge, which likewise compare against the stock preset rather than `initialTheme`.
+   */
   resetThemeToDefault(): void {
     this.confirmationService.confirm({
       header: this.translateService.translate('designer.confirmReset.header'),
@@ -208,7 +252,7 @@ export class ThemeDesignerComponent implements OnChanges {
       rejectLabel: this.translateService.translate('designer.confirmReset.reject'),
       accept: () => {
         this.themeService.clearThemeInLocalStorage();
-        this.initializeTheme(false);
+        this.loadTheme(cloneTheme(this.basePreset.preset) as Json);
         this.onApplyTheme();
       },
     });
@@ -221,10 +265,28 @@ export class ThemeDesignerComponent implements OnChanges {
 
     const initialTheme = cloneTheme(this.initialTheme);
     const savedTheme = restoreSavedTheme ? this.themeService.getSavedTheme() : undefined;
+    // The stock preset itself (not `initialTheme`) is the reset/undo baseline, so per-field
+    // reverts land on the token's factory value even when the host app's `initialTheme` already
+    // layers its own customizations on top via `definePreset`.
+    this.themeService.setDefaultTheme(this.basePreset.preset as Json);
+    // Snapshot `initialTheme` itself, before merging any locally-saved edits onto it - the
+    // Download badge tracks drift against what the app's own preset file actually defines, so a
+    // value restored from a previous session's local edit (not yet folded back into that file)
+    // still counts as a change. Also not done in `loadTheme`, so a later `resetThemeToDefault()`
+    // call (which reuses `loadTheme`) doesn't re-baseline it.
+    this.themeService.setAppLoadTheme(initialTheme);
     const theme = savedTheme ? definePreset(initialTheme, savedTheme) : initialTheme;
+    this.loadTheme(theme);
+  }
+
+  private loadTheme(theme: Json): void {
     this.theme = theme;
     this.themeService.setBasePreset(this.basePreset);
     this.themeService.setTheme(theme);
+    // The freshly loaded theme (saved edits included, if any) is treated as the Apply baseline -
+    // this component has no visibility into what the host app actually rendered at bootstrap.
+    this.themeService.setLastAppliedTheme(theme);
+    this.refreshChangeCounts();
     this.themeSections = Object.entries(theme)
       .filter(([key]) => key !== 'css')
       .map(([key, value]) => ({key, value}));

@@ -1,9 +1,11 @@
+import { TestBed } from '@angular/core/testing';
 import { PaletteDesignToken } from '@primeng/themes/types';
 import { PaletteSectionComponent } from './palette-section.component';
 
 describe('PaletteSectionComponent', () => {
   it('generates only numeric PrimeNG palette shades', () => {
-    const component = new PaletteSectionComponent();
+    TestBed.configureTestingModule({});
+    const component = TestBed.runInInjectionContext(() => new PaletteSectionComponent());
     const palette = {} as PaletteDesignToken;
 
     component.updatePalette(palette, '#336699');

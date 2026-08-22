@@ -20,12 +20,18 @@
       <div class="ptd-designer-action-buttons flex items-center gap-2">
         <p-button icon="pi pi-home" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.demoPage' | ptdTranslate"
                   (click)="onDemoPage()"/>
-        <p-button icon="pi pi-download" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.download' | ptdTranslate"
-                  (click)="onDownloadTheme()"/>
-        <p-button icon="pi pi-upload" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.apply' | ptdTranslate"
-                  (click)="onApplyTheme()"/>
-        <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.resetTheme' | ptdTranslate"
-                  (click)="resetThemeToDefault()"/>
+        <p-overlaybadge [value]="downloadBadge" severity="info" [badgeDisabled]="!downloadBadge">
+          <p-button icon="pi pi-download" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.download' | ptdTranslate"
+                    (click)="onDownloadTheme()"/>
+        </p-overlaybadge>
+        <p-overlaybadge [value]="applyBadge" severity="danger" [badgeDisabled]="!applyBadge">
+          <p-button icon="pi pi-upload" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.apply' | ptdTranslate"
+                    (click)="onApplyTheme()"/>
+        </p-overlaybadge>
+        <p-overlaybadge [value]="resetBadge" severity="success" [badgeDisabled]="!resetBadge">
+          <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.resetTheme' | ptdTranslate"
+                    (click)="resetThemeToDefault()"/>
+        </p-overlaybadge>
         <p-button icon="pi pi-sun" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.toggleDarkMode' | ptdTranslate"
                   (click)="toggleDarkMode()" tooltipPosition="left"/>
         <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.close' | ptdTranslate" tooltipPosition="left"

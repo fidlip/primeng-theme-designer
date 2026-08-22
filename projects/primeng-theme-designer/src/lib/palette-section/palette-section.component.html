@@ -8,6 +8,13 @@
         [name]="keyBase + 'BaseColor'"
         (ngModelChange)="onColorChange($event)"
       />
+      @if (showResetButton) {
+        <button type="button" class="ptd-theme-palette-reset"
+                [title]="resetTooltip"
+                (mousedown)="resetToDefault($event)">
+          <i class="pi pi-undo"></i>
+        </button>
+      }
     </div>
     <div class="ptd-theme-palette-container">
       @if (palette | isJson) {

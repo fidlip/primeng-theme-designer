@@ -2,12 +2,21 @@ import { TreeNode } from 'primeng/api';
 
 const REF_REGEX = /^{([^{}]+)}$/;
 const PARTIAL_REF_REGEX = /\{([^}]+)\}/g;
+const MAX_EVALUATION_DEPTH = 10;
 
 export function evaluateTokenValue(value: string, tree: TreeNode[], _preview = false): string {
-  return value.replace(PARTIAL_REF_REGEX, match => {
-    const resolved = resolveToken(match, tree);
-    return resolved?.data?.value === undefined ? match : String(resolved.data.value);
-  });
+  let result = value;
+  for (let depth = 0; depth < MAX_EVALUATION_DEPTH; depth++) {
+    const next = result.replace(PARTIAL_REF_REGEX, match => {
+      const resolved = resolveToken(match, tree);
+      return resolved?.data?.value === undefined ? match : String(resolved.data.value);
+    });
+    if (next === result) {
+      break;
+    }
+    result = next;
+  }
+  return result;
 }
 
 export function resolveToken(path: string, tree: TreeNode[], visited = new Set<string>()): TreeNode | null {

@@ -5,16 +5,16 @@ export const PTD_TRANSLATIONS_EN: PtdTranslationTree = {
   designer: {
     title: 'Designer',
     tooltip: {
-      demoPage: 'Demo page',
-      download: 'Download',
-      apply: 'Apply',
-      resetTheme: 'Reset to the default theme',
-      toggleDarkMode: 'Toggle dark mode',
-      close: 'Close',
+      demoPage: 'Open the demo page',
+      download: 'Download the theme file - badge shows fields changed since the app loaded',
+      apply: 'Apply the theme live - badge shows edits since the last apply',
+      resetTheme: 'Reset to the stock preset, discarding all customizations - badge shows fields differing from it',
+      toggleDarkMode: 'Preview dark mode in the designer',
+      close: 'Close the designer',
     },
     confirmReset: {
       header: 'Confirmation',
-      message: 'Do you want to discard the current theme and restore the default theme?',
+      message: 'Do you want to discard the current theme, including any customizations made by the app, and restore the stock preset?',
       accept: 'Discard',
       reject: 'Back',
     },

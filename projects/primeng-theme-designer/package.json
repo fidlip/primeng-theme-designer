@@ -1,6 +1,6 @@
 {
   "name": "primeng-theme-designer",
-  "version": "19.0.0",
+  "version": "19.1.0",
   "description": "Standalone Theme Designer for PrimeNG",
   "main": "./src/public-api.ts",
   "scripts": {

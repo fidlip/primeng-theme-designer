@@ -11,6 +11,8 @@ describe('theme token utilities', () => {
     semantic: {
       primary: { color: '{blue.500}' },
       border: { value: '1px solid {blue.500}' },
+      surface: { 100: '#f1f5f9', 800: '#1e293b' },
+      background: { value: 'light-dark({surface.100}, {surface.800})' },
     },
     css: () => '.ignored {}',
   } as unknown as Json;
@@ -31,8 +33,13 @@ describe('theme token utilities', () => {
   it('resolves nested and partial token references', () => {
     const tree = buildTokenTree(theme);
     expect(resolveToken('{primary.color}', tree)?.data.value).toBe('#336699');
-    expect(evaluateTokenValue('border: {border.value}', tree)).toBe('border: 1px solid {blue.500}');
+    expect(evaluateTokenValue('border: {border.value}', tree)).toBe('border: 1px solid #336699');
     expect(evaluateTokenValue('color: {primary.color}', tree)).toBe('color: #336699');
+  });
+
+  it('resolves multiple token references nested inside a single compound value (e.g. light-dark())', () => {
+    const tree = buildTokenTree(theme);
+    expect(evaluateTokenValue('{background.value}', tree)).toBe('light-dark(#f1f5f9, #1e293b)');
   });
 
   it('sanitizes token braces', () => {
