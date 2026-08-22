@@ -157,6 +157,7 @@ export class ThemeDesignerComponent implements OnChanges {
 
   toggleDarkMode(): void {
     window.document.body.classList.toggle('ptd-dark-mode');
+    this.themeService.toggleDarkMode();
   }
 
   protected toggleCollapsed(): void {
@@ -169,7 +170,10 @@ export class ThemeDesignerComponent implements OnChanges {
   }
 
   onApplyTheme(): void {
-    Theme.setTheme({preset: this.theme});
+    // `Theme.setTheme` replaces `options` wholesale (falling back to library defaults for
+    // anything not passed) rather than merging onto what's already active - omitting it here
+    // would silently discard the consuming app's own `darkModeSelector`/`cssLayer`/... config.
+    Theme.setTheme({preset: this.theme, options: Theme.getOptions()});
   }
 
   onDemoPage(): void {
