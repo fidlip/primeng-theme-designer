@@ -1,5 +1,5 @@
 
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, forwardRef, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, ElementRef, EventEmitter, forwardRef, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
@@ -7,6 +7,9 @@ import { Popover } from 'primeng/popover';
 import { ThemeTokenOption } from '../token-tree-builder';
 import { ValuePreviewComponent } from '../value-preview/value-preview.component';
 import { PtdTranslatePipe } from '../i18n/translate.pipe';
+import { ThemeStateService } from '../theme-state.service';
+import { formatLightDarkValue, LightDarkValue, parseLightDarkValue } from '../light-dark-value.helper';
+import { resolveToken } from '../token-resolver';
 
 const NON_TOKEN_CHARACTER = /[.A-Za-z0-9]/;
 
@@ -40,8 +43,26 @@ export class ThemeValuePickerComponent implements ControlValueAccessor {
   protected selectedTokenIndex: number | null = null;
   protected disabled = false;
 
+  private readonly themeState = inject(ThemeStateService);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
+  /** Set only when the written value is a `light-dark(light, dark)` pair; `inputText` then shows/edits just one half. */
+  private lightDarkValue: LightDarkValue | null = null;
+
   private onChange: (value: string) => void = () => undefined;
   private onTouched: () => void = () => undefined;
+
+  constructor() {
+    effect(() => {
+      const darkMode = this.themeState.darkMode();
+      if (this.lightDarkValue) {
+        this.inputText = darkMode ? this.lightDarkValue.dark : this.lightDarkValue.light;
+        // This component is OnPush; the effect runs outside its own change detection pass, so
+        // mutating `inputText` here needs an explicit nudge to reach the template/child preview.
+        this.changeDetectorRef.markForCheck();
+      }
+    });
+  }
 
   @HostListener('keydown.arrowUp', ['$event'])
   onArrowUp(event: Event): void {
@@ -71,7 +92,11 @@ export class ThemeValuePickerComponent implements ControlValueAccessor {
   }
 
   writeValue(value: string | number | boolean | null): void {
-    this.inputText = value === null ? '' : String(value);
+    const rawValue = value === null ? '' : String(value);
+    this.lightDarkValue = parseLightDarkValue(rawValue);
+    this.inputText = this.lightDarkValue
+      ? (this.themeState.darkMode() ? this.lightDarkValue.dark : this.lightDarkValue.light)
+      : rawValue;
   }
 
   registerOnChange(fn: (value: string) => void): void {
@@ -120,7 +145,16 @@ export class ThemeValuePickerComponent implements ControlValueAccessor {
     const { start, end } = this.getTokenBounds(text, caret);
     const replacement = `{${token.path}}`;
     const value = text.slice(0, start) + replacement + text.slice(end);
-    this.updateValue(value);
+
+    if (this.lightDarkValue && value.trim() === replacement && this.resolvesToLightDarkPair(token.path)) {
+      // The picked token is itself a light-dark(light, dark) pair, so it already carries both
+      // halves on its own - point straight at it instead of nesting a fresh light-dark(...)
+      // around a reference that would just re-resolve to the same pair one level down.
+      this.lightDarkValue = null;
+      this.updateValue(replacement);
+    } else {
+      this.updateValue(value);
+    }
 
     const position = start + replacement.length;
     setTimeout(() => {
@@ -128,6 +162,11 @@ export class ThemeValuePickerComponent implements ControlValueAccessor {
       input.setSelectionRange(position, position);
       this.popover.hide();
     });
+  }
+
+  private resolvesToLightDarkPair(path: string): boolean {
+    const value = resolveToken(`{${path}}`, this.tokenTree)?.data?.value;
+    return typeof value === 'string' && parseLightDarkValue(value) !== null;
   }
 
   onInputBlur(): void {
@@ -143,8 +182,16 @@ export class ThemeValuePickerComponent implements ControlValueAccessor {
 
   private updateValue(value: string): void {
     this.inputText = value;
-    this.onChange(value);
-    this.valueChange.emit(value);
+
+    if (this.lightDarkValue) {
+      this.lightDarkValue = this.themeState.darkMode()
+        ? { ...this.lightDarkValue, dark: value }
+        : { ...this.lightDarkValue, light: value };
+    }
+    const fullValue = this.lightDarkValue ? formatLightDarkValue(this.lightDarkValue) : value;
+
+    this.onChange(fullValue);
+    this.valueChange.emit(fullValue);
   }
 
   private getTokenBounds(text: string, caret: number): { start: number; end: number } {

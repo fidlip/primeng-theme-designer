@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Json } from './json.model';
 import { detailedDiff } from 'deep-object-diff';
 import { BehaviorSubject, map } from 'rxjs';
@@ -15,11 +15,22 @@ export class ThemeStateService {
     map((tokenTree: TreeNode[]): ThemeTokenOption[] => flattenTokenTree(tokenTree))
   );
 
+  /**
+   * Which half of a `light-dark(light, dark)` token value the editor should show/edit.
+   * Mirrors the designer's own dark-mode toggle (not the consuming app's).
+   */
+  private readonly _darkMode = signal(false);
+  readonly darkMode = this._darkMode.asReadonly();
+
   /** The stock preset the working theme was derived from; used as the export/diff baseline. */
   private basePreset?: PresetOption;
 
   setTheme(theme: Json): void {
     this.availableTokensTree.next(buildTokenTree(theme));
+  }
+
+  toggleDarkMode(): void {
+    this._darkMode.update(darkMode => !darkMode);
   }
 
   /**

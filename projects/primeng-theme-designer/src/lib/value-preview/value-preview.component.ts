@@ -1,13 +1,15 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject, Input, OnChanges } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { evaluateTokenValue } from '../token-resolver';
+import { collapseLightDark } from '../light-dark-value.helper';
+import { ThemeStateService } from '../theme-state.service';
 
 interface PreviewPart {
   value: string;
   isColor: boolean;
 }
 
-const COLOR_CANDIDATE = /#[0-9a-fA-F]{3,8}|(?:rgb|rgba|hsl|hsla)\([^)]*\)|\b(?:transparent|black|white|red|green|blue|yellow|gray|grey|orange|purple|pink|brown|cyan|magenta)\b/g;
+const COLOR_CANDIDATE = /[a-zA-Z-]+\((?:[^()]|\([^()]*\))*\)|#[0-9a-fA-F]{3,8}|\b(?:transparent|black|white|red|green|blue|yellow|gray|grey|orange|purple|pink|brown|cyan|magenta)\b/g;
 
 @Component({
   selector: 'ptd-value-preview',
@@ -23,6 +25,19 @@ export class ValuePreviewComponent implements OnChanges {
   protected evaluatedValue = '';
   protected preview: PreviewPart[] | null = null;
 
+  private readonly themeState = inject(ThemeStateService);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
+  constructor() {
+    effect(() => {
+      this.themeState.darkMode();
+      this.updatePreview();
+      // OnPush + the effect runs outside this component's own change detection pass, so a
+      // dark-mode toggle needs an explicit nudge to re-render with the newly collapsed color.
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
   ngOnChanges(): void {
     this.updatePreview();
   }
@@ -33,7 +48,8 @@ export class ValuePreviewComponent implements OnChanges {
       return;
     }
 
-    const evaluatedValue = evaluateTokenValue(this.value, this.data, true);
+    const resolvedValue = evaluateTokenValue(this.value, this.data, true);
+    const evaluatedValue = collapseLightDark(resolvedValue, this.themeState.darkMode());
     const preview = this.preparePreviewParts(evaluatedValue);
     if (evaluatedValue !== this.value || preview.some(part => part.isColor)) {
       this.evaluatedValue = evaluatedValue;
