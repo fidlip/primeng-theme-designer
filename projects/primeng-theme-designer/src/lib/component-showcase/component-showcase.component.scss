@@ -1,41 +1,140 @@
-.showcase-list { display: grid; gap: 1.5rem; }
+.showcase-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
 /* PrimeNG hardcodes `autofocus` on Terminal's prompt input with no way to opt out; the browser
    applies that the instant the element is inserted, well before any JS in ngAfterViewInit runs,
    dragging the whole page's scroll down to it on every load. An element that isn't rendered
    (display:none) is skipped by the browser's autofocus handling entirely, so keep it hidden from
    the very first paint and only reveal it once the component confirms that moment has passed. */
-.showcase-list ::ng-deep .p-terminal-prompt-value { display: none; }
-.showcase-list.terminal-ready ::ng-deep .p-terminal-prompt-value { display: block; }
-.row { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem; }
-.stack { display: grid; gap: .75rem; }
-.grow { flex: 1; }
-.product-tile, .product-row { margin: .5rem; padding: 1rem; border: 1px solid var(--p-content-border-color); border-radius: var(--p-border-radius-md); display: flex; justify-content: space-between; gap: 1rem; }
-.block-target { margin-top: .75rem; min-height: 5rem; display: grid; place-items: center; border: 1px dashed var(--p-content-border-color); border-radius: var(--p-border-radius-md); }
-.block-target ::ng-deep .p-blockui-mask { display: flex !important; align-items: center; justify-content: center; }
-.confirmpopup-anchor { margin-top: 5.5rem; }
+.showcase-list ::ng-deep .p-terminal-prompt-value {
+  display: none;
+}
+
+.showcase-list.terminal-ready ::ng-deep .p-terminal-prompt-value {
+  display: block;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .75rem;
+}
+
+.stack {
+  display: grid;
+  gap: .75rem;
+}
+
+.grow {
+  flex: 1;
+}
+
+.product-tile, .product-row {
+  margin: .5rem;
+  padding: 1rem;
+  border: 1px solid var(--p-content-border-color);
+  border-radius: var(--p-border-radius-md);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.block-target {
+  margin-top: .75rem;
+  min-height: 5rem;
+  display: grid;
+  place-items: center;
+  border: 1px dashed var(--p-content-border-color);
+  border-radius: var(--p-border-radius-md);
+}
+
+.block-target ::ng-deep .p-blockui-mask {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirmpopup-anchor {
+  margin-top: 5.5rem;
+}
+
 /* ConfirmPopup always appends to document.body (no appendTo input), so this can't be
    scoped to a local host — it targets the class globally instead. */
-::ng-deep .p-confirmpopup { opacity: 1 !important; transform: none !important; }
-.contextmenu-host { position: relative; }
-.contextmenu-host ::ng-deep .p-contextmenu {
-  position: static !important; inset: auto !important; opacity: 1 !important; transform: none !important; margin-top: .5rem;
+::ng-deep .p-confirmpopup {
+  opacity: 1 !important;
+  transform: none !important;
 }
-.popover-host ::ng-deep .p-popover { position: static !important; inset: auto !important; opacity: 1 !important; transform: none !important; margin-top: .5rem; }
+
+.contextmenu-host {
+  position: relative;
+}
+
+.contextmenu-host ::ng-deep .p-contextmenu {
+  position: static !important;
+  inset: auto !important;
+  opacity: 1 !important;
+  transform: none !important;
+  margin-top: .5rem;
+}
+
+.popover-host ::ng-deep .p-popover {
+  position: static !important;
+  inset: auto !important;
+  opacity: 1 !important;
+  transform: none !important;
+  margin-top: .5rem;
+}
+
 /* This preview swatch is just here to show its own themed tokens alongside the always-open
    inline picker below; it doesn't need to open its own overlay on click. */
-.colorpicker-static-preview { pointer-events: none; }
-.tooltip-host { display: flex; align-items: center; gap: .5rem; }
-.tooltip-host .p-tooltip { position: static; display: inline-block; }
-.dock-host, .speed-host { position: relative; min-height: 7rem; }
-.treeselect-host { position: relative; }
+.colorpicker-static-preview {
+  pointer-events: none;
+}
+
+.tooltip-host {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.tooltip-host .p-tooltip {
+  position: static;
+  display: inline-block;
+}
+
+.dock-host, .speed-host {
+  position: relative;
+  min-height: 7rem;
+}
+
+.treeselect-host {
+  position: relative;
+}
+
 .treeselect-host ::ng-deep .p-overlay {
-  position: static !important; inset: auto !important; opacity: 1 !important; transform: none !important;
+  position: static !important;
+  inset: auto !important;
+  opacity: 1 !important;
+  transform: none !important;
 }
+
 .treeselect-host ::ng-deep .p-treeselect-overlay {
-  position: static !important; inset: auto !important; opacity: 1 !important; transform: none !important;
-  width: 100% !important; margin-top: .5rem;
+  position: static !important;
+  inset: auto !important;
+  opacity: 1 !important;
+  transform: none !important;
+  width: 100% !important;
+  margin-top: .5rem;
 }
-.scrolltop-host { height: 200px; overflow-y: auto; }
+
+.scrolltop-host {
+  height: 200px;
+  overflow-y: auto;
+}
+
 /* PrimeNG v22's Toast lays each `.p-toast-message` out via `position: absolute` + a `translate`
    transform (its new hover-to-expand stacking design), anchored to the `.p-toast` root. Forcing
    just the root to `position: static` (as every other overlay override in this file does) leaves
@@ -54,26 +153,110 @@
    only un-does the *positioning* half of that, not the JS-driven height collapse. The template's
    `mode="expanded"` on `<p-toast>` is the other half - it renders every message at full height
    simultaneously, which is what this always-open showcase needs. */
-.toast-host ::ng-deep .p-toast { display: flex; flex-wrap: wrap; gap: .75rem; position: relative !important; inset: auto !important; width: 100% !important; }
-.toast-host ::ng-deep .p-toast .p-toast-message { position: static !important; inset: auto !important; opacity: 1 !important; transform: none !important; margin: 0; }
+.toast-host ::ng-deep .p-toast {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+}
+
+.toast-host ::ng-deep .p-toast .p-toast-message {
+  position: static !important;
+  inset: auto !important;
+  opacity: 1 !important;
+  transform: none !important;
+  margin: 0;
+}
+
 .dialog-host ::ng-deep .p-dialog-mask, .confirmdialog-host ::ng-deep .p-dialog-mask {
-  position: static !important; inset: auto !important; height: auto !important; width: auto !important;
+  position: static !important;
+  inset: auto !important;
+  height: auto !important;
+  width: auto !important;
 }
-.dialog-host ::ng-deep .p-dialog, .confirmdialog-host ::ng-deep .p-dialog { opacity: 1 !important; transform: none !important; }
-.confirmdialog-host ::ng-deep .p-dialog-mask { background: transparent !important; }
+
+.dialog-host ::ng-deep .p-dialog, .confirmdialog-host ::ng-deep .p-dialog {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.confirmdialog-host ::ng-deep .p-dialog-mask {
+  background: transparent !important;
+}
+
 .drawer-host ::ng-deep .p-drawer {
-  position: static !important; inset: auto !important; width: 100% !important; height: auto !important;
-  max-height: none !important; transform: none !important;
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  transform: none !important;
 }
-.scrolltop-host p { max-width: 420px; margin: 0 0 .75rem; }
-.gallery-image { width: 100%; display: block; max-height: 250px; object-fit: cover; }
-.gallery-thumb { width: 4rem; height: 3rem; object-fit: cover; display: block; }
-.image-compare { display: block; width: min(100%, 500px); aspect-ratio: 16/9; }
-.image-compare img { width: 100%; height: 100%; object-fit: cover; }
-.inplace-display { padding: .75rem; display: inline-block; }
-.overlay-icon { font-size: 2rem; }
-.center { height: 100%; display: grid; place-items: center; }
-.long-copy { width: 140%; line-height: 1.7; }
-small { display: block; color: var(--p-text-muted-color); }
-code { margin-left: .75rem; }
-@media (max-width: 700px) { .showcase-list { gap: 1rem; } }
+
+.scrolltop-host p {
+  max-width: 420px;
+  margin: 0 0 .75rem;
+}
+
+.gallery-image {
+  width: 100%;
+  display: block;
+  max-height: 250px;
+  object-fit: cover;
+}
+
+.gallery-thumb {
+  width: 4rem;
+  height: 3rem;
+  object-fit: cover;
+  display: block;
+}
+
+.image-compare {
+  display: block;
+  width: min(100%, 500px);
+  aspect-ratio: 16/9;
+}
+
+.image-compare img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.inplace-display {
+  padding: .75rem;
+  display: inline-block;
+}
+
+.overlay-icon {
+  font-size: 2rem;
+}
+
+.center {
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.long-copy {
+  width: 140%;
+  line-height: 1.7;
+}
+
+small {
+  display: block;
+  color: var(--p-text-muted-color);
+}
+
+code {
+  margin-left: .75rem;
+}
+
+@media (max-width: 700px) {
+  .showcase-list {
+    gap: 1rem;
+  }
+}
