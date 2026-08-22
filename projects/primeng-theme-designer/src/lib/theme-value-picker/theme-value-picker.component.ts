@@ -49,6 +49,9 @@ export class ThemeValuePickerComponent implements ControlValueAccessor {
   /** Set only when the written value is a `light-dark(light, dark)` pair; `inputText` then shows/edits just one half. */
   private lightDarkValue: LightDarkValue | null = null;
 
+  /** The full (unsplit) value last written or committed, used to detect drift from the theme's default. */
+  private currentValue = '';
+
   private onChange: (value: string) => void = () => undefined;
   private onTouched: () => void = () => undefined;
 
@@ -93,6 +96,7 @@ export class ThemeValuePickerComponent implements ControlValueAccessor {
 
   writeValue(value: string | number | boolean | null): void {
     const rawValue = value === null ? '' : String(value);
+    this.currentValue = rawValue;
     this.lightDarkValue = parseLightDarkValue(rawValue);
     this.inputText = this.lightDarkValue
       ? (this.themeState.darkMode() ? this.lightDarkValue.dark : this.lightDarkValue.light)
@@ -189,9 +193,45 @@ export class ThemeValuePickerComponent implements ControlValueAccessor {
         : { ...this.lightDarkValue, light: value };
     }
     const fullValue = this.lightDarkValue ? formatLightDarkValue(this.lightDarkValue) : value;
+    this.currentValue = fullValue;
 
     this.onChange(fullValue);
     this.valueChange.emit(fullValue);
+  }
+
+  /** Whether the current value differs from the theme's default for this field; drives the reset button's visibility. */
+  protected get showResetButton(): boolean {
+    const defaultValue = this.getDefaultRawValue();
+    return defaultValue !== undefined && defaultValue !== this.currentValue;
+  }
+
+  /** "current → default" tooltip shown on the reset button; only meaningful while `showResetButton` is true. */
+  protected get resetTooltip(): string {
+    return `${this.currentValue} → ${this.getDefaultRawValue() ?? ''}`;
+  }
+
+  protected resetToDefault(event: Event): void {
+    event.preventDefault();
+    const defaultValue = this.getDefaultRawValue();
+    if (defaultValue === undefined) {
+      return;
+    }
+    this.lightDarkValue = parseLightDarkValue(defaultValue);
+    this.inputText = this.lightDarkValue
+      ? (this.themeState.darkMode() ? this.lightDarkValue.dark : this.lightDarkValue.light)
+      : defaultValue;
+    this.currentValue = defaultValue;
+    this.onChange(defaultValue);
+    this.onTouched();
+    this.valueChange.emit(defaultValue);
+  }
+
+  private getDefaultRawValue(): string | undefined {
+    if (!this.name) {
+      return undefined;
+    }
+    const defaultValue = this.themeState.getDefaultValue(this.name);
+    return defaultValue === undefined ? undefined : String(defaultValue);
   }
 
   private getTokenBounds(text: string, caret: number): { start: number; end: number } {

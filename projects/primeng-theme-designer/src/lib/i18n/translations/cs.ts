@@ -5,16 +5,16 @@ export const PTD_TRANSLATIONS_CS: PtdTranslationTree = {
   designer: {
     title: 'Návrhář',
     tooltip: {
-      demoPage: 'Ukázková stránka',
-      download: 'Stáhnout',
-      apply: 'Použít',
-      resetTheme: 'Obnovit výchozí motiv',
-      toggleDarkMode: 'Přepnout tmavý režim',
-      close: 'Zavřít',
+      demoPage: 'Otevřít ukázkovou stránku',
+      download: 'Stáhnout soubor motivu – odznak ukazuje počet polí změněných od načtení aplikace',
+      apply: 'Použít motiv naživo – odznak ukazuje počet změn od posledního použití',
+      resetTheme: 'Obnovit tovární motiv a zahodit všechny úpravy – odznak ukazuje počet polí lišících se od něj',
+      toggleDarkMode: 'Náhled tmavého režimu v designeru',
+      close: 'Zavřít designer',
     },
     confirmReset: {
       header: 'Potvrzení',
-      message: 'Chcete zahodit aktuální motiv a obnovit výchozí motiv?',
+      message: 'Chcete zahodit aktuální motiv včetně všech úprav provedených aplikací a obnovit tovární motiv?',
       accept: 'Zahodit',
       reject: 'Zpět',
     },

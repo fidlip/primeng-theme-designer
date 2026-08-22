@@ -18,18 +18,36 @@
         <span class="ptd-designer-title font-bold text-xl">{{ title || ('designer.title' | ptdTranslate) }}</span>
       </div>
       <div class="ptd-designer-action-buttons flex items-center gap-2">
-        <p-button icon="pi pi-home" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.demoPage' | ptdTranslate"
-                  (click)="onDemoPage()"/>
-        <p-button icon="pi pi-download" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.download' | ptdTranslate"
-                  (click)="onDownloadTheme()"/>
-        <p-button icon="pi pi-upload" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.apply' | ptdTranslate"
-                  (click)="onApplyTheme()"/>
-        <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.resetTheme' | ptdTranslate"
-                  (click)="resetThemeToDefault()"/>
-        <p-button icon="pi pi-sun" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.toggleDarkMode' | ptdTranslate"
-                  (click)="toggleDarkMode()" tooltipPosition="left"/>
-        <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="secondary" [pTooltip]="'designer.tooltip.close' | ptdTranslate" tooltipPosition="left"
-                  (click)="onClose()"/>
+        <button pButton type="button" [iconOnly]="true" [rounded]="true" [text]="true" severity="secondary"
+                [pTooltip]="'designer.tooltip.demoPage' | ptdTranslate" (click)="onDemoPage()">
+          <i class="pi pi-home"></i>
+        </button>
+        <p-overlaybadge [value]="downloadBadge" severity="info" [badgeDisabled]="!downloadBadge">
+          <button pButton type="button" [iconOnly]="true" [rounded]="true" [text]="true" severity="secondary"
+                  [pTooltip]="'designer.tooltip.download' | ptdTranslate" (click)="onDownloadTheme()">
+            <i class="pi pi-download"></i>
+          </button>
+        </p-overlaybadge>
+        <p-overlaybadge [value]="applyBadge" severity="danger" [badgeDisabled]="!applyBadge">
+          <button pButton type="button" [iconOnly]="true" [rounded]="true" [text]="true" severity="secondary"
+                  [pTooltip]="'designer.tooltip.apply' | ptdTranslate" (click)="onApplyTheme()">
+            <i class="pi pi-upload"></i>
+          </button>
+        </p-overlaybadge>
+        <p-overlaybadge [value]="resetBadge" severity="success" [badgeDisabled]="!resetBadge">
+          <button pButton type="button" [iconOnly]="true" [rounded]="true" [text]="true" severity="secondary"
+                  [pTooltip]="'designer.tooltip.resetTheme' | ptdTranslate" (click)="resetThemeToDefault()">
+            <i class="pi pi-refresh"></i>
+          </button>
+        </p-overlaybadge>
+        <button pButton type="button" [iconOnly]="true" [rounded]="true" [text]="true" severity="secondary"
+                [pTooltip]="'designer.tooltip.toggleDarkMode' | ptdTranslate" tooltipPosition="left" (click)="toggleDarkMode()">
+          <i class="pi pi-sun"></i>
+        </button>
+        <button pButton type="button" [iconOnly]="true" [rounded]="true" [text]="true" severity="secondary"
+                [pTooltip]="'designer.tooltip.close' | ptdTranslate" tooltipPosition="left" (click)="onClose()">
+          <i class="pi pi-times"></i>
+        </button>
       </div>
     </div>
   </ng-template>
