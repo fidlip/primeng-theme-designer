@@ -12,7 +12,7 @@ A standalone visual theme editor for [PrimeNG](https://primeng.org) design token
 - **Token references** — type `{` in any value field to autocomplete a reference to another token, with the resolved value previewed inline.
 - **Palette editor** — pick a base color and the whole 50–950 palette scale is generated automatically.
 - **Apply instantly** to `Theme.setTheme(...)` so changes are visible in the running app without a reload.
-- **Persistence** — edits are saved to `localStorage` and restored automatically; "Reset to default" clears them.
+- **Persistence** — edits are saved to `localStorage` and restored automatically; "Reset to default" clears them. The key defaults to `primeng-theme-designer-saved-theme`; provide the `PTD_STORAGE_KEY` injection token to change it (e.g. when several apps share one origin).
 - **Export** the current theme as a ready-to-use `definePreset(...)` TypeScript file, either in full or as a diff against the stock preset.
 - **Dark mode toggle**, collapsible panel, and deep-linkable sections (jump straight to `components.button`, for example).
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, InjectionToken, inject } from '@angular/core';
 import { Json, JsonPropertyType } from './json.model';
 import { detailedDiff } from 'deep-object-diff';
 import { BehaviorSubject, map } from 'rxjs';
@@ -8,10 +8,21 @@ import { PresetOption } from './preset-option.model';
 import { cloneTheme } from './theme-clone.helper';
 import { countChangedLeaves } from './theme-diff.helper';
 
+/**
+ * The `localStorage` key the designer persists the working theme under. Optional - override it
+ * when several apps or builds share one origin and must not load each other's saved theme (the
+ * demo, for instance, keys it by release line, since tokens differ between PrimeNG majors).
+ */
+export const PTD_STORAGE_KEY = new InjectionToken<string>('PTD_STORAGE_KEY', {
+  factory: () => 'primeng-theme-designer-saved-theme',
+});
+
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeStateService {
+  private readonly storageKey = inject(PTD_STORAGE_KEY);
+
   readonly availableTokensTree = new BehaviorSubject<TreeNode[]>([]);
   readonly availableTokens = this.availableTokensTree.pipe(
     map((tokenTree: TreeNode[]): ThemeTokenOption[] => flattenTokenTree(tokenTree))
@@ -152,11 +163,11 @@ export class ThemeStateService {
   }
 
   saveToLocalStorage(themeJson: Json): void {
-    localStorage.setItem('primeng-theme-designer-saved-theme', JSON.stringify(themeJson));
+    localStorage.setItem(this.storageKey, JSON.stringify(themeJson));
   }
 
   getSavedTheme(): Json | undefined {
-    const savedTheme = localStorage.getItem('primeng-theme-designer-saved-theme');
+    const savedTheme = localStorage.getItem(this.storageKey);
     if (!savedTheme) {
       return undefined;
     }
@@ -169,7 +180,7 @@ export class ThemeStateService {
   }
 
   clearThemeInLocalStorage(): void {
-    localStorage.removeItem('primeng-theme-designer-saved-theme');
+    localStorage.removeItem(this.storageKey);
   }
 
   private getBasePreset(): PresetOption {
