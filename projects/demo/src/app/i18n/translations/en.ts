@@ -23,6 +23,7 @@ export const TRANSLATIONS_EN: TranslationObject = {
     presetSelector: { label: 'Choose theme preset' },
     openDesigner: 'Open theme designer',
     langSwitcher: { label: 'Language' },
+    versionSwitcher: { label: 'Demo version (PrimeNG release line)' },
     customTest: { content: '... custom content' },
   },
 };
