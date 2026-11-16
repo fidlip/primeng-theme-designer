@@ -13,6 +13,7 @@ export const TRANSLATIONS_CS: TranslationObject = {
     presetSelector: { label: 'Vyberte přednastavení motivu' },
     openDesigner: 'Otevřít návrháře motivu',
     langSwitcher: { label: 'Jazyk' },
+    versionSwitcher: { label: 'Verze ukázky (řada PrimeNG)' },
     customTest: { content: '... vlastní obsah' },
   },
 };

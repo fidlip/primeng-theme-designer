@@ -11,6 +11,7 @@ import {TooltipModule} from 'primeng/tooltip';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {VersionSwitcherComponent} from './version-switcher/version-switcher.component';
 
 /** Demonstrates the library's optional translate-adapter extension point: German only exists for the designer's own texts (see translations.ts), not for this demo's own copy. */
 const LANGS = ['en', 'cs', 'de'];
@@ -19,7 +20,7 @@ const LANGS = ['en', 'cs', 'de'];
   selector: 'app-root',
   imports: [
     ThemeDesignerComponent, PresetSelectorComponent, ComponentShowcaseComponent, ButtonModule, TooltipModule,
-    ShowcaseSectionComponent, SelectButtonModule, FormsModule, TranslatePipe,
+    ShowcaseSectionComponent, SelectButtonModule, FormsModule, TranslatePipe, VersionSwitcherComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',

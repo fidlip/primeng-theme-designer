@@ -1,8 +1,16 @@
 name: Deploy demo to GitHub Pages
 
+# Publishes every release line side by side: main at the site root and each release/* branch in
+# its own subfolder (release/21.x -> /21/). GitHub Pages only ever serves the latest deployment,
+# so every run rebuilds all branches, no matter which one was pushed. This file must be identical
+# on main and all release/* branches, since a push runs the workflow file of the pushed branch.
+#
+# A versions.json listing all builds is written next to every build's index.html; the demo's
+# version switcher (projects/demo/src/app/version-switcher) reads it.
+
 on:
   push:
-    branches: [main]
+    branches: [main, 'release/**']
   workflow_dispatch:
 
 permissions:
@@ -15,23 +23,99 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  list-branches:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: list
+        # The subfolder is the major number (release/21.x -> 21).
+        run: |
+          matrix=$(
+            {
+              echo '{"ref":"main","dir":""}'
+              git for-each-ref --format='%(refname:lstrip=3)' 'refs/remotes/origin/release/*' \
+                | while read -r ref; do
+                    dir=${ref#release/}; dir=${dir%%.*}
+                    echo "{\"ref\":\"$ref\",\"dir\":\"$dir\"}"
+                  done
+            } | jq -sc '{include: .}'
+          )
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "$matrix"
+
+  build:
+    needs: list-branches
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.list-branches.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.ref }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
+      # PrimeNG 22+ demos import a gitignored license file; generate it from the optional
+      # PRIMENG_LICENSE_KEY repository secret (empty key = PrimeNG shows its license banner).
+      - name: PrimeNG license
+        env:
+          PRIMENG_LICENSE_KEY: ${{ secrets.PRIMENG_LICENSE_KEY }}
+        run: |
+          dir=projects/demo/src/app
+          if [ -f "$dir/primeng-license.example.ts" ] && [ ! -f "$dir/primeng-license.local.ts" ]; then
+            node -e 'console.log(`export const PRIMENG_LICENSE_KEY = ${JSON.stringify(process.env.PRIMENG_LICENSE_KEY ?? "")};`)' \
+              > "$dir/primeng-license.local.ts"
+          fi
       - run: npx ng build primeng-theme-designer
-      - run: npx ng build demo --base-href /primeng-theme-designer/
+      - run: npx ng build demo --base-href "/${{ github.event.repository.name }}/${{ matrix.dir && format('{0}/', matrix.dir) || '' }}"
+      - name: Describe build
+        run: |
+          version=$(jq -r .version projects/primeng-theme-designer/package.json)
+          jq -n --arg ref '${{ matrix.ref }}' --arg dir '${{ matrix.dir }}' --arg version "$version" \
+            '{ref: $ref, dir: $dir, version: $version}' > dist/demo/build.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: demo-${{ matrix.dir || 'main' }}
+          path: dist/demo
+          retention-days: 1
+
+  assemble:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: demo-*
+          path: builds
+      - name: Assemble site
+        env:
+          BASE: /${{ github.event.repository.name }}/
+        run: |
+          mkdir site
+          # main first, then the release lines newest first
+          for b in builds/demo-main $(ls -d builds/demo-* | grep -v '/demo-main$' | sort -t- -k2 -n -r); do
+            dir=$(jq -r .dir "$b/build.json")
+            mkdir -p "site/$dir"
+            cp -r "$b/browser/." "site/$dir/"
+            jq --arg base "$BASE" '{
+                label: (if .ref == "main" then "\(.version) (main)" else .version end),
+                path: (if .dir == "" then $base else "\($base)\(.dir)/" end)
+              }' "$b/build.json"
+          done | jq -s '{versions: .}' > versions.json
+          cat versions.json
+          find site -name index.html -exec dirname {} \; | while read -r d; do cp versions.json "$d/"; done
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/demo/browser
+          path: site
 
   deploy:
-    needs: build
+    needs: assemble
     runs-on: ubuntu-latest
     environment:
       name: github-pages
